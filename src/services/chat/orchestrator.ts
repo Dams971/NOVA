@@ -172,7 +172,7 @@ export class ChatOrchestrator {
 
       return response;
 
-    } catch (error) {
+    } catch (_error) {
       console.error('Chat orchestration error:', error);
       
       // Log error for monitoring
@@ -327,7 +327,7 @@ export class ChatOrchestrator {
         inputType: 'select'
       };
 
-    } catch (error) {
+    } catch (_error) {
       console.error('Availability check error:', error);
       return {
         message: "Je ne peux pas vérifier les disponibilités actuellement. Un conseiller va vous aider.",
@@ -388,7 +388,7 @@ export class ChatOrchestrator {
         data: { appointmentId: appointment.id }
       };
 
-    } catch (error) {
+    } catch (_error) {
       console.error('Appointment booking error:', error);
 
       if (error.message?.includes('conflict')) {
@@ -462,7 +462,7 @@ export class ChatOrchestrator {
         data: { appointmentId: slots.appointmentId }
       };
 
-    } catch (error) {
+    } catch (_error) {
       console.error('Appointment reschedule error:', error);
       return {
         message: "Je ne peux pas reporter votre rendez-vous. Un conseiller va vous aider.",
@@ -507,7 +507,7 @@ export class ChatOrchestrator {
         suggestedReplies: ['Prendre un nouveau rendez-vous']
       };
 
-    } catch (error) {
+    } catch (_error) {
       console.error('Appointment cancellation error:', error);
       return {
         message: "Je ne peux pas annuler votre rendez-vous. Un conseiller va vous aider.",
@@ -541,7 +541,7 @@ export class ChatOrchestrator {
         suggestedReplies: practitioners.slice(0, 3).map(p => `Rdv avec ${p.name}`)
       };
 
-    } catch (error) {
+    } catch (_error) {
       console.error('Practitioners list error:', error);
       return {
         message: "Je ne peux pas afficher la liste des praticiens. Un conseiller va vous aider.",

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { MFAService } from '@/lib/auth/mfa-service';
 import { withAuth, withCORS, AuthenticatedRequest } from '@/lib/middleware/auth';
 
@@ -27,7 +27,7 @@ async function handleMFAStatus(request: AuthenticatedRequest): Promise<NextRespo
       }
     });
 
-  } catch (error) {
+  } catch (_error) {
     console.error('MFA status error:', error);
 
     return NextResponse.json(

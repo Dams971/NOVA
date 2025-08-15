@@ -126,7 +126,7 @@ export const runMigrations = async () => {
     }
     
     console.log('🎉 All migrations completed successfully!');
-  } catch (error) {
+  } catch (_error) {
     console.error('💥 Migration failed:', error);
     throw error;
   }

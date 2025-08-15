@@ -115,7 +115,7 @@ export class MFAService {
         backupCodes,
       };
 
-    } catch (error) {
+    } catch (_error) {
       console.error('MFA setup error:', error);
       if (error instanceof MFAError) {
         throw error;
@@ -165,7 +165,7 @@ export class MFAService {
 
       return true;
 
-    } catch (error) {
+    } catch (_error) {
       console.error('MFA enable error:', error);
       if (error instanceof MFAError) {
         throw error;
@@ -222,7 +222,7 @@ export class MFAService {
 
       return { isValid: false };
 
-    } catch (error) {
+    } catch (_error) {
       console.error('MFA verification error:', error);
       if (error instanceof MFAError) {
         throw error;
@@ -256,7 +256,7 @@ export class MFAService {
 
       return true;
 
-    } catch (error) {
+    } catch (_error) {
       console.error('MFA disable error:', error);
       if (error instanceof MFAError) {
         throw error;
@@ -291,7 +291,7 @@ export class MFAService {
 
       return newBackupCodes;
 
-    } catch (error) {
+    } catch (_error) {
       console.error('Backup codes regeneration error:', error);
       if (error instanceof MFAError) {
         throw error;

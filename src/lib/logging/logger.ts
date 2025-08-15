@@ -94,7 +94,7 @@ class Logger {
     // File output
     try {
       fs.appendFileSync(this.logFilePath, logLine);
-    } catch (error) {
+    } catch (_error) {
       console.error('Failed to write to log file:', error);
     }
   }

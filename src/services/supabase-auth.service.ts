@@ -144,7 +144,7 @@ export class SupabaseAuthService {
         });
 
       if (error) throw error;
-    } catch (error) {
+    } catch (_error) {
       console.error('Profile upsert error:', error);
       throw error;
     }
@@ -171,7 +171,7 @@ export class SupabaseAuthService {
         });
 
       if (error) throw error;
-    } catch (error) {
+    } catch (_error) {
       console.error('Consent recording error:', error);
       // Don't throw - consent recording failure shouldn't block signup
     }

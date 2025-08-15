@@ -81,7 +81,7 @@ export default function CabinetOverviewGrid({
       const data = await response.json();
       setMetrics(data.data);
       setLastUpdated(new Date());
-    } catch (err) {
+    } catch (_err) {
       console.error('Failed to fetch metrics:', err);
     }
   };

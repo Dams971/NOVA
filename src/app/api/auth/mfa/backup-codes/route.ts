@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { MFAService, MFAError } from '@/lib/auth/mfa-service';
 import { withAuth, withCORS, AuthenticatedRequest } from '@/lib/middleware/auth';
 
@@ -34,7 +34,7 @@ async function handleRegenerateBackupCodes(request: AuthenticatedRequest): Promi
       warning: 'Please save these backup codes in a secure location. They will not be shown again.'
     });
 
-  } catch (error) {
+  } catch (_error) {
     console.error('Backup codes regeneration error:', error);
 
     if (error instanceof MFAError) {

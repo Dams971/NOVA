@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { db } from '@/lib/database/unified-connection';
 import { withAuth } from '@/lib/middleware/auth';
 
@@ -23,7 +23,7 @@ async function handleGetAppointment(request: NextRequest, { params }: Params) {
       success: true,
       data: appointment
     });
-  } catch (error) {
+  } catch (_error) {
     console.error('Get appointment error:', error);
     return NextResponse.json(
       { error: 'Failed to fetch appointment' },
@@ -58,7 +58,7 @@ async function handleUpdateAppointment(request: NextRequest, { params }: Params)
       success: true,
       data: updatedAppointment
     });
-  } catch (error) {
+  } catch (_error) {
     console.error('Update appointment error:', error);
     return NextResponse.json(
       { error: 'Failed to update appointment' },
@@ -86,7 +86,7 @@ async function handleCancelAppointment(request: NextRequest, { params }: Params)
       message: 'Appointment cancelled successfully',
       data: updatedAppointment
     });
-  } catch (error) {
+  } catch (_error) {
     console.error('Cancel appointment error:', error);
     return NextResponse.json(
       { error: 'Failed to cancel appointment' },

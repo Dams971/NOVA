@@ -132,7 +132,7 @@ export class IONOSEmailService {
 
       await this.transporter.sendMail(mailOptions);
       return true;
-    } catch (error) {
+    } catch (_error) {
       console.error('OTP email error:', error);
       return false;
     }
@@ -465,7 +465,7 @@ Cité 109, Daboussy El Achour, Alger
             timestamp: new Date().toISOString()
           }
         });
-    } catch (error) {
+    } catch (_error) {
       console.error('Email logging error:', error);
     }
   }

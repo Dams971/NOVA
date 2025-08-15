@@ -173,7 +173,7 @@ class DatabaseManager {
         }
       }
 
-    } catch (error) {
+    } catch (_error) {
       console.error(`Error creating cabinet database for ${cabinetId}:`, error);
       throw error;
     }
@@ -186,7 +186,7 @@ class DatabaseManager {
     for (const [key, connection] of this.connections) {
       try {
         await connection.end();
-      } catch (error) {
+      } catch (_error) {
         console.error(`Error closing connection ${key}:`, error);
       }
     }
@@ -201,7 +201,7 @@ class DatabaseManager {
       const connection = await this.getMainConnection();
       await connection.ping();
       return true;
-    } catch (error) {
+    } catch (_error) {
       console.error('Database connection test failed:', error);
       return false;
     }

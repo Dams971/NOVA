@@ -396,7 +396,7 @@ export class DialogManagerV3 {
           shouldSignUp: true
         };
       }
-    } catch (error) {
+    } catch (_error) {
       console.error('Auth status check failed:', error);
       return {
         hasAccount: false,

@@ -89,7 +89,7 @@ export default function AppointmentList({
         }));
         setAppointments(appointmentsWithPatients);
       }
-    } catch (error) {
+    } catch (_error) {
       console.error('Error loading appointments:', error);
     } finally {
       setLoading(false);

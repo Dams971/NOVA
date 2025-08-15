@@ -123,7 +123,7 @@ export class EmailQueue extends EventEmitter {
       this.queue.splice(jobIndex, 1);
 
       await this.sendEmail(job);
-    } catch (error) {
+    } catch (_error) {
       console.error('Queue processing error:', error);
     } finally {
       this.processing = false;

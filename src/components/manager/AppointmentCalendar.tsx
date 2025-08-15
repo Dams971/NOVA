@@ -77,7 +77,7 @@ export default function AppointmentCalendar({
       if (result.success && result.data) {
         setEvents(result.data);
       }
-    } catch (error) {
+    } catch (_error) {
       console.error('Error loading calendar events:', error);
     } finally {
       setLoading(false);
@@ -202,7 +202,7 @@ export default function AppointmentCalendar({
     try {
       await onEventDrop(draggedEvent.id, newDateTime);
       await loadEvents(); // Refresh events
-    } catch (error) {
+    } catch (_error) {
       console.error('Error dropping event:', error);
     }
 

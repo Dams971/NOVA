@@ -27,7 +27,7 @@ async function handleGetCabinets(request: NextRequest) {
       success: true,
       data: cabinetsWithStats
     });
-  } catch (error) {
+  } catch (_error) {
     console.error('Get cabinets error:', error);
     return NextResponse.json(
       { error: 'Failed to fetch cabinets' },

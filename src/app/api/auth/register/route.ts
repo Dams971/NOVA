@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { AuthService, RegisterUserRequest, AuthenticationError } from '@/lib/auth/auth-service';
 import { withCORS } from '@/lib/middleware/auth';
 
@@ -51,7 +51,7 @@ async function handleRegister(request: NextRequest): Promise<NextResponse> {
       ...loginResponse
     }, { status: 201 });
 
-  } catch (error) {
+  } catch (_error) {
     console.error('Registration error:', error);
 
     if (error instanceof AuthenticationError) {

@@ -34,7 +34,7 @@ export class UnifiedDatabase {
           return;
         }
       }
-    } catch (error) {
+    } catch (_error) {
       console.log('⚠️ PostgreSQL not available, using in-memory database');
     }
     

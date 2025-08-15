@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { RBACService } from '@/lib/auth/rbac';
 import { withPermission, withCORS, AuthenticatedRequest } from '@/lib/middleware/auth';
 
@@ -91,7 +91,7 @@ async function handleGetCabinets(request: AuthenticatedRequest): Promise<NextRes
       accessLevel: userRole === 'super_admin' || userRole === 'admin' ? 'all' : 'assigned',
     });
 
-  } catch (error) {
+  } catch (_error) {
     console.error('Get cabinets error:', error);
     return NextResponse.json(
       { error: 'Internal server error', code: 'INTERNAL_ERROR' },
@@ -148,7 +148,7 @@ async function handleCreateCabinet(request: AuthenticatedRequest): Promise<NextR
       cabinet: newCabinet,
     }, { status: 201 });
 
-  } catch (error) {
+  } catch (_error) {
     console.error('Create cabinet error:', error);
     return NextResponse.json(
       { error: 'Internal server error', code: 'INTERNAL_ERROR' },

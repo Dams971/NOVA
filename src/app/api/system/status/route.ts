@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import Bootstrap from '@/lib/core/bootstrap';
 import APIGateway from '@/lib/api/gateway';
 import { getInitializationPromise } from '@/lib/core/init';

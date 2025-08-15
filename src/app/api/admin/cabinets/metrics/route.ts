@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { CabinetService } from '@/lib/services/cabinet-service';
 
 // Mock metrics service - in a real implementation, this would fetch from analytics database
@@ -22,7 +22,7 @@ class CabinetMetricsService {
   }
 }
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const cabinetService = new CabinetService();
     const metricsService = new CabinetMetricsService();

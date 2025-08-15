@@ -1,6 +1,6 @@
 export const runtime = 'nodejs';
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { getEmailService } from '@/server/email/ionos-email.service';
 
@@ -21,7 +21,7 @@ const appointmentEmailSchema = z.object({
   userId: z.string(),
 });
 
-export async function POST(request: NextRequest) {
+export async function POST() {
   try {
     const body = await request.json();
     const validated = appointmentEmailSchema.parse(body);
@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
     );
     
     return NextResponse.json({ ok: success });
-  } catch (error) {
+  } catch (_error) {
     console.error('Appointment email error:', error);
     
     if (error instanceof z.ZodError) {

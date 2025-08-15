@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { db } from '@/lib/database/unified-connection';
 import { withAuth } from '@/lib/middleware/auth';
 
@@ -23,7 +23,7 @@ async function handleGetPatient(request: NextRequest, { params }: Params) {
       success: true,
       data: patient
     });
-  } catch (error) {
+  } catch (_error) {
     console.error('Get patient error:', error);
     return NextResponse.json(
       { error: 'Failed to fetch patient' },
@@ -53,7 +53,7 @@ async function handleUpdatePatient(request: NextRequest, { params }: Params) {
       success: true,
       data: updatedPatient
     });
-  } catch (error) {
+  } catch (_error) {
     console.error('Update patient error:', error);
     return NextResponse.json(
       { error: 'Failed to update patient' },
@@ -77,7 +77,7 @@ async function handleDeletePatient(request: NextRequest, { params }: Params) {
       success: true,
       message: 'Patient deleted successfully'
     });
-  } catch (error) {
+  } catch (_error) {
     console.error('Delete patient error:', error);
     return NextResponse.json(
       { error: 'Failed to delete patient' },

@@ -473,7 +473,7 @@ export class CabinetTools {
       dayAfter.setDate(dayAfter.getDate() + 1);
       return `${dayAfter.toLocaleDateString('fr-FR')} matin`;
 
-    } catch (error) {
+    } catch (_error) {
       console.error('Error getting next availability:', error);
       return undefined;
     }

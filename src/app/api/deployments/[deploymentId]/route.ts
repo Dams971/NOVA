@@ -46,7 +46,7 @@ export async function GET(
       }
     });
 
-  } catch (error) {
+  } catch (_error) {
     console.error('Get deployment API error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
@@ -84,7 +84,7 @@ export async function DELETE(
       message: 'Deployment rolled back successfully'
     });
 
-  } catch (error) {
+  } catch (_error) {
     console.error('Rollback deployment API error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },

@@ -59,7 +59,7 @@ export async function GET(
       }
     });
 
-  } catch (error) {
+  } catch (_error) {
     console.error('Error in manager dashboard API:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
@@ -100,7 +100,7 @@ export async function POST(
       { status: 400 }
     );
 
-  } catch (error) {
+  } catch (_error) {
     console.error('Error in manager dashboard POST API:', error);
     return NextResponse.json(
       { error: 'Internal server error' },

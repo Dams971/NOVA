@@ -63,7 +63,7 @@ export class AuthService {
         token,
         expiresAt: session.expiresAt
       };
-    } catch (error) {
+    } catch (_error) {
       console.error('Registration error:', error);
       return { success: false, error: 'Registration failed' };
     }
@@ -106,7 +106,7 @@ export class AuthService {
         token,
         expiresAt: session.expiresAt
       };
-    } catch (error) {
+    } catch (_error) {
       console.error('Login error:', error);
       return { success: false, error: 'Login failed' };
     }
@@ -125,7 +125,7 @@ export class AuthService {
       );
 
       return true;
-    } catch (error) {
+    } catch (_error) {
       console.error('Logout error:', error);
       return false;
     }
@@ -162,7 +162,7 @@ export class AuthService {
       }
 
       return await this.getUserById(payload.userId);
-    } catch (error) {
+    } catch (_error) {
       console.error('Get user by token error:', error);
       return null;
     }
@@ -188,7 +188,7 @@ export class AuthService {
         permissions: ROLE_PERMISSIONS[user.role],
         assignedCabinets
       };
-    } catch (error) {
+    } catch (_error) {
       console.error('Get user permissions error:', error);
       return null;
     }

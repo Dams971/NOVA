@@ -40,7 +40,7 @@ async function handleGetStats(request: NextRequest) {
       success: true,
       data: metrics
     });
-  } catch (error) {
+  } catch (_error) {
     console.error('Get stats error:', error);
     return NextResponse.json(
       { error: 'Failed to fetch statistics' },

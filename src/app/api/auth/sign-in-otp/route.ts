@@ -17,7 +17,7 @@ export interface SignInOTPResponse {
   error?: string
 }
 
-export async function POST(request: NextRequest): Promise<NextResponse<SignInOTPResponse>> {
+export async function POST(): Promise<NextResponse<SignInOTPResponse>> {
   try {
     const body = await request.json()
     const { email, shouldCreateUser = true }: SignInOTPRequest = body
@@ -120,7 +120,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<SignInOTP
       }
     })
 
-  } catch (error) {
+  } catch (_error) {
     console.error('Sign-in OTP error:', error)
     
     return NextResponse.json(
@@ -134,7 +134,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<SignInOTP
   }
 }
 
-export async function GET(request: NextRequest): Promise<NextResponse> {
+export async function GET(): Promise<NextResponse> {
   return NextResponse.json(
     { 
       success: false, 

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { PatientService } from '@/lib/services/patient-service';
 import { CreatePatientRequest, PatientFilters } from '@/lib/models/patient';
 import { UserContext } from '@/lib/services/cabinet-access-control';
@@ -11,7 +11,7 @@ const getMockUserContext = (): UserContext => ({
   permissions: ['read', 'create', 'update', 'delete']
 });
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const { searchParams } = new URL(request.url);
     const patientService = PatientService.getInstance();
@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
         error: result.error
       }, { status: 400 });
     }
-  } catch (error) {
+  } catch (_error) {
     console.error('Error fetching patients:', error);
     return NextResponse.json({
       success: false,
@@ -53,7 +53,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function POST(request: NextRequest) {
+export async function POST() {
   try {
     const patientService = PatientService.getInstance();
     const userContext = getMockUserContext();
@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
         error: result.error
       }, { status: 400 });
     }
-  } catch (error) {
+  } catch (_error) {
     console.error('Error creating patient:', error);
     return NextResponse.json({
       success: false,

@@ -214,7 +214,7 @@ export class AppointmentAssistant {
       
       return response;
       
-    } catch (error) {
+    } catch (_error) {
       console.error("Erreur dans processAppointment:", error);
       
       // Retourner une erreur structurée

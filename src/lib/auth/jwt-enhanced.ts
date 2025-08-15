@@ -191,7 +191,7 @@ class EnhancedJWTManager {
 
       return newTokenPair;
 
-    } catch (error) {
+    } catch (_error) {
       console.error('Token refresh error:', error);
       
       if (error instanceof jwt.JsonWebTokenError) {
@@ -224,7 +224,7 @@ class EnhancedJWTManager {
       }
 
       return decoded;
-    } catch (error) {
+    } catch (_error) {
       console.error('Access token verification error:', error);
       return null;
     }
@@ -289,7 +289,7 @@ class EnhancedJWTManager {
       if (familyKeys.length > 0) {
         await this.redis.del(...familyKeys);
       }
-    } catch (error) {
+    } catch (_error) {
       console.error('Error revoking token family:', error);
     }
   }
@@ -320,7 +320,7 @@ class EnhancedJWTManager {
       if (familyKeys.length > 0) {
         await this.redis.del(...familyKeys);
       }
-    } catch (error) {
+    } catch (_error) {
       console.error('Error revoking all user tokens:', error);
     }
   }
@@ -364,7 +364,7 @@ class EnhancedJWTManager {
       }
       
       return sessions;
-    } catch (error) {
+    } catch (_error) {
       console.error('Error getting user sessions:', error);
       return [];
     }
@@ -390,7 +390,7 @@ class EnhancedJWTManager {
       }
       
       return cleaned;
-    } catch (error) {
+    } catch (_error) {
       console.error('Error cleaning up tokens:', error);
       return 0;
     }
@@ -426,7 +426,7 @@ class EnhancedJWTManager {
     try {
       await this.redis.ping();
       return true;
-    } catch (error) {
+    } catch (_error) {
       console.error('JWT manager health check failed:', error);
       return false;
     }

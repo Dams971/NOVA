@@ -16,7 +16,7 @@ export async function initializeNovaPlatform(): Promise<void> {
       console.warn('System readiness issues detected:', validation.issues);
     }
     
-  } catch (error) {
+  } catch (_error) {
     console.error('Failed to initialize Nova Platform:', error);
     throw error;
   }

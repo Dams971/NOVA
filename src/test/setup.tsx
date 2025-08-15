@@ -280,6 +280,7 @@ declare global {
 
 // Extend the expect interface
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Vi {
     interface AsymmetricMatchersContaining {
       toHaveAccessibleName(expectedName: string): any;

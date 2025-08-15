@@ -68,7 +68,7 @@ export class EmailQueue {
       } else {
         console.log('⚠️ Email queue table not found - run setup-postgresql.sql first');
       }
-    } catch (error) {
+    } catch (_error) {
       console.error('❌ Failed to check email queue table:', error);
       throw error;
     }
@@ -206,7 +206,7 @@ export class EmailQueue {
       
       return success;
 
-    } catch (error) {
+    } catch (_error) {
       console.error('❌ Failed to cancel email job:', error);
       throw error;
     }
@@ -240,7 +240,7 @@ export class EmailQueue {
 
       return stats;
 
-    } catch (error) {
+    } catch (_error) {
       console.error('❌ Failed to get queue stats:', error);
       throw error;
     }
@@ -366,7 +366,7 @@ export class EmailQueue {
         await this.processJob(jobRow, connection);
       }
 
-    } catch (error) {
+    } catch (_error) {
       console.error('Email queue processing error:', error);
     } finally {
       this.isProcessing = false;
@@ -490,7 +490,7 @@ export class EmailQueue {
         job.attempts,
         job.createdAt
       ]);
-    } catch (error) {
+    } catch (_error) {
       console.error('❌ Failed to add job to database:', error);
       throw error;
     }

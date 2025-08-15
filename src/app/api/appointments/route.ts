@@ -29,7 +29,7 @@ async function handleGetAppointments(request: NextRequest) {
       success: true,
       data: appointments
     });
-  } catch (error) {
+  } catch (_error) {
     console.error('Get appointments error:', error);
     return NextResponse.json(
       { error: 'Failed to fetch appointments' },
@@ -74,7 +74,7 @@ async function handleCreateAppointment(request: NextRequest) {
       success: true,
       data: appointment
     }, { status: 201 });
-  } catch (error) {
+  } catch (_error) {
     console.error('Create appointment error:', error);
     return NextResponse.json(
       { error: 'Failed to create appointment' },

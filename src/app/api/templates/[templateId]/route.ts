@@ -30,7 +30,7 @@ export async function GET(
       data: template
     });
 
-  } catch (error) {
+  } catch (_error) {
     console.error('Get template API error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
@@ -85,7 +85,7 @@ export async function DELETE(
       message: 'Template removed successfully'
     });
 
-  } catch (error) {
+  } catch (_error) {
     console.error('Delete template API error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },

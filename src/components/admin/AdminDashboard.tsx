@@ -26,7 +26,7 @@ export default function AdminDashboard({ initialView = 'overview' }: AdminDashbo
           const data = await response.json();
           setCabinets(data.data || []);
         }
-      } catch (error) {
+      } catch (_error) {
         console.error('Failed to fetch cabinets:', error);
       } finally {
         setLoading(false);

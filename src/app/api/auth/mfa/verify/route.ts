@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { AuthService, MFALoginRequest, AuthenticationError } from '@/lib/auth/auth-service';
 import { withCORS } from '@/lib/middleware/auth';
 
@@ -30,7 +30,7 @@ async function handleMFAVerify(request: NextRequest): Promise<NextResponse> {
       ...loginResponse
     });
 
-  } catch (error) {
+  } catch (_error) {
     console.error('MFA verification error:', error);
 
     if (error instanceof AuthenticationError) {

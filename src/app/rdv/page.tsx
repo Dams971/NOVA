@@ -239,7 +239,7 @@ export default function RDVPageNova() {
         
         addBotMessage(botContent, [], quickActions, response);
       }
-    } catch (error) {
+    } catch (_error) {
       console.error('Erreur IA:', error);
       addBotMessage('Désolé, une erreur s’est produite. Pouvez-vous réessayer ?');
     } finally {
@@ -425,7 +425,7 @@ export default function RDVPageNova() {
           result
         );
       }
-    } catch (error) {
+    } catch (_error) {
       console.error('Erreur création RDV:', error);
       addBotMessage('Une erreur s’est produite lors de la création du rendez-vous. Pouvez-vous réessayer ?');
     }
@@ -1074,7 +1074,7 @@ export default function RDVPageNova() {
                         result
                       );
                     }
-                  } catch (error) {
+                  } catch (_error) {
                     console.error('Erreur:', error);
                     addBotMessage('Une erreur s’est produite. Veuillez réessayer.');
                   }

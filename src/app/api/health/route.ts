@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import HealthMonitor from '@/lib/monitoring/health';
 import APIGateway from '@/lib/api/gateway';
 

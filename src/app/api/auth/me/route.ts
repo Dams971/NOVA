@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { withAuth } from '@/lib/middleware/auth';
 
 export const GET = withAuth(async (request) => {
@@ -9,7 +9,7 @@ export const GET = withAuth(async (request) => {
       user: request.user,
       permissions: request.permissions
     });
-  } catch (error) {
+  } catch (_error) {
     console.error('Get current user API error:', error);
     return NextResponse.json({
       success: false,

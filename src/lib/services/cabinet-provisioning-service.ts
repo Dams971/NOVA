@@ -170,7 +170,7 @@ export class CabinetProvisioningService {
         success: true,
         data: { cabinet, deployment }
       };
-    } catch (error) {
+    } catch (_error) {
       console.error('Cabinet provisioning failed:', error);
       
       // Handle rollback if enabled
@@ -419,7 +419,7 @@ export class CabinetProvisioningService {
         if (step.rollbackAction) {
           try {
             await step.rollbackAction();
-          } catch (error) {
+          } catch (_error) {
             console.error(`Rollback failed for step ${step.id}:`, error);
             // Continue with other rollback actions
           }
@@ -433,7 +433,7 @@ export class CabinetProvisioningService {
         success: true,
         data: true
       };
-    } catch (error) {
+    } catch (_error) {
       console.error('Rollback failed:', error);
       return {
         success: false,

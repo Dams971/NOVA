@@ -176,7 +176,7 @@ export class DebouncedSearch {
       try {
         const result = await searchFn();
         callback(result);
-      } catch (error) {
+      } catch (_error) {
         console.error('Search error:', error);
       }
     }, this.delay);

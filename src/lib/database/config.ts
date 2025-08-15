@@ -55,7 +55,7 @@ export const testConnection = async (): Promise<boolean> => {
     connection.release();
     console.log('✅ Database connection successful');
     return true;
-  } catch (error) {
+  } catch (_error) {
     console.error('❌ Database connection failed:', error);
     return false;
   }

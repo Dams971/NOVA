@@ -84,7 +84,7 @@ export class AppointmentRepository {
           appointment
         };
       });
-    } catch (error) {
+    } catch (_error) {
       console.error('Appointment creation error:', error);
       
       if (error instanceof Error) {
@@ -185,7 +185,7 @@ export class AppointmentRepository {
           appointment: updatedAppointment || undefined
         };
       });
-    } catch (error) {
+    } catch (_error) {
       console.error('Appointment reschedule error:', error);
       return {
         success: false,
@@ -507,7 +507,7 @@ export class AppointmentRepository {
 
         return true;
       });
-    } catch (error) {
+    } catch (_error) {
       console.error('Appointment cancellation error:', error);
       return false;
     }

@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
-  } catch (error) {
+  } catch (_error) {
     console.error('Error in analytics/export API:', error);
     return NextResponse.json(
       { 

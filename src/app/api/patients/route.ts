@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { db } from '@/lib/database/unified-connection';
 import { withAuth } from '@/lib/middleware/auth';
 
@@ -24,7 +24,7 @@ async function handleGetPatients(request: NextRequest) {
       success: true,
       data: patients
     });
-  } catch (error) {
+  } catch (_error) {
     console.error('Get patients error:', error);
     return NextResponse.json(
       { error: 'Failed to fetch patients' },
@@ -54,7 +54,7 @@ async function handleCreatePatient(request: NextRequest) {
       success: true,
       data: patient
     }, { status: 201 });
-  } catch (error) {
+  } catch (_error) {
     console.error('Create patient error:', error);
     return NextResponse.json(
       { error: 'Failed to create patient' },

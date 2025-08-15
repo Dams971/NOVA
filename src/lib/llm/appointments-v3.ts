@@ -801,7 +801,7 @@ export class AppointmentAssistantV3 {
 
       return response;
       
-    } catch (error) {
+    } catch (_error) {
       console.error("Erreur dans processAppointmentV3:", error);
       
       // Return structured error response

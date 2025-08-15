@@ -8,7 +8,7 @@
  * - Comprehensive validation and error handling
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { getSharedDialogManager } from '../../../lib/chat/dialogManager';
 import { getSharedAppointmentAssistant } from '../../../lib/llm/appointments-v2';
 import { v4 as uuidv4 } from 'uuid';
@@ -71,7 +71,7 @@ function generateTimeBasedSlots(date?: string): Array<{start_iso: string, end_is
 /**
  * POST /api/rdv - Enhanced RDV processing with intelligent slot-filling
  */
-export async function POST(request: NextRequest) {
+export async function POST() {
   try {
     const body = await request.json();
     const { action, message, sessionId: clientSessionId, ...data } = body;
@@ -424,7 +424,7 @@ export async function POST(request: NextRequest) {
 /**
  * GET /api/rdv - Enhanced appointment consultation with session awareness
  */
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const { searchParams } = new URL(request.url);
     const appointmentId = searchParams.get('id');

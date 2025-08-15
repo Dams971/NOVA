@@ -16,7 +16,7 @@ interface ErrorMessageProps {
  * ErrorMessage component displays error messages in an accessible way.
  * It includes proper ARIA attributes and visual indicators for errors.
  */
-export default function ErrorMessage({
+export function ErrorMessage({
   id,
   message,
   className = '',
@@ -44,6 +44,8 @@ export default function ErrorMessage({
     </div>
   );
 }
+
+export default ErrorMessage;
 
 // Component for field-specific errors
 interface FieldErrorProps {
@@ -75,7 +77,7 @@ interface FormErrorProps {
 }
 
 export function FormError({ errors, className = '', title = 'Erreurs de validation' }: FormErrorProps) {
-  const errorEntries = Object.entries(errors).filter(([_, error]) => error);
+  const errorEntries = Object.entries(errors).filter(([, error]) => error);
   
   if (errorEntries.length === 0) return null;
 

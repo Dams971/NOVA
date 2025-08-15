@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { MFAService, MFAError } from '@/lib/auth/mfa-service';
 import { withAuth, withCORS, AuthenticatedRequest } from '@/lib/middleware/auth';
 
@@ -33,7 +33,7 @@ async function handleSetupMFA(request: AuthenticatedRequest): Promise<NextRespon
       instructions: 'Scan the QR code with your authenticator app and verify with a token to enable MFA'
     });
 
-  } catch (error) {
+  } catch (_error) {
     console.error('MFA setup error:', error);
 
     if (error instanceof MFAError) {

@@ -65,7 +65,7 @@ class JWTManager {
     try {
       const decoded = jwt.verify(token, this.secretKey) as JWTPayload;
       return decoded;
-    } catch (error) {
+    } catch (_error) {
       console.error('JWT verification failed:', error);
       return null;
     }
@@ -78,7 +78,7 @@ class JWTManager {
     try {
       const decoded = jwt.verify(token, this.refreshSecretKey) as { userId: string };
       return decoded;
-    } catch (error) {
+    } catch (_error) {
       console.error('Refresh token verification failed:', error);
       return null;
     }

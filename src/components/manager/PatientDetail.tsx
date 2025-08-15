@@ -55,7 +55,7 @@ export default function PatientDetail({ patient, onEdit, onClose }: PatientDetai
       if (result.success && result.data) {
         setCommunicationHistory(result.data);
       }
-    } catch (error) {
+    } catch (_error) {
       console.error('Failed to load communication history:', error);
     } finally {
       setLoading(false);

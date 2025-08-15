@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { PatientService } from '@/lib/services/patient-service';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const { searchParams } = new URL(request.url);
     const cabinetId = searchParams.get('cabinetId');
@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
         error: result.error
       }, { status: 400 });
     }
-  } catch (error) {
+  } catch (_error) {
     console.error('Error fetching patient statistics:', error);
     return NextResponse.json({
       success: false,

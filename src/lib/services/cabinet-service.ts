@@ -73,7 +73,7 @@ export class CabinetService {
         success: true,
         data: cabinet
       };
-    } catch (error) {
+    } catch (_error) {
       console.error('Error in createCabinet:', error);
       return {
         success: false,
@@ -97,7 +97,7 @@ export class CabinetService {
         success: true,
         data: cabinet
       };
-    } catch (error) {
+    } catch (_error) {
       console.error('Error in getCabinetById:', error);
       return {
         success: false,
@@ -121,7 +121,7 @@ export class CabinetService {
         success: true,
         data: cabinet
       };
-    } catch (error) {
+    } catch (_error) {
       console.error('Error in getCabinetBySlug:', error);
       return {
         success: false,
@@ -138,7 +138,7 @@ export class CabinetService {
         success: true,
         data: cabinets
       };
-    } catch (error) {
+    } catch (_error) {
       console.error('Error in getAllCabinets:', error);
       return {
         success: false,
@@ -172,7 +172,7 @@ export class CabinetService {
         success: true,
         data: cabinet
       };
-    } catch (error) {
+    } catch (_error) {
       console.error('Error in updateCabinet:', error);
       return {
         success: false,
@@ -211,7 +211,7 @@ export class CabinetService {
         success: true,
         data: true
       };
-    } catch (error) {
+    } catch (_error) {
       console.error('Error in deleteCabinet:', error);
       return {
         success: false,
@@ -239,7 +239,7 @@ export class CabinetService {
         success: true,
         data: config.configValue
       };
-    } catch (error) {
+    } catch (_error) {
       console.error('Error in getCabinetConfig:', error);
       return {
         success: false,
@@ -264,7 +264,7 @@ export class CabinetService {
       return {
         success: true
       };
-    } catch (error) {
+    } catch (_error) {
       console.error('Error in setCabinetConfig:', error);
       return {
         success: false,
@@ -281,7 +281,7 @@ export class CabinetService {
         success: true,
         data: deleted
       };
-    } catch (error) {
+    } catch (_error) {
       console.error('Error in deleteCabinetConfig:', error);
       return {
         success: false,
@@ -304,7 +304,7 @@ export class CabinetService {
         success: true,
         data: configObject
       };
-    } catch (error) {
+    } catch (_error) {
       console.error('Error in getAllCabinetConfigs:', error);
       return {
         success: false,

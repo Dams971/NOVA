@@ -73,7 +73,7 @@ export default function ManagerDashboard({ cabinet, userId }: ManagerDashboardPr
       // Load dashboard layout (simulated for now)
       setDashboardLayout(getDefaultDashboardLayout(userId, cabinet.id));
 
-    } catch (error) {
+    } catch (_error) {
       console.error('Error loading dashboard data:', error);
     } finally {
       setLoading(false);

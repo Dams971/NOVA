@@ -66,7 +66,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
       }
-    } catch (err) {
+    } catch (_err) {
       console.error('Auth check failed:', err);
     } finally {
       setIsLoading(false);
@@ -159,7 +159,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           'Authorization': `Bearer ${token}`
         }
       });
-    } catch (err) {
+    } catch (_err) {
       console.error('Logout error:', err);
     } finally {
       // Clear local state regardless
@@ -194,7 +194,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
 
-    } catch (err) {
+    } catch (_err) {
       console.error('Token refresh failed:', err);
       await logout();
     }

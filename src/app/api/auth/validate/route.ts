@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { AuthService } from '@/lib/auth/auth-service';
 import { withAuth, AuthenticatedRequest, withCORS } from '@/lib/middleware/auth';
 
@@ -32,7 +32,7 @@ async function handleValidate(request: AuthenticatedRequest): Promise<NextRespon
       }
     }, { status: 200 });
 
-  } catch (error) {
+  } catch (_error) {
     console.error('Token validation error:', error);
 
     return NextResponse.json(

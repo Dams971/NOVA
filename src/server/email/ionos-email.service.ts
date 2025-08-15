@@ -103,7 +103,7 @@ class IonosEmailService {
       });
 
       return true;
-    } catch (error) {
+    } catch (_error) {
       console.error('Email send error:', error);
       
       // Log error
@@ -151,7 +151,7 @@ class IonosEmailService {
       });
 
       return true;
-    } catch (error) {
+    } catch (_error) {
       console.error('OTP email send error:', error);
       
       await this.logEmail({
@@ -200,7 +200,7 @@ class IonosEmailService {
         ...data,
         sent_at: new Date().toISOString(),
       });
-    } catch (error) {
+    } catch (_error) {
       console.error('Failed to log email:', error);
     }
   }

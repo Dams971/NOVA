@@ -27,7 +27,7 @@ export default function ManagerDashboardPage() {
         } else {
           setError(result.error || 'Cabinet not found');
         }
-      } catch (err) {
+      } catch (_err) {
         console.error('Error loading cabinet:', err);
         setError('Failed to load cabinet');
       } finally {

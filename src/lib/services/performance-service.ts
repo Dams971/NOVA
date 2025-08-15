@@ -28,7 +28,7 @@ export class PerformanceService {
         success: true,
         data: kpis
       };
-    } catch (error) {
+    } catch (_error) {
       console.error('Error calculating KPIs:', error);
       return {
         success: false,
@@ -191,7 +191,7 @@ export class PerformanceService {
         success: true,
         data: alerts
       };
-    } catch (error) {
+    } catch (_error) {
       console.error('Error getting alerts:', error);
       return {
         success: false,
@@ -209,7 +209,7 @@ export class PerformanceService {
         success: true,
         data: true
       };
-    } catch (error) {
+    } catch (_error) {
       console.error('Error acknowledging alert:', error);
       return {
         success: false,

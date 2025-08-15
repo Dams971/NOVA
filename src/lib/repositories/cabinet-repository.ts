@@ -73,7 +73,7 @@ export class MySQLCabinetRepository implements CabinetRepository {
       }
 
       return cabinet;
-    } catch (error) {
+    } catch (_error) {
       console.error('Error creating cabinet:', error);
       throw error;
     }
@@ -101,7 +101,7 @@ export class MySQLCabinetRepository implements CabinetRepository {
       }
 
       return cabinet;
-    } catch (error) {
+    } catch (_error) {
       console.error('Error finding cabinet by ID:', error);
       throw error;
     }
@@ -129,7 +129,7 @@ export class MySQLCabinetRepository implements CabinetRepository {
       }
 
       return cabinet;
-    } catch (error) {
+    } catch (_error) {
       console.error('Error finding cabinet by slug:', error);
       throw error;
     }
@@ -181,7 +181,7 @@ export class MySQLCabinetRepository implements CabinetRepository {
       }
 
       return cabinets;
-    } catch (error) {
+    } catch (_error) {
       console.error('Error finding cabinets:', error);
       throw error;
     }
@@ -265,7 +265,7 @@ export class MySQLCabinetRepository implements CabinetRepository {
 
       // Return updated cabinet
       return await this.findById(id);
-    } catch (error) {
+    } catch (_error) {
       console.error('Error updating cabinet:', error);
       throw error;
     }
@@ -281,7 +281,7 @@ export class MySQLCabinetRepository implements CabinetRepository {
       );
 
       return result.affectedRows > 0;
-    } catch (error) {
+    } catch (_error) {
       console.error('Error deleting cabinet:', error);
       throw error;
     }
@@ -306,7 +306,7 @@ export class MySQLCabinetRepository implements CabinetRepository {
         configValue: JSON.parse(row.config_value),
         cabinetId: row.cabinet_id
       };
-    } catch (error) {
+    } catch (_error) {
       console.error('Error getting cabinet config:', error);
       throw error;
     }
@@ -329,7 +329,7 @@ export class MySQLCabinetRepository implements CabinetRepository {
         configKey,
         JSON.stringify(configValue)
       ]);
-    } catch (error) {
+    } catch (_error) {
       console.error('Error setting cabinet config:', error);
       throw error;
     }
@@ -345,7 +345,7 @@ export class MySQLCabinetRepository implements CabinetRepository {
       );
 
       return result.affectedRows > 0;
-    } catch (error) {
+    } catch (_error) {
       console.error('Error deleting cabinet config:', error);
       throw error;
     }
@@ -365,7 +365,7 @@ export class MySQLCabinetRepository implements CabinetRepository {
         configValue: JSON.parse(row.config_value),
         cabinetId: row.cabinet_id
       }));
-    } catch (error) {
+    } catch (_error) {
       console.error('Error getting all cabinet configs:', error);
       throw error;
     }

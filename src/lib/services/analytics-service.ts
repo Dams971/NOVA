@@ -49,7 +49,7 @@ export class AnalyticsService {
         success: true,
         data: data.data
       };
-    } catch (error) {
+    } catch (_error) {
       console.error('Error fetching cabinet analytics:', error);
       return {
         success: false,
@@ -80,7 +80,7 @@ export class AnalyticsService {
         success: true,
         data: data.data
       };
-    } catch (error) {
+    } catch (_error) {
       console.error('Error fetching performance metrics:', error);
       return {
         success: false,
@@ -118,7 +118,7 @@ export class AnalyticsService {
         success: true,
         data: blob
       };
-    } catch (error) {
+    } catch (_error) {
       console.error('Error exporting report:', error);
       return {
         success: false,
@@ -140,7 +140,7 @@ export class AnalyticsService {
         success: true,
         data: data.data
       };
-    } catch (error) {
+    } catch (_error) {
       console.error('Error fetching report templates:', error);
       return {
         success: false,
@@ -284,7 +284,7 @@ export class AnalyticsService {
         success: true,
         data: data.data
       };
-    } catch (error) {
+    } catch (_error) {
       console.error('Error fetching comparative analytics:', error);
       return {
         success: false,
@@ -315,7 +315,7 @@ export class AnalyticsService {
         success: true,
         data: data.data
       };
-    } catch (error) {
+    } catch (_error) {
       console.error('Error fetching benchmark data:', error);
       return {
         success: false,
@@ -348,7 +348,7 @@ export class AnalyticsService {
         success: true,
         data: data.data
       };
-    } catch (error) {
+    } catch (_error) {
       console.error('Error detecting anomalies:', error);
       return {
         success: false,

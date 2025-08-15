@@ -160,7 +160,7 @@ export class PostgreSQLManager {
     try {
       const result = await this.query('SELECT 1 as test');
       return result.rows[0]?.test === 1;
-    } catch (error) {
+    } catch (_error) {
       console.error('PostgreSQL connection test failed:', error);
       return false;
     }
@@ -186,7 +186,7 @@ export class PostgreSQLManager {
       try {
         await pool.end();
         console.log(`Closed PostgreSQL pool: ${key}`);
-      } catch (error) {
+      } catch (_error) {
         console.error(`Error closing PostgreSQL pool ${key}:`, error);
       }
     });
@@ -216,7 +216,7 @@ export class PostgreSQLManager {
         console.log('✅ Database tables verified');
       }
 
-    } catch (error) {
+    } catch (_error) {
       console.error('❌ Database initialization failed:', error);
       throw error;
     }

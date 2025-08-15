@@ -359,7 +359,7 @@ export default function SmartBookingPage() {
           fullAddress: result.display_name
         };
       }
-    } catch (error) {
+    } catch (_error) {
       console.warn('Geocoding failed:', error);
     }
     
@@ -443,7 +443,7 @@ Veuillez essayer avec une adresse plus précise (exemple: "15 rue de la Paix, 75
         
         return fullAddress || data.display_name;
       }
-    } catch (error) {
+    } catch (_error) {
       console.warn('Reverse geocoding failed, using fallback:', error);
     }
     
@@ -506,7 +506,7 @@ Veuillez essayer avec une adresse plus précise (exemple: "15 rue de la Paix, 75
             if (i < maxAttempts - 1) {
               await new Promise(resolve => setTimeout(resolve, 2000));
             }
-          } catch (error) {
+          } catch (_error) {
             console.warn(`Attempt ${i + 1} failed:`, error);
             if (i === 0) {
               throw error; // If first attempt fails, throw to handle normally

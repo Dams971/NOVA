@@ -16,7 +16,7 @@ interface LoadingSpinnerProps {
  * LoadingSpinner component displays an accessible loading indicator.
  * It includes proper ARIA attributes and screen reader announcements.
  */
-export default function LoadingSpinner({
+export function LoadingSpinner({
   size = 'md',
   color = 'blue',
   className = '',
@@ -70,6 +70,8 @@ export default function LoadingSpinner({
     </div>
   );
 }
+
+export default LoadingSpinner;
 
 // Loading overlay component
 interface LoadingOverlayProps {

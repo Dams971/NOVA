@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { createChatOrchestrator, ChatContext, ChatResponse } from '@/services/chat/orchestrator';
 import { Problems, handleApiError } from '@/lib/http/problem';
 import { z } from 'zod';
@@ -42,7 +42,7 @@ const ChatRequestSchema = z.object({
   })
 });
 
-export async function POST(request: NextRequest): Promise<NextResponse> {
+export async function POST(): Promise<NextResponse> {
   try {
     // Parse and validate request
     const body = await request.json();
@@ -120,7 +120,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       }
     });
 
-  } catch (error) {
+  } catch (_error) {
     console.error('Chat API error:', error);
     
     // Handle validation errors
@@ -155,7 +155,7 @@ export async function GET(): Promise<NextResponse> {
       }
     });
 
-  } catch (error) {
+  } catch (_error) {
     console.error('Chat health check failed:', error);
     
     return NextResponse.json({
@@ -201,7 +201,7 @@ async function logChatInteraction(params: {
     // 3. Update conversation state in Redis/session store
     // 4. Trigger webhooks for escalation/completion events
 
-  } catch (error) {
+  } catch (_error) {
     console.error('Failed to log chat interaction:', error);
     // Don't throw - logging failures shouldn't break the chat
   }

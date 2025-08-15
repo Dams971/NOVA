@@ -67,13 +67,13 @@ test.describe('UI Compliance Tests - WCAG 2.2 AA', () => {
       
       // Tab through first few elements
       await page.keyboard.press('Tab');
-      let focused1 = await page.evaluate(() => document.activeElement?.tagName);
+      const focused1 = await page.evaluate(() => document.activeElement?.tagName);
       
       await page.keyboard.press('Tab');
-      let focused2 = await page.evaluate(() => document.activeElement?.tagName);
+      const focused2 = await page.evaluate(() => document.activeElement?.tagName);
       
       await page.keyboard.press('Tab');
-      let focused3 = await page.evaluate(() => document.activeElement?.tagName);
+      const focused3 = await page.evaluate(() => document.activeElement?.tagName);
       
       // Verify logical progression (skip link, then main content)
       expect([focused1, focused2, focused3]).toContain('A'); // Skip link should be first

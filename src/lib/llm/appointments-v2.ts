@@ -388,7 +388,7 @@ export class AppointmentAssistantV2 {
 
       return response;
       
-    } catch (error) {
+    } catch (_error) {
       console.error("Erreur dans processAppointmentWithSession:", error);
       
       // Return structured error

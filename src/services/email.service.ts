@@ -711,7 +711,7 @@ export class EmailService {
         
         // Log provider failure but continue to next provider
         console.warn(`Email provider ${provider.name} failed:`, result.error);
-      } catch (error) {
+      } catch (_error) {
         console.error(`Email provider ${provider.name} error:`, error);
       }
     }
@@ -834,7 +834,7 @@ export class EmailService {
                 if (result.success) {
                   break; // Successfully sent, move to next email
                 }
-              } catch (error) {
+              } catch (_error) {
                 console.error(`Queued email provider ${provider.name} error:`, error);
               }
             }

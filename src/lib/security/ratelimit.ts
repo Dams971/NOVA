@@ -92,7 +92,7 @@ class RateLimiter {
         resetTime,
         totalHits: current + tokens,
       };
-    } catch (error) {
+    } catch (_error) {
       console.error('Rate limiter error:', error);
       // Fail open for Redis errors
       return {
@@ -228,7 +228,7 @@ class RateLimiter {
       if (keys.length > 0) {
         await this.redis.del(...keys);
       }
-    } catch (error) {
+    } catch (_error) {
       console.error('Rate limiter reset error:', error);
     }
   }
@@ -253,7 +253,7 @@ class RateLimiter {
       const resetTime = new Date(now + (ttl > 0 ? ttl * 1000 : this.defaultConfig.windowMs));
       
       return { current, resetTime };
-    } catch (error) {
+    } catch (_error) {
       console.error('Rate limiter usage check error:', error);
       return { current: 0, resetTime: new Date() };
     }
@@ -266,7 +266,7 @@ class RateLimiter {
     try {
       await this.redis.ping();
       return true;
-    } catch (error) {
+    } catch (_error) {
       console.error('Rate limiter health check failed:', error);
       return false;
     }

@@ -98,7 +98,7 @@ async function checkAuthentication(request: NextRequest) {
       authenticated: true,
       user: payload
     };
-  } catch (error) {
+  } catch (_error) {
     console.error('Authentication error:', error);
     return { authenticated: false };
   }

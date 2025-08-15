@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { AuthService, RegisterUserRequest, AuthenticationError } from '@/lib/auth/auth-service';
 import { RBACService } from '@/lib/auth/rbac';
 import { withPermission, withCORS, AuthenticatedRequest } from '@/lib/middleware/auth';
@@ -88,7 +88,7 @@ async function handleGetUsers(request: AuthenticatedRequest): Promise<NextRespon
       total: filteredUsers.length,
     });
 
-  } catch (error) {
+  } catch (_error) {
     console.error('Get users error:', error);
     return NextResponse.json(
       { error: 'Internal server error', code: 'INTERNAL_ERROR' },
@@ -161,7 +161,7 @@ async function handleCreateUser(request: AuthenticatedRequest): Promise<NextResp
       }
     }, { status: 201 });
 
-  } catch (error) {
+  } catch (_error) {
     console.error('Create user error:', error);
 
     if (error instanceof AuthenticationError) {

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { MFAService, MFAError } from '@/lib/auth/mfa-service';
 import { withAuth, withCORS, AuthenticatedRequest } from '@/lib/middleware/auth';
 
@@ -32,7 +32,7 @@ async function handleDisableMFA(request: AuthenticatedRequest): Promise<NextResp
       message: 'MFA has been successfully disabled for your account'
     });
 
-  } catch (error) {
+  } catch (_error) {
     console.error('MFA disable error:', error);
 
     if (error instanceof MFAError) {

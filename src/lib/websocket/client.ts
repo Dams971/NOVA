@@ -60,7 +60,7 @@ export class WebSocketClient extends EventEmitter {
           try {
             const data = JSON.parse(event.data);
             this.handleMessage(data);
-          } catch (error) {
+          } catch (_error) {
             console.error('Failed to parse WebSocket message:', error);
           }
         };

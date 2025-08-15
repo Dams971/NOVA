@@ -40,7 +40,7 @@ export function withAuth(handler: (req: AuthenticatedRequest) => Promise<NextRes
       // Call the actual handler
       return await handler(req);
 
-    } catch (error) {
+    } catch (_error) {
       console.error('Authentication middleware error:', error);
       return NextResponse.json(
         { error: 'Authentication failed', code: 'AUTH_ERROR' },

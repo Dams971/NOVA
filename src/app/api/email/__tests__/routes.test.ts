@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { POST as appointmentPost } from '../appointment-confirmation/route';
 import { POST as otpPost } from '../otp/route';
 import { GET as verifyGet } from '../../debug/email/verify/route';
-import { NextRequest } from 'next/server';
+
 
 // Mock the email service
 vi.mock('@/server/email/ionos-email.service', () => ({

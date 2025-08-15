@@ -30,7 +30,7 @@ export async function GET(
         error: result.error
       }, { status: 404 });
     }
-  } catch (error) {
+  } catch (_error) {
     console.error('Error fetching patient:', error);
     return NextResponse.json({
       success: false,
@@ -68,7 +68,7 @@ export async function PUT(
         error: result.error
       }, { status: 400 });
     }
-  } catch (error) {
+  } catch (_error) {
     console.error('Error updating patient:', error);
     return NextResponse.json({
       success: false,
@@ -99,7 +99,7 @@ export async function DELETE(
         error: result.error
       }, { status: 400 });
     }
-  } catch (error) {
+  } catch (_error) {
     console.error('Error deleting patient:', error);
     return NextResponse.json({
       success: false,

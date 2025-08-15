@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
       success: true,
       data: analytics
     });
-  } catch (error) {
+  } catch (_error) {
     console.error('Error in analytics/cabinet API:', error);
     return NextResponse.json(
       { 

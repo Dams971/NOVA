@@ -16,9 +16,14 @@
       "Bash(echo \"Updated: $file\")",
       "Bash(echo:*)",
       "Bash(done)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(node:*)",
+      "Bash(npm run build:*)",
+      "Bash(timeout 30 npm run build:*)",
+      "Bash(timeout 10 npm run dev:*)"
     ],
     "deny": [],
-    "ask": []
+    "ask": [],
+    "defaultMode": "acceptEdits"
   }
 }

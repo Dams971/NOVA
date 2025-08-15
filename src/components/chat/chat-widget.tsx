@@ -166,7 +166,7 @@ export default function ChatWidget({
 
       oscillator.start(audioContext.currentTime);
       oscillator.stop(audioContext.currentTime + 0.3);
-    } catch (error) {
+    } catch (_error) {
       console.warn('Could not play notification sound:', error);
     }
   }, [soundsEnabled]);
@@ -239,7 +239,7 @@ export default function ChatWidget({
         }, 3000);
       };
 
-    } catch (error) {
+    } catch (_error) {
       console.error('Failed to connect WebSocket:', error);
       setConnectionStatus('error');
     }
@@ -408,7 +408,7 @@ export default function ChatWidget({
           throw new Error('Failed to send message');
         }
       }
-    } catch (error) {
+    } catch (_error) {
       console.error('Error sending message:', error);
       addSystemMessage('Erreur lors de l\'envoi du message. Veuillez réessayer.');
       setIsLoading(false);

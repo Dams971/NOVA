@@ -29,7 +29,7 @@ export async function GET(
         error: result.error
       }, { status: 404 });
     }
-  } catch (error) {
+  } catch (_error) {
     console.error('Error fetching medical history:', error);
     return NextResponse.json({
       success: false,
@@ -88,7 +88,7 @@ export async function POST(
         error: result.error
       }, { status: 400 });
     }
-  } catch (error) {
+  } catch (_error) {
     console.error('Error creating medical record:', error);
     return NextResponse.json({
       success: false,

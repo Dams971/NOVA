@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { AuthService, RefreshTokenRequest, AuthenticationError } from '@/lib/auth/auth-service';
 import { withCORS } from '@/lib/middleware/auth';
 
@@ -30,7 +30,7 @@ async function handleRefresh(request: NextRequest): Promise<NextResponse> {
       ...refreshResponse
     }, { status: 200 });
 
-  } catch (error) {
+  } catch (_error) {
     console.error('Token refresh error:', error);
 
     if (error instanceof AuthenticationError) {

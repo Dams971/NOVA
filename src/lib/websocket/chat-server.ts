@@ -223,7 +223,7 @@ export class ChatWebSocketServer {
           this.sendError(sessionId, `Unknown message type: ${validatedMessage.type}`);
       }
 
-    } catch (error) {
+    } catch (_error) {
       console.error(`💥 Error handling message from ${sessionId}:`, error);
       
       if (error instanceof z.ZodError) {
@@ -265,7 +265,7 @@ export class ChatWebSocketServer {
         timestamp: Date.now()
       });
 
-    } catch (error) {
+    } catch (_error) {
       console.error('Authentication error:', error);
       this.sendError(sessionId, 'Authentication failed');
     }
@@ -348,7 +348,7 @@ export class ChatWebSocketServer {
       // Log interaction
       this.logInteraction(sessionId, validatedChat.message, response);
 
-    } catch (error) {
+    } catch (_error) {
       console.error('Chat message error:', error);
       
       // Hide typing indicator
@@ -398,7 +398,7 @@ export class ChatWebSocketServer {
 
     try {
       client.ws.send(JSON.stringify(message));
-    } catch (error) {
+    } catch (_error) {
       console.error(`Failed to send message to ${sessionId}:`, error);
       this.clients.delete(sessionId);
     }
@@ -425,7 +425,7 @@ export class ChatWebSocketServer {
         if (client.ws.readyState === WebSocket.OPEN) {
           try {
             client.ws.ping();
-          } catch (error) {
+          } catch (_error) {
             console.warn(`Failed to ping client ${sessionId}:`, error);
             this.clients.delete(sessionId);
           }
@@ -449,7 +449,7 @@ export class ChatWebSocketServer {
           console.log(`🧹 Cleaning up inactive connection: ${sessionId}`);
           try {
             client.ws.close(1000, 'Connection timeout');
-          } catch (error) {
+          } catch (_error) {
             console.warn(`Error closing connection ${sessionId}:`, error);
           }
           this.clients.delete(sessionId);

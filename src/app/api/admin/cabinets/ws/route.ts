@@ -1,10 +1,10 @@
-import { NextRequest } from 'next/server';
+
 
 // Note: This is a simplified WebSocket implementation
 // In a production environment, you would use a proper WebSocket server
 // or a service like Socket.IO, Pusher, or similar
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   // For now, return a 501 Not Implemented status
   // The frontend will fall back to polling
   return new Response('WebSocket not implemented in this demo', {
@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
 // In a real implementation, you would set up WebSocket handling here
 // Example with a WebSocket library:
 /*
-export async function GET(request: NextRequest) {
+export async function GET() {
   const { socket, response } = Deno.upgradeWebSocket(request);
   
   socket.onopen = () => {

@@ -136,7 +136,7 @@ export function useChat({
         try {
           const message = JSON.parse(event.data);
           handleWebSocketMessage(message);
-        } catch (error) {
+        } catch (_error) {
           console.error('Failed to parse WebSocket message:', error);
         }
       };
@@ -162,7 +162,7 @@ export function useChat({
         }
       };
 
-    } catch (error) {
+    } catch (_error) {
       console.error('Failed to create WebSocket connection:', error);
       setConnectionStatus('error');
       onError?.(error instanceof Error ? error : new Error('Connection failed'));
@@ -344,7 +344,7 @@ export function useChat({
           throw new Error('Failed to send message');
         }
       }
-    } catch (error) {
+    } catch (_error) {
       console.error('Error sending message:', error);
       addSystemMessage('Erreur lors de l\'envoi du message. Veuillez réessayer.');
       setIsLoading(false);

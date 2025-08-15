@@ -105,7 +105,7 @@ export class EmailService {
         }
       });
 
-    } catch (error) {
+    } catch (_error) {
       console.error('Failed to initialize email transporter:', error);
     }
   }
@@ -144,7 +144,7 @@ export class EmailService {
         messageId: result.messageId
       };
 
-    } catch (error) {
+    } catch (_error) {
       console.error('Email send error:', error);
       return {
         success: false,
@@ -171,7 +171,7 @@ export class EmailService {
         replyTo: `noreply@nova-dental.fr`
       });
 
-    } catch (error) {
+    } catch (_error) {
       console.error('Failed to send appointment confirmation:', error);
       return {
         success: false,
@@ -198,7 +198,7 @@ export class EmailService {
         replyTo: `noreply@nova-dental.fr`
       });
 
-    } catch (error) {
+    } catch (_error) {
       console.error('Failed to send appointment reminder:', error);
       return {
         success: false,
@@ -225,7 +225,7 @@ export class EmailService {
         replyTo: `noreply@nova-dental.fr`
       });
 
-    } catch (error) {
+    } catch (_error) {
       console.error('Failed to send appointment cancellation:', error);
       return {
         success: false,
@@ -255,7 +255,7 @@ export class EmailService {
         replyTo: `noreply@nova-dental.fr`
       });
 
-    } catch (error) {
+    } catch (_error) {
       console.error('Failed to send appointment reschedule:', error);
       return {
         success: false,
@@ -800,7 +800,7 @@ ${newParams.cabinetName}
           resolve(success && !error);
         });
       });
-    } catch (error) {
+    } catch (_error) {
       console.error('Email service health check failed:', error);
       return false;
     }

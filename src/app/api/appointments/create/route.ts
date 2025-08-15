@@ -25,7 +25,7 @@ export interface CreateAppointmentResponse {
   error?: string
 }
 
-export async function POST(request: NextRequest): Promise<NextResponse<CreateAppointmentResponse>> {
+export async function POST(): Promise<NextResponse<CreateAppointmentResponse>> {
   try {
     const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -300,7 +300,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<CreateApp
       }
     })
 
-  } catch (error) {
+  } catch (_error) {
     console.error('Create appointment error:', error)
     
     return NextResponse.json(
@@ -314,7 +314,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<CreateApp
   }
 }
 
-export async function GET(request: NextRequest): Promise<NextResponse> {
+export async function GET(): Promise<NextResponse> {
   return NextResponse.json(
     { 
       success: false, 
