@@ -1,0 +1,225 @@
+name: Lighthouse CI
+on:
+  pull_request:
+    branches: [main, master, develop]
+  push:
+    branches: [main, master]
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Setup environment variables
+        run: |
+          echo "NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL || 'http://localhost:54321' }}" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'test-key' }}" >> $GITHUB_ENV
+          echo "NODE_ENV=production" >> $GITHUB_ENV
+      
+      - name: Build Next.js app
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ env.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ env.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          NODE_ENV: production
+      
+      - name: Start Next.js server
+        run: |
+          npm run start &
+          sleep 10
+          # Wait for server to be ready
+          npx wait-on http://localhost:3000 --timeout 60000
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ env.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ env.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+      
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli@0.13.x
+      
+      - name: Run Lighthouse CI
+        run: lhci autorun
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+      
+      - name: Upload Lighthouse results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lighthouse-results-${{ github.run_id }}
+          path: .lighthouseci/
+          retention-days: 30
+      
+      - name: Comment PR with Lighthouse results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            
+            // Read Lighthouse results
+            const resultsPath = '.lighthouseci';
+            if (!fs.existsSync(resultsPath)) {
+              console.log('No Lighthouse results found');
+              return;
+            }
+            
+            const manifestPath = path.join(resultsPath, 'manifest.json');
+            if (!fs.existsSync(manifestPath)) {
+              console.log('No manifest.json found');
+              return;
+            }
+            
+            const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+            const urls = Object.keys(manifest);
+            
+            let comment = '## 🚀 Lighthouse CI Results\n\n';
+            comment += '| URL | Performance | Accessibility | Best Practices | SEO |\n';
+            comment += '|-----|-------------|---------------|----------------|-----|\n';
+            
+            urls.forEach(url => {
+              const runs = manifest[url];
+              if (runs && runs.length > 0) {
+                const latestRun = runs[runs.length - 1];
+                const reportPath = path.join(resultsPath, latestRun.jsonPath);
+                
+                if (fs.existsSync(reportPath)) {
+                  const report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+                  const categories = report.categories;
+                  
+                  const performance = Math.round(categories.performance?.score * 100) || 0;
+                  const accessibility = Math.round(categories.accessibility?.score * 100) || 0;
+                  const bestPractices = Math.round(categories['best-practices']?.score * 100) || 0;
+                  const seo = Math.round(categories.seo?.score * 100) || 0;
+                  
+                  const perfIcon = performance >= 90 ? '🟢' : performance >= 50 ? '🟡' : '🔴';
+                  const a11yIcon = accessibility >= 90 ? '🟢' : accessibility >= 50 ? '🟡' : '🔴';
+                  const bpIcon = bestPractices >= 90 ? '🟢' : bestPractices >= 50 ? '🟡' : '🔴';
+                  const seoIcon = seo >= 90 ? '🟢' : seo >= 50 ? '🟡' : '🔴';
+                  
+                  const urlName = url.replace('http://localhost:3000', '');
+                  comment += `| ${urlName || '/'} | ${perfIcon} ${performance} | ${a11yIcon} ${accessibility} | ${bpIcon} ${bestPractices} | ${seoIcon} ${seo} |\n`;
+                }
+              }
+            });
+            
+            comment += '\n### Core Web Vitals\n';
+            comment += '- **LCP**: Largest Contentful Paint ≤ 2.5s\n';
+            comment += '- **FID**: First Input Delay ≤ 100ms\n';
+            comment += '- **CLS**: Cumulative Layout Shift ≤ 0.1\n';
+            comment += '- **TBT**: Total Blocking Time ≤ 200ms\n\n';
+            comment += '### Accessibility Requirements\n';
+            comment += '- **WCAG 2.2 AA**: Score ≥ 95%\n';
+            comment += '- **Color Contrast**: ≥ 4.5:1 ratio\n';
+            comment += '- **Touch Targets**: ≥ 44pt (iOS) / 48dp (Android)\n';
+            comment += '- **Keyboard Navigation**: Full support\n';
+            comment += '- **Screen Reader**: Compatible\n\n';
+            comment += '*Results are averaged across 3 runs on desktop.*';
+            
+            // Post comment
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+  lighthouse-mobile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Setup environment variables
+        run: |
+          echo "NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL || 'http://localhost:54321' }}" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'test-key' }}" >> $GITHUB_ENV
+          echo "NODE_ENV=production" >> $GITHUB_ENV
+      
+      - name: Build Next.js app
+        run: npm run build
+      
+      - name: Start Next.js server
+        run: |
+          npm run start &
+          sleep 10
+          npx wait-on http://localhost:3000 --timeout 60000
+      
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli@0.13.x
+      
+      - name: Create mobile Lighthouse config
+        run: |
+          cat > lighthouserc-mobile.json << 'EOF'
+          {
+            "ci": {
+              "collect": {
+                "url": [
+                  "http://localhost:3000/",
+                  "http://localhost:3000/rdv"
+                ],
+                "numberOfRuns": 2,
+                "settings": {
+                  "preset": "perf",
+                  "throttling": {
+                    "cpuSlowdownMultiplier": 4,
+                    "rttMs": 150,
+                    "throughputKbps": 1638.4
+                  },
+                  "screenEmulation": {
+                    "mobile": true,
+                    "width": 412,
+                    "height": 823,
+                    "deviceScaleFactor": 2.625
+                  },
+                  "emulatedFormFactor": "mobile"
+                }
+              },
+              "assert": {
+                "assertions": {
+                  "categories:accessibility": ["error", {"minScore": 0.95}],
+                  "categories:performance": ["error", {"minScore": 0.7}],
+                  "cumulative-layout-shift": ["error", {"maxNumericValue": 0.1}],
+                  "largest-contentful-paint": ["error", {"maxNumericValue": 4000}]
+                }
+              }
+            }
+          }
+          EOF
+      
+      - name: Run Mobile Lighthouse CI
+        run: lhci autorun --config=lighthouserc-mobile.json
+      
+      - name: Upload Mobile Lighthouse results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lighthouse-mobile-results-${{ github.run_id }}
+          path: .lighthouseci/
+          retention-days: 30

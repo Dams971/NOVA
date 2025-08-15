@@ -1,0 +1,339 @@
+@layer utilities {
+  /* Touch target utilities */
+  .touch-target {
+    min-width: 44px;
+    min-height: 44px;
+    @apply sm:min-w-[48px] sm:min-h-[48px];
+  }
+  
+  /* Container query utilities */
+  .container-responsive {
+    container-type: inline-size;
+  }
+  
+  @container (min-width: 320px) {
+    .container\:grid-cols-1 {
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+    
+    .container\:text-sm {
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+    }
+  }
+  
+  @container (min-width: 640px) {
+    .container\:grid-cols-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    
+    .container\:text-base {
+      font-size: 1rem;
+      line-height: 1.5rem;
+    }
+  }
+  
+  @container (min-width: 768px) {
+    .container\:grid-cols-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    
+    .container\:text-lg {
+      font-size: 1.125rem;
+      line-height: 1.75rem;
+    }
+  }
+  
+  /* Safe area utilities */
+  .safe-area-inset {
+    padding-top: env(safe-area-inset-top);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+  }
+  
+  .safe-area-inset-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  .safe-area-inset-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  .safe-area-inset-x {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+  
+  /* Focus visible improvements */
+  .focus-visible-ring {
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2;
+  }
+  
+  .focus-ring-inset {
+    @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset;
+  }
+  
+  /* Skip links */
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 
+           bg-blue-600 text-white px-4 py-2 rounded-md z-[100]
+           focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600;
+  }
+  
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    
+    .animate-pulse {
+      animation: none !important;
+    }
+    
+    .animate-bounce {
+      animation: none !important;
+    }
+    
+    .animate-spin {
+      animation: none !important;
+    }
+  }
+  
+  /* High contrast mode */
+  @media (prefers-contrast: high) {
+    .high-contrast-border {
+      @apply border-2 border-black dark:border-white;
+    }
+    
+    .high-contrast-text {
+      @apply text-black dark:text-white;
+    }
+    
+    .high-contrast-bg {
+      @apply bg-white dark:bg-black;
+    }
+  }
+  
+  /* Dark mode preference */
+  @media (prefers-color-scheme: dark) {
+    .dark-auto {
+      @apply dark:bg-gray-900 dark:text-white;
+    }
+  }
+  
+  /* Line length constraint for readability */
+  .prose-optimal {
+    max-width: 65ch;
+  }
+  
+  .prose-narrow {
+    max-width: 45ch;
+  }
+  
+  .prose-wide {
+    max-width: 85ch;
+  }
+  
+  /* Fluid spacing */
+  .fluid-padding {
+    padding: clamp(1rem, 5vw, 3rem);
+  }
+  
+  .fluid-margin {
+    margin: clamp(1rem, 5vw, 3rem);
+  }
+  
+  .fluid-gap {
+    gap: clamp(1rem, 3vw, 2rem);
+  }
+  
+  /* Skeleton loading animations */
+  .skeleton {
+    @apply animate-pulse bg-gray-200 dark:bg-gray-700;
+  }
+  
+  .skeleton-text {
+    @apply h-4 bg-gray-200 dark:bg-gray-700 rounded animate-pulse;
+  }
+  
+  /* Screen reader only content that becomes visible on focus */
+  .sr-only-focusable {
+    @apply sr-only focus:not-sr-only focus:absolute focus:w-auto focus:h-auto 
+           focus:p-4 focus:bg-white focus:text-black focus:border-2 focus:border-blue-500
+           focus:z-50;
+  }
+  
+  /* Custom scrollbars for better accessibility */
+  .scrollbar-custom {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(156, 163, 175) rgb(243, 244, 246);
+  }
+  
+  .scrollbar-custom::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  .scrollbar-custom::-webkit-scrollbar-track {
+    background: rgb(243, 244, 246);
+    border-radius: 4px;
+  }
+  
+  .scrollbar-custom::-webkit-scrollbar-thumb {
+    background: rgb(156, 163, 175);
+    border-radius: 4px;
+  }
+  
+  .scrollbar-custom::-webkit-scrollbar-thumb:hover {
+    background: rgb(107, 114, 128);
+  }
+  
+  /* Better tap targets for mobile */
+  .mobile-tap-target {
+    @apply min-w-[44px] min-h-[44px] flex items-center justify-center;
+  }
+  
+  /* Print utilities */
+  @media print {
+    .print-hidden {
+      display: none !important;
+    }
+    
+    .print-visible {
+      display: block !important;
+    }
+    
+    .print-break-before {
+      break-before: page;
+    }
+    
+    .print-break-after {
+      break-after: page;
+    }
+    
+    .print-no-break {
+      break-inside: avoid;
+    }
+  }
+  
+  /* Enhanced focus indicators */
+  .focus-ring-thick {
+    @apply focus:outline-none focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50;
+  }
+  
+  .focus-ring-error {
+    @apply focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2;
+  }
+  
+  .focus-ring-success {
+    @apply focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2;
+  }
+  
+  /* Interactive states */
+  .interactive {
+    @apply transition-all duration-200 ease-in-out cursor-pointer
+           hover:scale-[1.02] active:scale-[0.98]
+           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+  }
+  
+  .interactive-subtle {
+    @apply transition-colors duration-200 ease-in-out cursor-pointer
+           hover:bg-gray-50 active:bg-gray-100
+           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+  }
+  
+  /* Visually hidden but available to screen readers */
+  .visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+  }
+  
+  /* Better button reset */
+  .btn-reset {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+  }
+  
+  /* Layout utilities for accessibility */
+  .landmark {
+    @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset;
+  }
+  
+  /* Improved link styles */
+  .link-accessible {
+    @apply text-blue-600 underline decoration-2 underline-offset-2
+           hover:text-blue-700 hover:decoration-blue-700
+           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:rounded;
+  }
+  
+  /* Table accessibility */
+  .table-accessible {
+    @apply border-collapse border border-gray-300;
+  }
+  
+  .table-accessible th,
+  .table-accessible td {
+    @apply border border-gray-300 px-4 py-2 text-left;
+  }
+  
+  .table-accessible th {
+    @apply bg-gray-50 font-semibold;
+  }
+  
+  .table-accessible tr:nth-child(even) {
+    @apply bg-gray-50;
+  }
+  
+  /* Form accessibility */
+  .form-section {
+    @apply space-y-6 p-6 border border-gray-200 rounded-lg;
+  }
+  
+  .form-section > legend {
+    @apply text-lg font-semibold text-gray-900 mb-4;
+  }
+  
+  /* Error states */
+  .error-border {
+    @apply border-red-500 focus:border-red-500 focus:ring-red-500;
+  }
+  
+  .error-text {
+    @apply text-red-600 text-sm font-medium;
+  }
+  
+  .error-bg {
+    @apply bg-red-50 border border-red-200;
+  }
+  
+  /* Success states */
+  .success-border {
+    @apply border-green-500 focus:border-green-500 focus:ring-green-500;
+  }
+  
+  .success-text {
+    @apply text-green-600 text-sm font-medium;
+  }
+  
+  .success-bg {
+    @apply bg-green-50 border border-green-200;
+  }
+}

@@ -1,0 +1,290 @@
+<mjml>
+  <mj-head>
+    <mj-title>Confirmation de rendez-vous - {{clinic_name}}</mj-title>
+    <mj-preview>Votre rendez-vous du {{appointment_date}} à {{appointment_time}} est confirmé</mj-preview>
+    <mj-attributes>
+      <mj-all font-family="system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif" />
+      <mj-text font-size="14px" color="#333333" line-height="1.6" />
+      <mj-section background-color="#ffffff" padding="0" />
+    </mj-attributes>
+    <mj-style inline="inline">
+      .appointment-card {
+        background: #ffffff !important;
+        border: 2px solid #0066cc !important;
+        border-radius: 12px !important;
+        padding: 20px !important;
+        margin: 20px 0 !important;
+      }
+      .detail-row {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        padding: 8px 0 !important;
+        border-bottom: 1px solid #f0f0f0 !important;
+      }
+      .detail-row:last-child {
+        border-bottom: none !important;
+      }
+      .detail-label {
+        font-weight: 600 !important;
+        color: #4a5568 !important;
+      }
+      .detail-value {
+        color: #2d3748 !important;
+        font-weight: 500 !important;
+      }
+      .btn-appointment {
+        background: #0066cc !important;
+        color: #ffffff !important;
+        padding: 12px 24px !important;
+        border-radius: 8px !important;
+        text-decoration: none !important;
+        display: inline-block !important;
+        font-weight: 600 !important;
+        margin: 8px !important;
+      }
+      .btn-secondary {
+        background: #6c757d !important;
+        color: #ffffff !important;
+        padding: 12px 24px !important;
+        border-radius: 8px !important;
+        text-decoration: none !important;
+        display: inline-block !important;
+        font-weight: 600 !important;
+        margin: 8px !important;
+      }
+      .check-item {
+        display: flex !important;
+        align-items: center !important;
+        margin: 8px 0 !important;
+      }
+      .check-icon {
+        color: #38a169 !important;
+        font-weight: bold !important;
+        margin-right: 12px !important;
+      }
+    </mj-style>
+  </mj-head>
+  
+  <mj-body background-color="#f4f6f8">
+    <!-- Header -->
+    <mj-section background-color="#0066cc" background-url="" padding="30px 20px">
+      <mj-column>
+        <mj-image 
+          src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='30' fill='%23ffffff'/%3E%3Ctext x='30' y='40' font-family='Arial' font-size='24' font-weight='bold' text-anchor='middle' fill='%230066cc'%3E🦷%3C/text%3E%3C/svg%3E"
+          width="60px"
+          align="center" 
+          alt="Logo clinique" 
+        />
+        <mj-text align="center" color="#ffffff" font-size="24px" font-weight="600" padding="15px 0 8px 0">
+          {{clinic_name}}
+        </mj-text>
+        <mj-text align="center" color="#ffffff" font-size="16px" opacity="0.9" padding="0">
+          Confirmation de rendez-vous
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <!-- Main Content -->
+    <mj-section background-color="#ffffff" padding="30px 20px">
+      <mj-column>
+        <!-- Greeting -->
+        <mj-text font-size="18px" color="#2d3748" padding="0 0 20px 0">
+          Bonjour {{patient_name}},
+        </mj-text>
+        
+        <!-- Confirmation Message -->
+        <mj-section background-color="#e6f7ff" border="1px solid #91d5ff" border-radius="8px" padding="16px">
+          <mj-column>
+            <mj-text align="center" font-size="32px" padding="0 0 8px 0">✅</mj-text>
+            <mj-text align="center" color="#0050b3" font-weight="500" padding="0">
+              Votre rendez-vous a été confirmé avec succès
+            </mj-text>
+          </mj-column>
+        </mj-section>
+      </mj-column>
+    </mj-section>
+
+    <!-- Appointment Details Card -->
+    <mj-section background-color="#ffffff" padding="0 20px 30px 20px">
+      <mj-column>
+        <mj-table css-class="appointment-card">
+          <tr>
+            <td colspan="2" style="padding-bottom: 16px;">
+              <h2 style="font-size: 20px; font-weight: 600; color: #0066cc; margin: 0; display: flex; align-items: center;">
+                📅 Détails du rendez-vous
+              </h2>
+            </td>
+          </tr>
+          <tr class="detail-row">
+            <td class="detail-label">🗓️ Date</td>
+            <td class="detail-value" style="text-align: right;">{{appointment_date}}</td>
+          </tr>
+          <tr class="detail-row">
+            <td class="detail-label">🕐 Heure</td>
+            <td class="detail-value" style="text-align: right;">{{appointment_time}}</td>
+          </tr>
+          {{#if practitioner}}
+          <tr class="detail-row">
+            <td class="detail-label">👨‍⚕️ Praticien</td>
+            <td class="detail-value" style="text-align: right;">{{practitioner}}</td>
+          </tr>
+          {{/if}}
+          {{#if care_type}}
+          <tr class="detail-row">
+            <td class="detail-label">🦷 Type de soin</td>
+            <td class="detail-value" style="text-align: right;">{{care_type}}</td>
+          </tr>
+          {{/if}}
+          {{#if estimated_duration}}
+          <tr class="detail-row">
+            <td class="detail-label">⏱️ Durée estimée</td>
+            <td class="detail-value" style="text-align: right;">{{estimated_duration}} min</td>
+          </tr>
+          {{/if}}
+        </mj-table>
+      </mj-column>
+    </mj-section>
+
+    <!-- Clinic Information -->
+    <mj-section background-color="#f8fbff" border="1px solid #d6e4fd" border-radius="8px" padding="20px" margin="0 20px 30px 20px">
+      <mj-column>
+        <mj-text font-size="18px" font-weight="600" color="#2d3748" padding="0 0 16px 0">
+          🏥 Informations du cabinet
+        </mj-text>
+        
+        <mj-text font-size="14px" padding="0 0 8px 0">
+          <strong>🏢 {{clinic_name}}</strong>
+        </mj-text>
+        
+        <mj-text font-size="14px" padding="0 0 8px 0">
+          📍 {{clinic_address}}
+        </mj-text>
+        
+        <mj-text font-size="14px" padding="0 0 8px 0">
+          📞 <a href="tel:{{clinic_phone}}" style="color: inherit; text-decoration: none;">{{clinic_phone}}</a>
+        </mj-text>
+        
+        {{#if clinic_email}}
+        <mj-text font-size="14px" padding="0 0 12px 0">
+          ✉️ <a href="mailto:{{clinic_email}}" style="color: inherit; text-decoration: none;">{{clinic_email}}</a>
+        </mj-text>
+        {{/if}}
+        
+        <mj-button 
+          background-color="#0066cc" 
+          color="#ffffff" 
+          font-size="13px" 
+          font-weight="500" 
+          border-radius="6px"
+          href="{{map_url}}"
+          padding="8px 16px"
+        >
+          📍 Voir sur la carte
+        </mj-button>
+      </mj-column>
+    </mj-section>
+
+    <!-- Conversation Summary -->
+    {{#if conversation_summary}}
+    <mj-section background-color="#fffbf0" border="1px solid #ffeaa7" border-radius="8px" padding="20px" margin="0 20px 30px 20px">
+      <mj-column>
+        <mj-text font-size="16px" font-weight="600" color="#d69e2e" padding="0 0 12px 0">
+          💬 Récapitulatif de notre conversation
+        </mj-text>
+        <mj-text font-size="14px" color="#744210" line-height="1.5" padding="0">
+          {{conversation_summary}}
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    {{/if}}
+
+    <!-- Action Buttons -->
+    <mj-section background-color="#ffffff" padding="0 20px 30px 20px">
+      <mj-column>
+        <mj-text align="center" padding="0 0 16px 0">
+          {{#if cancellation_link}}
+          <a href="{{cancellation_link}}" class="btn-secondary">🔄 Modifier / Annuler</a>
+          {{/if}}
+          <a href="tel:{{clinic_phone}}" class="btn-appointment">📞 Appeler le cabinet</a>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <!-- Preparation Checklist -->
+    <mj-section background-color="#f0fff4" border="1px solid #9ae6b4" border-radius="8px" padding="20px" margin="0 20px 30px 20px">
+      <mj-column>
+        <mj-text font-size="16px" font-weight="600" color="#22543d" padding="0 0 16px 0">
+          📋 À prévoir pour votre rendez-vous
+        </mj-text>
+        
+        <mj-text font-size="14px" color="#2f855a" padding="0 0 6px 0">
+          <span class="check-icon">✓</span> Votre carte d'identité
+        </mj-text>
+        
+        <mj-text font-size="14px" color="#2f855a" padding="0 0 6px 0">
+          <span class="check-icon">✓</span> Votre carte vitale ou attestation d'assurance
+        </mj-text>
+        
+        <mj-text font-size="14px" color="#2f855a" padding="0 0 6px 0">
+          <span class="check-icon">✓</span> Vos radiographies récentes (si applicable)
+        </mj-text>
+        
+        <mj-text font-size="14px" color="#2f855a" padding="0 0 6px 0">
+          <span class="check-icon">✓</span> Liste de vos médicaments actuels
+        </mj-text>
+        
+        <mj-text font-size="14px" color="#2f855a" padding="0">
+          <span class="check-icon">✓</span> Arrivez 10 minutes avant l'heure
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <!-- QR Code Section -->
+    {{#if cancellation_qr_code}}
+    <mj-section background-color="#f7fafc" border-radius="8px" padding="20px" margin="0 20px 30px 20px">
+      <mj-column>
+        <mj-text align="center" font-size="14px" color="#4a5568" padding="0 0 12px 0">
+          Scannez pour modifier/annuler
+        </mj-text>
+        <mj-image 
+          src="data:image/png;base64,{{cancellation_qr_code}}" 
+          width="120px" 
+          align="center"
+          alt="QR Code pour modification"
+        />
+      </mj-column>
+    </mj-section>
+    {{/if}}
+
+    <!-- Footer -->
+    <mj-section background-color="#2d3748" padding="30px 20px">
+      <mj-column>
+        <mj-text align="center" color="#ffffff" font-weight="600" padding="0 0 8px 0">
+          {{clinic_name}}
+        </mj-text>
+        
+        <mj-text align="center" color="#ffffff" font-size="14px" opacity="0.8" padding="0 0 16px 0">
+          {{clinic_address}}
+        </mj-text>
+        
+        <mj-text align="center" color="#ffffff" font-size="12px" opacity="0.7" line-height="1.4" padding="0 0 16px 0">
+          Cet email est généré automatiquement, merci de ne pas y répondre directement.<br/>
+          Pour toute question, contactez-nous par téléphone.
+        </mj-text>
+        
+        <!-- GDPR Notice -->
+        <mj-section background-color="#edf2f7" border="1px solid #cbd5e0" border-radius="6px" padding="16px">
+          <mj-column>
+            <mj-text font-size="12px" color="#4a5568" line-height="1.4" padding="0">
+              <strong>Protection de vos données (RGPD)</strong><br/>
+              Vos données personnelles sont traitées conformément au Règlement Général sur la Protection des Données. 
+              Elles sont utilisées uniquement dans le cadre de votre suivi médical et ne sont jamais partagées avec des tiers. 
+              Vous disposez d'un droit d'accès, de rectification et de suppression de vos données.
+            </mj-text>
+          </mj-column>
+        </mj-section>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

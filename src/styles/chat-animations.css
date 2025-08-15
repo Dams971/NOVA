@@ -1,0 +1,233 @@
+/**
+ * NOVA Chat Widget Animations
+ * Custom CSS animations for enhanced chat experience
+ */
+
+/* Message animations */
+@keyframes fade-in {
+  from { 
+    opacity: 0; 
+    transform: translateY(10px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+@keyframes slide-up {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+@keyframes bounce-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) translateY(-50px);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05) translateY(0);
+  }
+  70% {
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse-dot {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes typing-dots {
+  0%, 20% {
+    color: transparent;
+    transform: scale(1);
+  }
+  50% {
+    color: currentColor;
+    transform: scale(1.2);
+  }
+  100% {
+    color: transparent;
+    transform: scale(1);
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+  20%, 40%, 60%, 80% { transform: translateX(2px); }
+}
+
+@keyframes glow {
+  0% { box-shadow: 0 0 5px rgba(59, 130, 246, 0.5); }
+  50% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.8); }
+  100% { box-shadow: 0 0 5px rgba(59, 130, 246, 0.5); }
+}
+
+/* Utility classes */
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.4s ease-out forwards;
+}
+
+.animate-bounce-in {
+  animation: bounce-in 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+.animate-pulse-dot {
+  animation: pulse-dot 1.5s infinite;
+}
+
+.animate-typing-dots {
+  animation: typing-dots 1.4s infinite;
+}
+
+.animate-shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+/* Staggered animations */
+.animate-stagger-1 { animation-delay: 0.1s; }
+.animate-stagger-2 { animation-delay: 0.2s; }
+.animate-stagger-3 { animation-delay: 0.3s; }
+.animate-stagger-4 { animation-delay: 0.4s; }
+
+/* Hover effects */
+.hover-lift {
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Chat-specific animations */
+.chat-message-enter {
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.chat-message-enter-active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.chat-bubble-tail::before {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  transition: all 0.2s ease;
+}
+
+/* Connection status indicators */
+.status-dot {
+  position: relative;
+  overflow: hidden;
+}
+
+.status-dot::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+  transition: left 0.5s;
+}
+
+.status-dot.connected::after {
+  animation: shine 2s infinite;
+}
+
+@keyframes shine {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* Widget entrance animation */
+.chat-widget-enter {
+  opacity: 0;
+  transform: scale(0.8) translateY(20px);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.chat-widget-enter-active {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+/* Settings panel slide */
+.settings-panel-enter {
+  opacity: 0;
+  transform: translateY(-10px);
+  max-height: 0;
+  transition: all 0.3s ease-out;
+}
+
+.settings-panel-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  max-height: 200px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .animate-bounce-in {
+    animation-duration: 0.4s;
+  }
+  
+  .animate-fade-in {
+    animation-duration: 0.2s;
+  }
+}
+
+/* Accessibility preferences */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in,
+  .animate-slide-up,
+  .animate-bounce-in,
+  .animate-pulse-dot,
+  .animate-typing-dots,
+  .animate-shake,
+  .animate-glow,
+  .chat-message-enter,
+  .chat-widget-enter,
+  .settings-panel-enter {
+    animation: none !important;
+    transition: opacity 0.1s ease !important;
+  }
+  
+  .hover-lift:hover {
+    transform: none !important;
+  }
+}

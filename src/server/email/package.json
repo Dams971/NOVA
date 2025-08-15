@@ -1,0 +1,11 @@
+{
+  "name": "email-service",
+  "private": true,
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "react-server": "./ionos-email.service.ts",
+      "default": "./ionos-email.service.ts"
+    }
+  }
+}

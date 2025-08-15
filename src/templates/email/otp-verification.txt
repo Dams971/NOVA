@@ -1,0 +1,41 @@
+{{clinic_name}}
+CODE DE VÉRIFICATION
+
+🔐 CONNEXION SÉCURISÉE
+===================================================
+
+Votre code de vérification : {{otp_code}}
+
+⏱️ Ce code expire dans {{expires_minutes}} minutes
+
+COMMENT UTILISER CE CODE
+===================================================
+1. Retournez sur la page de connexion NOVA RDV
+2. Saisissez ce code à 6 chiffres dans le champ prévu
+3. Cliquez sur "Vérifier" pour accéder à votre compte
+
+MESURES DE SÉCURITÉ IMPORTANTES
+===================================================
+⚠️ ATTENTION :
+• Ne partagez JAMAIS ce code avec personne
+• Nos équipes ne vous demanderont jamais ce code par téléphone
+• Ce code n'est valide que pendant {{expires_minutes}} minutes
+• En cas de doute, contactez-nous immédiatement
+
+🤝 BESOIN D'AIDE ?
+===================================================
+Si vous n'avez pas demandé ce code ou rencontrez des difficultés :
+
+📞 Contactez-nous : {{clinic_phone}}
+✉️ Email : {{clinic_email}}
+
+IMPORTANT
+===================================================
+Si vous n'avez pas demandé ce code, vous pouvez ignorer 
+cet email en toute sécurité. Aucune action n'est requise.
+
+===================================================
+© 2025 {{clinic_name}}
+Cet email est généré automatiquement pour votre sécurité.
+Ne répondez pas à cet email.
+===================================================

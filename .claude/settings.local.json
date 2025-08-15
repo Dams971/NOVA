@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git clone:*)",
+      "Bash(npm test:*)",
+      "Bash(mv:*)",
+      "Bash(for file in src/components/manager/PatientForm.tsx src/components/manager/PatientDetail.tsx src/components/manager/PatientManagement.tsx)",
+      "Bash(do)",
+      "Bash(if [ -f \"$file\" ])",
+      "Bash(then)",
+      "Bash(if ! grep -q \"^import React\" \"$file\")",
+      "Bash(if grep -q \"from ''react''\" \"$file\")",
+      "Bash(sed:*)",
+      "Bash(else)",
+      "Bash(fi)",
+      "Bash(echo \"Updated: $file\")",
+      "Bash(echo:*)",
+      "Bash(done)",
+      "Bash(npx tsc:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

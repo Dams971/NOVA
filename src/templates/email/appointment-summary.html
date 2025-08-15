@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Confirmation de rendez-vous - {{clinic_name}}</title>
+    <!--[if mso]>
+    <noscript>
+        <xml>
+            <o:OfficeDocumentSettings>
+                <o:PixelsPerInch>96</o:PixelsPerInch>
+            </o:OfficeDocumentSettings>
+        </xml>
+    </noscript>
+    <![endif]-->
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 0;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+        
+        table {
+            border-collapse: collapse;
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+            width: 100%;
+        }
+        
+        td {
+            vertical-align: top;
+        }
+        
+        img {
+            border: 0;
+            height: auto;
+            line-height: 100%;
+            outline: none;
+            text-decoration: none;
+            -ms-interpolation-mode: bicubic;
+        }
+        
+        /* Container styles */
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .email-header {
+            background: linear-gradient(135deg, #0066cc 0%, #004499 100%);
+            color: #ffffff;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .clinic-logo {
+            width: 60px;
+            height: 60px;
+            background: #ffffff;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #0066cc;
+        }
+        
+        .email-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 0 0 8px 0;
+        }
+        
+        .email-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            margin: 0;
+        }
+        
+        .email-content {
+            padding: 30px 20px;
+        }
+        
+        .greeting {
+            font-size: 18px;
+            color: #2d3748;
+            margin-bottom: 20px;
+        }
+        
+        .confirmation-message {
+            background: #e6f7ff;
+            border: 1px solid #91d5ff;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .confirmation-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+        
+        .confirmation-text {
+            color: #0050b3;
+            font-weight: 500;
+        }
+        
+        /* Appointment details card */
+        .appointment-card {
+            background: #ffffff;
+            border: 2px solid #0066cc;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 102, 204, 0.1);
+        }
+        
+        .appointment-card-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #0066cc;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            color: #4a5568;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .detail-value {
+            color: #2d3748;
+            font-weight: 500;
+            text-align: right;
+            flex: 1;
+            margin-left: 16px;
+        }
+        
+        /* Clinic info section */
+        .clinic-info {
+            background: #f8fbff;
+            border: 1px solid #d6e4fd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .clinic-info-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .clinic-detail {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+        }
+        
+        .clinic-detail:last-child {
+            margin-bottom: 0;
+        }
+        
+        .clinic-icon {
+            width: 20px;
+            text-align: center;
+        }
+        
+        .map-link {
+            display: inline-block;
+            background: #0066cc;
+            color: #ffffff;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            margin-top: 12px;
+        }
+        
+        /* Conversation summary */
+        .conversation-summary {
+            background: #fffbf0;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .conversation-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #d69e2e;
+            margin-bottom: 12px;
+        }
+        
+        .conversation-text {
+            color: #744210;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        /* Action buttons */
+        .action-buttons {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            margin: 0 8px 8px 0;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: #0066cc;
+            color: #ffffff;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: #ffffff;
+        }
+        
+        /* Preparation checklist */
+        .preparation {
+            background: #f0fff4;
+            border: 1px solid #9ae6b4;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .preparation-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #22543d;
+            margin-bottom: 16px;
+        }
+        
+        .preparation-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .preparation-item {
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #2f855a;
+            font-size: 14px;
+        }
+        
+        .check-icon {
+            color: #38a169;
+            font-weight: bold;
+        }
+        
+        /* QR Code section */
+        .qr-section {
+            text-align: center;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        
+        .qr-title {
+            font-size: 14px;
+            color: #4a5568;
+            margin-bottom: 12px;
+        }
+        
+        .qr-code {
+            width: 120px;
+            height: 120px;
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #a0aec0;
+            font-size: 12px;
+        }
+        
+        /* Footer */
+        .email-footer {
+            background: #2d3748;
+            color: #ffffff;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .footer-clinic {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .footer-address {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: 16px;
+        }
+        
+        .footer-note {
+            font-size: 12px;
+            opacity: 0.7;
+            line-height: 1.4;
+        }
+        
+        .gdpr-notice {
+            background: #edf2f7;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 16px;
+            font-size: 12px;
+            color: #4a5568;
+            text-align: left;
+        }
+        
+        /* Responsive design */
+        @media only screen and (max-width: 600px) {
+            .email-container {
+                width: 100% !important;
+                margin: 0 !important;
+            }
+            
+            .email-header,
+            .email-content,
+            .email-footer {
+                padding: 20px 16px !important;
+            }
+            
+            .appointment-card {
+                padding: 16px !important;
+            }
+            
+            .detail-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+            
+            .detail-value {
+                text-align: left;
+                margin-left: 0;
+            }
+            
+            .btn {
+                display: block;
+                margin: 8px 0;
+                text-align: center;
+            }
+            
+            .email-title {
+                font-size: 20px !important;
+            }
+            
+            .email-subtitle {
+                font-size: 14px !important;
+            }
+        }
+        
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            .email-container {
+                background-color: #1a202c !important;
+                color: #e2e8f0 !important;
+            }
+            
+            .appointment-card {
+                background: #2d3748 !important;
+                border-color: #4a5568 !important;
+            }
+            
+            .clinic-info {
+                background: #2d3748 !important;
+                border-color: #4a5568 !important;
+            }
+            
+            .conversation-summary {
+                background: #744210 !important;
+                border-color: #d69e2e !important;
+            }
+            
+            .preparation {
+                background: #22543d !important;
+                border-color: #38a169 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+        <tr>
+            <td align="center" style="padding: 20px 0; background-color: #f4f6f8;">
+                <div class="email-container">
+                    <!-- Header -->
+                    <div class="email-header">
+                        <div class="clinic-logo">🦷</div>
+                        <h1 class="email-title">{{clinic_name}}</h1>
+                        <p class="email-subtitle">Confirmation de rendez-vous</p>
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="email-content">
+                        <!-- Greeting -->
+                        <p class="greeting">Bonjour {{patient_name}},</p>
+                        
+                        <!-- Confirmation message -->
+                        <div class="confirmation-message">
+                            <div class="confirmation-icon">✅</div>
+                            <p class="confirmation-text">Votre rendez-vous a été confirmé avec succès</p>
+                        </div>
+                        
+                        <!-- Appointment details -->
+                        <div class="appointment-card">
+                            <h2 class="appointment-card-title">
+                                📅 Détails du rendez-vous
+                            </h2>
+                            
+                            <div class="detail-row">
+                                <span class="detail-label">
+                                    🗓️ Date
+                                </span>
+                                <span class="detail-value">{{appointment_date}}</span>
+                            </div>
+                            
+                            <div class="detail-row">
+                                <span class="detail-label">
+                                    🕐 Heure
+                                </span>
+                                <span class="detail-value">{{appointment_time}}</span>
+                            </div>
+                            
+                            {{#if practitioner}}
+                            <div class="detail-row">
+                                <span class="detail-label">
+                                    👨‍⚕️ Praticien
+                                </span>
+                                <span class="detail-value">{{practitioner}}</span>
+                            </div>
+                            {{/if}}
+                            
+                            {{#if care_type}}
+                            <div class="detail-row">
+                                <span class="detail-label">
+                                    🦷 Type de soin
+                                </span>
+                                <span class="detail-value">{{care_type}}</span>
+                            </div>
+                            {{/if}}
+                            
+                            {{#if estimated_duration}}
+                            <div class="detail-row">
+                                <span class="detail-label">
+                                    ⏱️ Durée estimée
+                                </span>
+                                <span class="detail-value">{{estimated_duration}} minutes</span>
+                            </div>
+                            {{/if}}
+                        </div>
+                        
+                        <!-- Clinic information -->
+                        <div class="clinic-info">
+                            <h3 class="clinic-info-title">
+                                🏥 Informations du cabinet
+                            </h3>
+                            
+                            <div class="clinic-detail">
+                                <span class="clinic-icon">🏢</span>
+                                <strong>{{clinic_name}}</strong>
+                            </div>
+                            
+                            <div class="clinic-detail">
+                                <span class="clinic-icon">📍</span>
+                                {{clinic_address}}
+                            </div>
+                            
+                            <div class="clinic-detail">
+                                <span class="clinic-icon">📞</span>
+                                <a href="tel:{{clinic_phone}}" style="color: inherit; text-decoration: none;">
+                                    {{clinic_phone}}
+                                </a>
+                            </div>
+                            
+                            {{#if clinic_email}}
+                            <div class="clinic-detail">
+                                <span class="clinic-icon">✉️</span>
+                                <a href="mailto:{{clinic_email}}" style="color: inherit; text-decoration: none;">
+                                    {{clinic_email}}
+                                </a>
+                            </div>
+                            {{/if}}
+                            
+                            <a href="{{map_url}}" class="map-link" target="_blank">
+                                📍 Voir sur la carte
+                            </a>
+                        </div>
+                        
+                        <!-- Conversation summary -->
+                        {{#if conversation_summary}}
+                        <div class="conversation-summary">
+                            <h3 class="conversation-title">💬 Récapitulatif de notre conversation</h3>
+                            <p class="conversation-text">{{conversation_summary}}</p>
+                        </div>
+                        {{/if}}
+                        
+                        <!-- Action buttons -->
+                        <div class="action-buttons">
+                            {{#if cancellation_link}}
+                            <a href="{{cancellation_link}}" class="btn btn-secondary">
+                                🔄 Modifier / Annuler
+                            </a>
+                            {{/if}}
+                            
+                            <a href="tel:{{clinic_phone}}" class="btn btn-primary">
+                                📞 Appeler le cabinet
+                            </a>
+                        </div>
+                        
+                        <!-- Preparation checklist -->
+                        <div class="preparation">
+                            <h3 class="preparation-title">📋 À prévoir pour votre rendez-vous</h3>
+                            <ul class="preparation-list">
+                                <li class="preparation-item">
+                                    <span class="check-icon">✓</span>
+                                    Votre carte d'identité
+                                </li>
+                                <li class="preparation-item">
+                                    <span class="check-icon">✓</span>
+                                    Votre carte vitale ou attestation d'assurance
+                                </li>
+                                <li class="preparation-item">
+                                    <span class="check-icon">✓</span>
+                                    Vos radiographies récentes (si applicable)
+                                </li>
+                                <li class="preparation-item">
+                                    <span class="check-icon">✓</span>
+                                    Liste de vos médicaments actuels
+                                </li>
+                                <li class="preparation-item">
+                                    <span class="check-icon">✓</span>
+                                    Arrivez 10 minutes avant l'heure
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <!-- QR Code for cancellation -->
+                        {{#if cancellation_qr_code}}
+                        <div class="qr-section">
+                            <p class="qr-title">Scannez pour modifier/annuler</p>
+                            <div class="qr-code">
+                                <img src="data:image/png;base64,{{cancellation_qr_code}}" 
+                                     alt="QR Code pour modification" 
+                                     style="max-width: 100%; height: auto;">
+                            </div>
+                        </div>
+                        {{/if}}
+                    </div>
+                    
+                    <!-- Footer -->
+                    <div class="email-footer">
+                        <p class="footer-clinic">{{clinic_name}}</p>
+                        <p class="footer-address">{{clinic_address}}</p>
+                        <p class="footer-note">
+                            Cet email est généré automatiquement, merci de ne pas y répondre directement.<br>
+                            Pour toute question, contactez-nous par téléphone.
+                        </p>
+                        
+                        <div class="gdpr-notice">
+                            <strong>Protection de vos données (RGPD)</strong><br>
+                            Vos données personnelles sont traitées conformément au Règlement Général sur la Protection des Données. 
+                            Elles sont utilisées uniquement dans le cadre de votre suivi médical et ne sont jamais partagées avec des tiers. 
+                            Vous disposez d'un droit d'accès, de rectification et de suppression de vos données.
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

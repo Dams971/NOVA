@@ -1,0 +1,69 @@
+{{clinic_name}}
+CONFIRMATION DE RENDEZ-VOUS
+
+===================================================
+
+Bonjour {{patient_name}},
+
+✅ Votre rendez-vous a été confirmé avec succès !
+
+DÉTAILS DU RENDEZ-VOUS
+===================================================
+📅 Date         : {{appointment_date}}
+🕐 Heure        : {{appointment_time}}
+{{#if practitioner}}👨‍⚕️ Praticien    : {{practitioner}}{{/if}}
+{{#if care_type}}🦷 Type de soin : {{care_type}}{{/if}}
+{{#if estimated_duration}}⏱️ Durée       : {{estimated_duration}} minutes{{/if}}
+
+INFORMATIONS DU CABINET
+===================================================
+🏢 {{clinic_name}}
+📍 {{clinic_address}}
+📞 {{clinic_phone}}
+{{#if clinic_email}}✉️ {{clinic_email}}{{/if}}
+
+Plan d'accès : {{map_url}}
+
+{{#if conversation_summary}}
+RÉCAPITULATIF DE NOTRE CONVERSATION
+===================================================
+{{conversation_summary}}
+
+{{/if}}
+À PRÉVOIR POUR VOTRE RENDEZ-VOUS
+===================================================
+✓ Votre carte d'identité
+✓ Votre carte vitale ou attestation d'assurance  
+✓ Vos radiographies récentes (si applicable)
+✓ Liste de vos médicaments actuels
+✓ Arrivez 10 minutes avant l'heure
+
+ACTIONS RAPIDES
+===================================================
+{{#if cancellation_link}}
+🔄 Modifier/Annuler : {{cancellation_link}}
+{{/if}}
+📞 Appeler le cabinet : {{clinic_phone}}
+
+IMPORTANT
+===================================================
+• En cas d'empêchement, merci de nous prévenir au moins 24h à l'avance
+• Pour les urgences, contactez-nous immédiatement au {{clinic_phone}}
+• Respectez les gestes barrières en vigueur
+
+===================================================
+
+© 2025 {{clinic_name}}
+{{clinic_address}}
+
+PROTECTION DE VOS DONNÉES (RGPD)
+Vos données personnelles sont traitées conformément au Règlement 
+Général sur la Protection des Données. Elles sont utilisées uniquement 
+dans le cadre de votre suivi médical et ne sont jamais partagées avec 
+des tiers. Vous disposez d'un droit d'accès, de rectification et de 
+suppression de vos données.
+
+Cet email est généré automatiquement.
+Pour toute question, contactez-nous par téléphone.
+
+===================================================

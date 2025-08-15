@@ -1,0 +1,146 @@
+@import "tailwindcss";
+@import "../styles/accessibility.css";
+
+:root {
+  /* Couleurs principales Nova */
+  --nova-blue: #1565C0;
+  --nova-blue-light: #1E88E5;
+  --nova-blue-dark: #0D47A1;
+  --white: #FFFFFF;
+  --beige-warm: #F5F3F0;
+  --beige-dark: #E8E6E1;
+
+  /* Couleurs secondaires */
+  --success: #4CAF50;
+  --warning: #FF9800;
+  --error: #F44336;
+  --neutral: #9E9E9E;
+
+  /* Typography */
+  --font-heading: 'Montserrat', sans-serif;
+  --font-body: 'Open Sans', sans-serif;
+  
+  /* Variables par défaut */
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-body);
+  
+  /* Couleurs personnalisées Nova */
+  --color-nova-blue: var(--nova-blue);
+  --color-nova-blue-light: var(--nova-blue-light);
+  --color-nova-blue-dark: var(--nova-blue-dark);
+  --color-beige-warm: var(--beige-warm);
+  --color-beige-dark: var(--beige-dark);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
+  --color-neutral: var(--neutral);
+}
+
+body {
+  background: var(--white);
+  color: var(--foreground);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Classes utilitaires personnalisées */
+@layer utilities {
+  .font-heading {
+    font-family: var(--font-heading);
+  }
+  
+  .font-body {
+    font-family: var(--font-body);
+  }
+  
+  .btn-primary {
+    background-color: var(--nova-blue);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: all 0.2s ease-in-out;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+  }
+  
+  .btn-primary:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(21, 101, 192, 0.15);
+  }
+  
+  .btn-secondary {
+    border: 2px solid var(--nova-blue);
+    color: var(--nova-blue);
+    background-color: transparent;
+    padding: 1rem 2rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+  }
+  
+  .btn-secondary:hover {
+    background-color: var(--nova-blue);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(21, 101, 192, 0.15);
+  }
+  
+  .section-padding {
+    padding: 5rem 0;
+  }
+  
+  .container-custom {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  
+  @media (min-width: 768px) {
+    .container-custom {
+      padding: 0 2rem;
+    }
+  }
+
+  /* Footer optimisé */
+  .footer-compact {
+    line-height: 1.4;
+  }
+
+  .footer-link {
+    transition: all 0.2s ease-in-out;
+    position: relative;
+  }
+
+  .footer-link:hover {
+    transform: translateX(2px);
+  }
+
+  .footer-section {
+    margin-bottom: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .footer-section {
+      margin-bottom: 0;
+    }
+  }
+}
