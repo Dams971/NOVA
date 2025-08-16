@@ -10,8 +10,7 @@ import WidgetCustomizer from './WidgetCustomizer';
 import AppointmentManagement from './AppointmentManagement';
 import PatientManagement from './PatientManagement';
 
-// Import medical design system components
-import { MedicalButton, UrgencyBanner } from '@/components/ui/medical';
+// Import utility functions
 import { cn } from '@/lib/utils';
 
 interface ManagerDashboardProps {
@@ -240,23 +239,21 @@ export default function ManagerDashboard({ cabinet, userId }: ManagerDashboardPr
               
               {/* Customize Button with medical design */}
               {activeTab === 'dashboard' && (
-                <MedicalButton
-                  variant="secondary"
+                <button
                   onClick={() => setShowCustomizer(true)}
-                  className="gap-2"
+                  className="gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
                 >
                   ⚙️ Personnaliser
-                </MedicalButton>
+                </button>
               )}
 
               {/* Urgence Button */}
-              <MedicalButton
-                variant="urgent"
-                size="large"
+              <button
                 onClick={() => window.location.href = 'tel:+213555000000'}
+                className="px-6 py-3 text-lg font-medium text-white bg-red-600 rounded-md hover:bg-red-700"
               >
                 🚨 Urgence
-              </MedicalButton>
+              </button>
             </div>
           </div>
         </div>
@@ -351,21 +348,28 @@ export default function ManagerDashboard({ cabinet, userId }: ManagerDashboardPr
               {alerts.length > 0 && (
                 <section aria-labelledby="alerts-title">
                   <h3 id="alerts-title" className="sr-only">Alertes actives</h3>
-                  <UrgencyBanner
-                    urgency={{ level: 'urgent' }}
-                    message={`${alerts.length} alerte(s) nécessitent votre attention`}
-                    subtitle="Cliquez pour voir les détails"
-                    actions={[
-                      {
-                        label: 'Voir les alertes',
-                        onClick: () => console.log('Show alerts'),
-                        variant: 'primary'
-                      }
-                    ]}
-                    animate
-                    dismissible
-                    onDismiss={() => setAlerts([])}
-                  />
+                  <div className="p-4 mb-4 text-red-700 bg-red-100 border border-red-200 rounded-lg">
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <p className="font-semibold">{`${alerts.length} alerte(s) nécessitent votre attention`}</p>
+                        <p className="text-sm">Cliquez pour voir les détails</p>
+                      </div>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => console.log('Show alerts')}
+                          className="px-3 py-1 text-sm font-medium text-white bg-red-600 rounded hover:bg-red-700"
+                        >
+                          Voir les alertes
+                        </button>
+                        <button
+                          onClick={() => setAlerts([])}
+                          className="px-3 py-1 text-sm font-medium text-red-600 bg-white border border-red-600 rounded hover:bg-red-50"
+                        >
+                          Fermer
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 </section>
               )}
 

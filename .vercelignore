@@ -1,0 +1,54 @@
+# Ignore test files
+**/*.test.ts
+**/*.test.tsx
+**/test/**
+**/tests/**
+**/__tests__/**
+*.spec.ts
+*.spec.tsx
+
+# Ignore documentation
+docs/**
+*.md
+!README.md
+
+# Ignore development files  
+.env.local
+.env.development
+scripts/**
+playwright.config.ts
+vitest.config.ts
+jest.config.js
+lighthouserc.json
+lighthouserc-mobile.json
+
+# Ignore CI/CD
+.github/**
+.gitlab/**
+.circleci/**
+
+# Ignore large or unnecessary files
+**/*.backup.*
+**/*.old.*
+**/*.log
+**/coverage/**
+**/.nyc_output/**
+**/dist/**
+**/build/**
+node_modules/**
+
+# Ignore Storybook
+.storybook/**
+**/*.stories.tsx
+**/*.stories.ts
+
+# Ignore unused components
+src/app/rdv/nova-rdv.tsx
+src/app/demo-nova/**
+src/components/ui/medical/**
+src/components/ui/nova/**
+
+# Ignore build artifacts  
+.next/**
+out/**
+*.tsbuildinfo
