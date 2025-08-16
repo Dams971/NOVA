@@ -1,4 +1,4 @@
-import { Pool, Client, PoolClient, PoolConfig } from 'pg';
+import { Pool, PoolClient, PoolConfig } from 'pg';
 import { env } from '@/config/env';
 
 /**
@@ -59,7 +59,7 @@ export class PostgreSQLManager {
       });
 
       // Handle client connections
-      pool.on('connect', (client) => {
+      pool.on('connect', (_client) => {
         console.log('New PostgreSQL client connected');
       });
 
@@ -147,7 +147,7 @@ export class PostgreSQLManager {
       const result = await callback(client);
       await this.commitTransaction(client);
       return result;
-    } catch (error) {
+    } catch (_error) {
       await this.rollbackTransaction(client);
       throw error;
     }
@@ -216,7 +216,7 @@ export class PostgreSQLManager {
         console.log('✅ Database tables verified');
       }
 
-    } catch (_error) {
+    } catch (error) {
       console.error('❌ Database initialization failed:', error);
       throw error;
     }
@@ -235,7 +235,7 @@ export class PostgreSQLManager {
       `);
       
       return result.rows[0]?.count >= 4;
-    } catch (error) {
+    } catch (_error) {
       return false;
     }
   }

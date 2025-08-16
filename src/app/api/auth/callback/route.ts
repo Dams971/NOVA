@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
+import { NextResponse } from 'next/server'
+import { createClient } from '@supabase/supabase-js'
 
 export async function GET() {
   const { searchParams } = new URL(request.url)

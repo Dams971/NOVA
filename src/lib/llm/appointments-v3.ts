@@ -522,7 +522,7 @@ export class PhoneValidatorV3 {
         isValid: true,
         normalized: e164
       };
-    } catch (error) {
+    } catch (_error) {
       return {
         isValid: false,
         error: "Format de téléphone invalide. Exemple: +213555123456"

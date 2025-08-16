@@ -67,7 +67,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         localStorage.removeItem('refreshToken');
       }
     } catch (_err) {
-      console.error('Auth check failed:', err);
+      console.error('Auth check failed:', _err);
     } finally {
       setIsLoading(false);
     }
@@ -160,7 +160,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
       });
     } catch (_err) {
-      console.error('Logout error:', err);
+      console.error('Logout error:', _err);
     } finally {
       // Clear local state regardless
       localStorage.removeItem('accessToken');
@@ -170,7 +170,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const refreshToken = async () => {
+  const refreshToken = useCallback(async () => {
     try {
       const refreshToken = localStorage.getItem('refreshToken');
       if (!refreshToken) {
@@ -195,10 +195,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       localStorage.setItem('refreshToken', data.refreshToken);
 
     } catch (_err) {
-      console.error('Token refresh failed:', err);
+      console.error('Token refresh failed:', _err);
       await logout();
     }
-  };
+  }, [logout]);
 
   const clearError = () => setError(null);
 
@@ -211,7 +211,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }, 14 * 60 * 1000); // Refresh every 14 minutes (token expires in 15)
 
     return () => clearInterval(interval);
-  }, [user]);
+  }, [user, refreshToken]);
 
   const value = {
     user,

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { v4 as uuidv4 } from 'uuid';
 import { db } from '@/lib/database/unified-connection';
 import { withAuth } from '@/lib/middleware/auth';
-import { v4 as uuidv4 } from 'uuid';
 
 async function handleGetAppointments(request: NextRequest) {
   try {
@@ -29,7 +29,7 @@ async function handleGetAppointments(request: NextRequest) {
       success: true,
       data: appointments
     });
-  } catch (_error) {
+  } catch (error) {
     console.error('Get appointments error:', error);
     return NextResponse.json(
       { error: 'Failed to fetch appointments' },
@@ -74,7 +74,7 @@ async function handleCreateAppointment(request: NextRequest) {
       success: true,
       data: appointment
     }, { status: 201 });
-  } catch (_error) {
+  } catch (error) {
     console.error('Create appointment error:', error);
     return NextResponse.json(
       { error: 'Failed to create appointment' },

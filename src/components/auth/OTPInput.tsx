@@ -74,6 +74,7 @@ export const OTPInput: React.FC<OTPInputProps> = ({
       inputRefs.current[targetIndex].focus();
       setFocusedIndex(targetIndex);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const updateOTP = useCallback((newDigits: string[]) => {

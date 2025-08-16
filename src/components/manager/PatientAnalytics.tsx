@@ -194,7 +194,7 @@ export default function PatientAnalytics({ cabinetId }: PatientAnalyticsProps) {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Analyses des Patients</h2>
-          <p className="text-gray-500">Vue d'ensemble des données patients du cabinet</p>
+          <p className="text-gray-500">Vue d&apos;ensemble des données patients du cabinet</p>
         </div>
         <div className="flex items-center space-x-3">
           <button

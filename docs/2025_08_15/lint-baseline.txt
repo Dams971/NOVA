@@ -1,0 +1,156 @@
+# NOVA RDV - ESLint Baseline Report
+Generated: 2025-08-15
+Source: npm run lint output
+
+## Summary
+Total warnings found: 995 warnings (0 errors)
+ESLint Configuration: Next.js 15 with TypeScript (flat config)
+
+## Warning Breakdown by Category
+
+### 1. TypeScript Unused Variables (@typescript-eslint/no-unused-vars)
+Count: 346 warnings (34.8% of total)
+Pattern violations:
+- Variables not prefixed with underscore: 'appointmentDate', 'gateway', 'withAuth', etc.
+- Function parameters not prefixed with underscore: 'cabinetId', 'index', 'user', etc.
+- Catch block variables: '_error', '__error', 'err', 'error'
+- Import statements not used: 'Phone', 'Mail', 'Clock', 'Calendar', etc.
+
+Current rule configuration:
+```json
+"@typescript-eslint/no-unused-vars": ["warn", { 
+  "argsIgnorePattern": "^_",
+  "varsIgnorePattern": "^_"
+}]
+```
+
+Missing configuration:
+- caughtErrorsIgnorePattern for error variables in catch blocks
+- destructuredArrayIgnorePattern for array destructuring
+
+### 2. TypeScript Any Types (@typescript-eslint/no-explicit-any)
+Count: 279 warnings (28.0% of total)
+Common patterns:
+- API response handling: `(response: any)`, `(data: any)`
+- Event handlers: `(e: any)`, `(event: any)`
+- Generic utility functions: `(value: any)`
+- WebSocket message handling
+- Form handling and validation
+
+### 3. React Unescaped Entities (react/no-unescaped-entities)
+Count: 69 warnings (6.9% of total)
+Common characters:
+- Single quotes (') - 52 instances
+- Double quotes (") - 17 instances
+Primarily in French text content (e.g., "d'urgence", "l'équipe")
+
+### 4. React Hooks Dependencies (react-hooks/exhaustive-deps)
+Count: 17 warnings (1.7% of total)
+Missing dependencies in:
+- useEffect hooks
+- useCallback hooks
+- Complex custom hooks
+
+### 5. Prefer Const (prefer-const)
+Count: 4 warnings (0.4% of total)
+Variables that should be declared with 'const' instead of 'let'
+
+### 6. Anonymous Default Exports (import/no-anonymous-default-export)
+Count: 4 warnings (0.4% of total)
+Files exporting objects without variable assignment
+
+### 7. TypeScript Comment Directives (@typescript-eslint/ban-ts-comment)
+Count: 2 warnings (0.2% of total)
+Instances of @ts-ignore that should be @ts-expect-error
+
+## Files with Highest Warning Counts
+
+1. src/app/rdv/page.tsx - 27 warnings
+   - 18 unused icon imports
+   - 8 explicit any types
+   - 1 unescaped entity
+
+2. src/lib/chat/dialogManager-v3.ts - 18 warnings
+   - 8 unused imports
+   - 7 explicit any types
+   - 3 unused error variables
+
+3. src/middleware.ts - 17 warnings
+   - 12 unused function definitions
+   - 3 explicit any types
+   - 2 unused parameters
+
+4. src/components/admin/CabinetOverviewGrid.tsx - 15 warnings
+   - 4 explicit any types
+   - 2 unescaped entities
+   - 1 unused parameter
+   - 8 other warnings
+
+5. src/components/admin/ComparativeAnalyticsDashboard.tsx - 14 warnings
+   - 9 unused imports
+   - 1 unused parameter
+   - 4 other warnings
+
+## Configuration Analysis
+
+### Current ESLint Setup (eslint.config.mjs)
+- Uses Next.js flat config format
+- Extends: "next/core-web-vitals", "next/typescript"
+- Custom rules are properly configured but incomplete
+
+### Issues with Current Configuration
+1. **Missing caughtErrorsIgnorePattern**: Many error variables in catch blocks trigger warnings
+2. **Inconsistent error variable naming**: Mix of 'error', '_error', '__error', 'err'
+3. **No test-specific overrides**: Test files may need different rules
+4. **French language content**: Unescaped entities common in French UI text
+
+## Recommendations
+
+### 1. Enhanced unused-vars Configuration
+```javascript
+"@typescript-eslint/no-unused-vars": ["warn", {
+  "argsIgnorePattern": "^_",
+  "varsIgnorePattern": "^_",
+  "caughtErrorsIgnorePattern": "^_",
+  "destructuredArrayIgnorePattern": "^_"
+}]
+```
+
+### 2. Gradual Any Type Reduction
+- Add specific types for API responses
+- Create proper interfaces for WebSocket messages
+- Type event handlers properly
+
+### 3. French Content Handling
+- Configure react/no-unescaped-entities to allow common French characters
+- Consider using proper Unicode entities in JSX
+
+### 4. Test File Overrides
+```javascript
+{
+  "files": ["**/__tests__/**/*", "**/*.test.*", "**/*.spec.*"],
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-unused-vars": "off"
+  }
+}
+```
+
+### 5. Cleanup Strategy
+- Phase 1: Fix unused imports (low risk)
+- Phase 2: Standardize error variable naming
+- Phase 3: Add proper TypeScript types
+- Phase 4: Fix React hooks dependencies
+
+## Build Impact
+Current warnings do not prevent successful builds but may indicate:
+- Dead code that could be removed
+- Type safety issues
+- Performance implications (missing React deps)
+- Maintenance overhead
+
+## Next Steps
+1. Implement improved ESLint configuration
+2. Create automated fixing scripts for safe changes
+3. Establish coding standards for error handling
+4. Set up pre-commit hooks to prevent regression

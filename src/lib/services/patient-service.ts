@@ -244,7 +244,7 @@ export class PatientService {
           hasMore: offset + limit < total
         }
       };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: 'Failed to fetch patients' };
     }
   }
@@ -256,7 +256,7 @@ export class PatientService {
         return { success: false, error: 'Patient not found' };
       }
       return { success: true, data: patient };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: 'Failed to fetch patient' };
     }
   }
@@ -288,7 +288,7 @@ export class PatientService {
       this.patients.set(patient.id, patient);
 
       return { success: true, data: patient };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: 'Failed to create patient' };
     }
   }
@@ -330,7 +330,7 @@ export class PatientService {
 
       this.patients.set(id, updatedPatient);
       return { success: true, data: updatedPatient };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: 'Failed to update patient' };
     }
   }
@@ -351,7 +351,7 @@ export class PatientService {
 
       this.patients.set(id, updatedPatient);
       return { success: true, data: true };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: 'Failed to delete patient' };
     }
   }
@@ -383,7 +383,7 @@ export class PatientService {
 
       this.patients.set(data.patientId, updatedPatient);
       return { success: true, data: medicalRecord };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: 'Failed to add medical record' };
     }
   }
@@ -420,7 +420,7 @@ export class PatientService {
 
       this.patients.set(patientId, updatedPatient);
       return { success: true, data: updatedRecord };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: 'Failed to update medical record' };
     }
   }
@@ -446,7 +446,7 @@ export class PatientService {
 
       this.patients.set(patientId, updatedPatient);
       return { success: true, data: true };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: 'Failed to delete medical record' };
     }
   }
@@ -464,7 +464,7 @@ export class PatientService {
       );
 
       return { success: true, data: sortedHistory };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: 'Failed to fetch medical history' };
     }
   }
@@ -516,7 +516,7 @@ export class PatientService {
       };
 
       return { success: true, data: statistics };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: 'Failed to fetch patient statistics' };
     }
   }

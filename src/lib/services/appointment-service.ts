@@ -177,7 +177,7 @@ export class AppointmentService {
       }
 
       return { success: true, data: appointments };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: 'Failed to fetch appointments' };
     }
   }
@@ -226,7 +226,7 @@ export class AppointmentService {
         return { success: false, error: 'Appointment not found' };
       }
       return { success: true, data: appointment };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: 'Failed to fetch appointment' };
     }
   }
@@ -257,7 +257,7 @@ export class AppointmentService {
       this.appointments.set(appointment.id, appointment);
 
       return { success: true, data: appointment };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: 'Failed to create appointment' };
     }
   }
@@ -336,7 +336,7 @@ export class AppointmentService {
       this.appointments.set(id, updatedAppointment);
 
       return { success: true, data: updatedAppointment };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: 'Failed to update appointment' };
     }
   }
@@ -399,7 +399,7 @@ export class AppointmentService {
 
       this.appointments.delete(id);
       return { success: true, data: true };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: 'Failed to delete appointment' };
     }
   }
@@ -464,7 +464,7 @@ export class AppointmentService {
       });
 
       return { success: true, data: events };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: 'Failed to fetch calendar events' };
     }
   }
@@ -532,7 +532,7 @@ export class AppointmentService {
       });
 
       return { success: true, data: conflicts.length === 0 };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: 'Failed to check availability' };
     }
   }
@@ -545,7 +545,7 @@ export class AppointmentService {
       }
 
       return await this.updateAppointment(id, { scheduledAt: newDateTime });
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: 'Failed to reschedule appointment' };
     }
   }
@@ -554,8 +554,8 @@ export class AppointmentService {
     const colors = {
       [AppointmentStatus.SCHEDULED]: border ? '#3B82F6' : '#DBEAFE',
       [AppointmentStatus.CONFIRMED]: border ? '#10B981' : '#D1FAE5',
-      [AppointmentStatus.IN_PROGRESS]: border ? '#F59E0B' : '#FEF3C7',
-      [AppointmentStatus.COMPLETED]: border ? '#6B7280' : '#F3F4F6',
+      [AppointmentStatus.IN_PROGRESS]: border ? 'warning-600' : '#FEF3C7',
+      [AppointmentStatus.COMPLETED]: border ? '#6B7280' : 'neutral-100',
       [AppointmentStatus.CANCELLED]: border ? '#EF4444' : '#FEE2E2',
       [AppointmentStatus.NO_SHOW]: border ? '#DC2626' : '#FECACA'
     };

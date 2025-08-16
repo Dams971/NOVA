@@ -157,7 +157,7 @@ export class PatientSearchService {
           hasMore: false // Advanced search returns all results
         }
       };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: 'Failed to perform advanced search' };
     }
   }
@@ -258,7 +258,7 @@ export class PatientSearchService {
           .sort((a, b) => b.count - a.count)
           .slice(0, 10)
       };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: 'Failed to generate search suggestions' };
     }
   }
@@ -383,7 +383,7 @@ export class PatientSearchService {
       };
 
       return { success: true, data: analytics };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: 'Failed to generate patient analytics' };
     }
   }
@@ -412,7 +412,7 @@ export class PatientSearchService {
         default:
           return { success: false, error: 'Unsupported export format' };
       }
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: 'Failed to export patients' };
     }
   }
@@ -442,7 +442,7 @@ export class PatientSearchService {
         : rows.join('\n');
 
       return { success: true, data: csvContent };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: 'Failed to generate CSV export' };
     }
   }

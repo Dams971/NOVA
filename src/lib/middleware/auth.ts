@@ -324,8 +324,10 @@ export function withAnalyticsAccess(getCabinetId?: (req: AuthenticatedRequest) =
 /**
  * Combine multiple middlewares
  */
-export function combineMiddlewares(...middlewares: Array<(handler: any) => any>) {
-  return (handler: any) => {
+export function combineMiddlewares(
+  ...middlewares: Array<(handler: (req: AuthenticatedRequest) => Promise<NextResponse>) => (req: AuthenticatedRequest) => Promise<NextResponse>>
+) {
+  return (handler: (req: AuthenticatedRequest) => Promise<NextResponse>) => {
     return middlewares.reduceRight((acc, middleware) => middleware(acc), handler);
   };
 }

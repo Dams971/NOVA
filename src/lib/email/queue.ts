@@ -157,7 +157,7 @@ export class EmailQueue extends EventEmitter {
 
       this.emit('job:completed', { job, info });
       console.log('Email sent:', info.messageId);
-    } catch (error) {
+    } catch (_error) {
       job.attempts = (job.attempts || 0) + 1;
       
       if (job.attempts < (job.maxAttempts || 3)) {

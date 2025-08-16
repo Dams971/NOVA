@@ -27,7 +27,7 @@ export interface GetSlotsResponse {
   error?: string
 }
 
-export async function POST(): Promise<NextResponse<GetSlotsResponse>> {
+export async function POST(request: NextRequest): Promise<NextResponse<GetSlotsResponse>> {
   try {
     const body = await request.json()
     const { date, duration_minutes = 30 }: GetSlotsRequest = body
@@ -159,7 +159,7 @@ export async function POST(): Promise<NextResponse<GetSlotsResponse>> {
     }
 
     // Format slots for frontend consumption
-    const formattedSlots: TimeSlot[] = slotsData.map((slot: any) => {
+    const formattedSlots: TimeSlot[] = slotsData.map((slot: { start_time: string; end_time: string; available: boolean }) => {
       const startTime = new Date(slot.start_time)
       const endTime = new Date(slot.end_time)
       
@@ -199,7 +199,7 @@ export async function POST(): Promise<NextResponse<GetSlotsResponse>> {
       }
     })
 
-  } catch (_error) {
+  } catch (error) {
     console.error('Get slots error:', error)
     
     return NextResponse.json(
@@ -213,7 +213,7 @@ export async function POST(): Promise<NextResponse<GetSlotsResponse>> {
   }
 }
 
-export async function GET(): Promise<NextResponse<GetSlotsResponse>> {
+export async function GET(request: NextRequest): Promise<NextResponse<GetSlotsResponse>> {
   try {
     const { searchParams } = new URL(request.url)
     const date = searchParams.get('date')
@@ -238,7 +238,7 @@ export async function GET(): Promise<NextResponse<GetSlotsResponse>> {
     // Call the POST handler with the mock request
     return await POST(mockRequest)
 
-  } catch (_error) {
+  } catch (error) {
     console.error('Get slots (GET) error:', error)
     
     return NextResponse.json(
@@ -253,7 +253,7 @@ export async function GET(): Promise<NextResponse<GetSlotsResponse>> {
 }
 
 // Additional utility endpoint to check specific slot availability
-export async function PUT(): Promise<NextResponse> {
+export async function PUT(request: NextRequest): Promise<NextResponse> {
   try {
     const body = await request.json()
     const { start_time, end_time } = body
@@ -299,7 +299,7 @@ export async function PUT(): Promise<NextResponse> {
       }
     })
 
-  } catch (_error) {
+  } catch (error) {
     console.error('Check slot availability error:', error)
     
     return NextResponse.json(

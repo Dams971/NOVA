@@ -77,7 +77,7 @@ const executeMigration = async (migration: Migration) => {
     
     await connection.commit();
     console.log(`✅ Migration ${migration.id} executed successfully`);
-  } catch (error) {
+  } catch (_error) {
     await connection.rollback();
     console.error(`❌ Migration ${migration.id} failed:`, error);
     throw error;

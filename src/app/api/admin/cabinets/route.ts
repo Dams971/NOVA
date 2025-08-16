@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/database/unified-connection';
 import { withAuth } from '@/lib/middleware/auth';
 
-async function handleGetCabinets(request: NextRequest) {
+async function handleGetCabinets(_request: NextRequest) {
   try {
     const cabinets = await db.getAllCabinets();
     
@@ -27,7 +27,7 @@ async function handleGetCabinets(request: NextRequest) {
       success: true,
       data: cabinetsWithStats
     });
-  } catch (_error) {
+  } catch (error) {
     console.error('Get cabinets error:', error);
     return NextResponse.json(
       { error: 'Failed to fetch cabinets' },

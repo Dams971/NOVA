@@ -4,10 +4,13 @@
       "url": [
         "http://localhost:3000/",
         "http://localhost:3000/rdv",
-        "http://localhost:3000/compte",
-        "http://localhost:3000/services",
-        "http://localhost:3000/urgences"
+        "http://localhost:3000/chat",
+        "http://localhost:3000/urgences",
+        "http://localhost:3000/manager/test-cabinet"
       ],
+      "startServerCommand": "npm run build && npm run start",
+      "startServerReadyPattern": "ready on",
+      "startServerReadyTimeout": 120000,
       "numberOfRuns": 3,
       "settings": {
         "preset": "desktop",

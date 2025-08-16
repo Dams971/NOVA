@@ -52,7 +52,7 @@ export class PatientRepository {
       
       // Return the created patient
       return await this.getPatientById(patientId);
-    } catch (error) {
+    } catch (_error) {
       await connection.rollback();
       throw error;
     } finally {
@@ -232,7 +232,7 @@ export class PatientRepository {
       await connection.commit();
       
       return await this.getPatientById(id);
-    } catch (error) {
+    } catch (_error) {
       await connection.rollback();
       throw error;
     } finally {

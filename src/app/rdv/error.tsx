@@ -37,7 +37,7 @@ export default function Error({ error, reset }: ErrorProps) {
           {process.env.NODE_ENV === 'development' && (
             <details className="text-left mt-4 p-4 bg-gray-100 rounded-md">
               <summary className="cursor-pointer text-sm font-medium text-gray-700 mb-2">
-                Détails de l'erreur (développement)
+                Détails de l&apos;erreur (développement)
               </summary>
               <pre className="text-xs text-gray-600 whitespace-pre-wrap break-words">
                 {error.message}
@@ -64,7 +64,7 @@ export default function Error({ error, reset }: ErrorProps) {
             className="inline-flex items-center"
           >
             <Home className="w-4 h-4 mr-2" aria-hidden="true" />
-            Retour à l'accueil
+            Retour à l&apos;accueil
           </Button>
         </div>
         

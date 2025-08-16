@@ -32,17 +32,17 @@ const ChatRequestSchema = z.object({
         role: z.enum(['user', 'assistant', 'system']),
         content: z.string(),
         timestamp: z.string().transform(str => new Date(str)),
-        metadata: z.any().optional()
+        metadata: z.unknown().optional()
       })).default([]),
       state: z.enum(['active', 'waiting_for_input', 'completed', 'escalated']).default('active'),
       currentIntent: z.string().optional(),
-      collectedSlots: z.record(z.any()).default({}),
+      collectedSlots: z.record(z.unknown()).default({}),
       confirmationPending: z.boolean().optional()
     })
   })
 });
 
-export async function POST(): Promise<NextResponse> {
+export async function POST(request: Request): Promise<NextResponse> {
   try {
     // Parse and validate request
     const body = await request.json();
@@ -120,7 +120,7 @@ export async function POST(): Promise<NextResponse> {
       }
     });
 
-  } catch (_error) {
+  } catch (error) {
     console.error('Chat API error:', error);
     
     // Handle validation errors
@@ -155,7 +155,7 @@ export async function GET(): Promise<NextResponse> {
       }
     });
 
-  } catch (_error) {
+  } catch (error) {
     console.error('Chat health check failed:', error);
     
     return NextResponse.json({

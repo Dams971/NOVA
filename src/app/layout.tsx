@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Montserrat, Open_Sans } from "next/font/google";
 import "./globals.css";
+import "@/styles/tokens.css";
+import "@/styles/theme.css";
+import "@/styles/accessibility.css";
 import { Providers } from "./providers";
 
 // Configuration des fonts Nova

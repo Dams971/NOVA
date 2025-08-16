@@ -20,10 +20,30 @@
       "Bash(node:*)",
       "Bash(npm run build:*)",
       "Bash(timeout 30 npm run build:*)",
-      "Bash(timeout 10 npm run dev:*)"
+      "Bash(timeout 10 npm run dev:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run type-check:*)",
+      "Bash(mkdir:*)",
+      "Bash(DEBUG_TESTS=true npm test -- --run src/app/api/appointments/__tests__/create.test.ts --reporter=verbose)",
+      "Bash(DEBUG_TESTS=true npm test -- --run src/app/api/appointments/__tests__/create.test.ts -t \"should trim whitespace\")",
+      "Bash(grep:*)",
+      "Bash(find:*)",
+      "Bash(rm:*)",
+      "Bash(git checkout:*)",
+      "Bash(npm run lint:*)",
+      "Bash(npm audit:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npx lighthouse:*)",
+      "Bash(taskkill:*)",
+      "Bash(touch:*)",
+      "WebFetch(domain:www.maiia.com)",
+      "WebFetch(domain:www.doctolib.fr)"
     ],
     "deny": [],
     "ask": [],
-    "defaultMode": "acceptEdits"
+    "defaultMode": "acceptEdits",
+    "additionalDirectories": [
+      "C:\\c\\Users\\ganed\\WebstormProjects"
+    ]
   }
 }

@@ -147,6 +147,7 @@ export default function CabinetOverviewGrid({
         ws.close();
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refreshInterval]);
 
   // Combine cabinets with their metrics
@@ -432,7 +433,7 @@ export default function CabinetOverviewGrid({
                   onClick={() => handleSort('appointmentsToday')}
                 >
                   <div className="flex items-center space-x-1">
-                    <span>Today's Appointments</span>
+                    <span>Today&apos;s Appointments</span>
                     {sortField === 'appointmentsToday' && (
                       sortDirection === 'asc' ? <SortAsc className="h-4 w-4" /> : <SortDesc className="h-4 w-4" />
                     )}
@@ -553,7 +554,7 @@ export default function CabinetOverviewGrid({
           <div className="text-2xl font-bold text-blue-600">
             {filteredAndSortedData.reduce((sum, c) => sum + c.metrics.appointmentsToday, 0)}
           </div>
-          <div className="text-sm text-gray-600">Today's Appointments</div>
+          <div className="text-sm text-gray-600">Today&apos;s Appointments</div>
         </div>
         <div className="bg-white p-4 rounded-lg shadow border">
           <div className="text-2xl font-bold text-purple-600">

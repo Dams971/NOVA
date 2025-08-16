@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { 
@@ -49,9 +49,9 @@ export default function AppointmentList({
 
   useEffect(() => {
     loadAppointments();
-  }, [cabinetId, statusFilter, dateFilter]);
+  }, [loadAppointments]);
 
-  const loadAppointments = async () => {
+  const loadAppointments = useCallback(async () => {
     setLoading(true);
     try {
       const filters: AppointmentFilters = {
@@ -94,7 +94,7 @@ export default function AppointmentList({
     } finally {
       setLoading(false);
     }
-  };
+  }, [cabinetId, statusFilter, dateFilter]);
 
   const getMockPatient = (patientId: string): Patient => {
     const mockPatients: Record<string, Patient> = {
@@ -265,7 +265,7 @@ export default function AppointmentList({
               onChange={(e) => setDateFilter(e.target.value as any)}
               className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="today">Aujourd'hui</option>
+              <option value="today">Aujourd&apos;hui</option>
               <option value="week">Cette semaine</option>
               <option value="month">Ce mois</option>
               <option value="all">Tous</option>

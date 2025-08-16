@@ -1,127 +1,119 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { axe, toHaveNoViolations } from 'jest-axe';
-import { vi } from 'vitest';
+/**
+ * NOVA Design System Accessibility Tests
+ * 
+ * Comprehensive WCAG 2.2 AA compliance testing for the NOVA medical design system.
+ * Tests color contrast, keyboard navigation, screen reader support, and focus management.
+ */
 
-// Import components to test
-import PatientForm from '@/components/manager/PatientForm';
-import PatientDetail from '@/components/manager/PatientDetail';
-import PatientManagement from '@/components/manager/PatientManagement';
-import VisuallyHidden from '@/components/ui/VisuallyHidden';
-import FocusTrap from '@/components/ui/FocusTrap';
-import LoadingSpinner from '@/components/ui/LoadingSpinner';
-import ErrorMessage from '@/components/ui/ErrorMessage';
-import SuccessMessage from '@/components/ui/SuccessMessage';
-import { ScreenReaderProvider } from '@/hooks/useScreenReaderAnnouncements';
+import React from 'react';
+import { render, screen, fireEvent, waitFor } from '@/test/test-utils';
+import { axe, toHaveNoViolations } from 'jest-axe';
+import { Button } from '@/components/ui/button';
+import { ChatRDV } from '@/components/rdv/ChatRDV';
+import { checkAccessibility } from '@/test/setup';
+import userEvent from '@testing-library/user-event';
+import { vi } from 'vitest';
 
 // Extend Jest matchers
 expect.extend(toHaveNoViolations);
 
-// Mock services
-vi.mock('@/lib/services/patient-service');
-vi.mock('@/lib/services/patient-search-service');
-vi.mock('@/lib/services/patient-communication-service');
-
-// Mock global PatientService 
-(globalThis as any).PatientService = {
-  getInstance: vi.fn(() => ({
-    getPatients: vi.fn().mockResolvedValue({
-      success: true,
-      data: { patients: [], total: 0, hasMore: false }
-    }),
-    createPatient: vi.fn().mockResolvedValue({
-      success: true,
-      data: {}
-    }),
-    updatePatient: vi.fn().mockResolvedValue({
-      success: true,
-      data: {}
-    }),
-    deletePatient: vi.fn().mockResolvedValue({
-      success: true
-    })
-  }))
-};
-
-// Mock patient data
-const mockPatient = {
-  id: 'patient-1',
-  cabinetId: 'cabinet-1',
-  firstName: 'Marie',
-  lastName: 'Dubois',
-  email: 'marie@example.com',
-  phone: '+33123456789',
-  dateOfBirth: new Date('1985-03-15'),
-  gender: 'female' as const,
-  address: {
-    street: '123 Rue de la Paix',
-    city: 'Paris',
-    postalCode: '75001',
-    country: 'France'
-  },
-  emergencyContact: {
-    name: 'Jean Dubois',
-    phone: '+33123456790',
-    relationship: 'Époux'
-  },
-  preferences: {
-    preferredLanguage: 'fr',
-    communicationMethod: 'email' as const,
-    reminderEnabled: true,
-    reminderHours: [24, 2]
-  },
-  medicalHistory: [],
-  isActive: true,
-  totalVisits: 5,
-  createdAt: new Date('2024-01-01'),
-  updatedAt: new Date('2024-01-01')
-};
-
-describe('Accessibility Tests', () => {
-  describe('UI Components', () => {
-    it('VisuallyHidden should not have accessibility violations', async () => {
+describe('NOVA Accessibility Compliance', () => {
+  describe('WCAG 2.2 AA - Color Contrast', () => {
+    test('primary buttons meet 4.5:1 contrast ratio', async () => {
       const { container } = render(
-        <VisuallyHidden>Hidden content for screen readers</VisuallyHidden>
+        <Button variant="primary">Prendre rendez-vous</Button>
       );
-      const results = await axe(container);
+      
+      const results = await axe(container, {
+        rules: {
+          'color-contrast': { enabled: true }
+        }
+      });
+      
       expect(results).toHaveNoViolations();
     });
 
-    it('LoadingSpinner should not have accessibility violations', async () => {
+    test('secondary buttons meet contrast requirements', async () => {
       const { container } = render(
-        <LoadingSpinner label="Loading data" showLabel={true} />
+        <Button variant="secondary">Annuler</Button>
       );
-      const results = await axe(container);
+      
+      const results = await axe(container, {
+        rules: {
+          'color-contrast': { enabled: true }
+        }
+      });
+      
       expect(results).toHaveNoViolations();
     });
 
-    it('ErrorMessage should not have accessibility violations', async () => {
+    test('destructive buttons meet contrast requirements', async () => {
       const { container } = render(
-        <ErrorMessage message="This is an error message" />
+        <Button variant="destructive">Supprimer</Button>
       );
-      const results = await axe(container);
+      
+      const results = await axe(container, {
+        rules: {
+          'color-contrast': { enabled: true }
+        }
+      });
+      
       expect(results).toHaveNoViolations();
     });
 
-    it('SuccessMessage should not have accessibility violations', async () => {
+    test('success buttons meet contrast requirements', async () => {
       const { container } = render(
-        <SuccessMessage message="Operation completed successfully" />
+        <Button variant="success">Confirmer</Button>
       );
-      const results = await axe(container);
+      
+      const results = await axe(container, {
+        rules: {
+          'color-contrast': { enabled: true }
+        }
+      });
+      
       expect(results).toHaveNoViolations();
     });
 
-    it('FocusTrap should not have accessibility violations', async () => {
+    test('warning buttons meet contrast requirements', async () => {
       const { container } = render(
-        <FocusTrap active={true}>
-          <div>
-            <button>First button</button>
-            <input type="text" placeholder="Input field" />
-            <button>Last button</button>
-          </div>
-        </FocusTrap>
+        <Button variant="warning">Attention</Button>
       );
-      const results = await axe(container);
+      
+      const results = await axe(container, {
+        rules: {
+          'color-contrast': { enabled: true }
+        }
+      });
+      
+      expect(results).toHaveNoViolations();
+    });
+
+    test('quiet buttons meet contrast requirements', async () => {
+      const { container } = render(
+        <Button variant="quiet">Options</Button>
+      );
+      
+      const results = await axe(container, {
+        rules: {
+          'color-contrast': { enabled: true }
+        }
+      });
+      
+      expect(results).toHaveNoViolations();
+    });
+
+    test('disabled buttons maintain readable contrast', async () => {
+      const { container } = render(
+        <Button disabled>Bouton désactivé</Button>
+      );
+      
+      const results = await axe(container, {
+        rules: {
+          'color-contrast': { enabled: true }
+        }
+      });
+      
       expect(results).toHaveNoViolations();
     });
   });
@@ -145,7 +137,7 @@ describe('Accessibility Tests', () => {
         getInstance: vi.fn()
       };
 
-      vi.mocked(require('@/lib/services/patient-service').PatientService.getInstance)
+      vi.mocked(PatientService.getInstance)
         .mockReturnValue(mockPatientService);
     });
 

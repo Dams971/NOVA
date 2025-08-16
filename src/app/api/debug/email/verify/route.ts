@@ -17,7 +17,7 @@ export async function GET() {
     const result = await emailService.verifyConnection();
     
     return NextResponse.json(result);
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       { success: false, error: 'Failed to verify email connection' },
       { status: 500 }

@@ -1,0 +1,528 @@
+/**
+ * NOVA Medical Design Tokens CSS Variables
+ * Palette bleu/vert/jaune optimisée pour l'accessibilité WCAG AAA
+ * Architecture conforme aux spécifications médicales
+ */
+
+:root {
+  /* ==================== COULEURS MÉDICALES PRINCIPALES ==================== */
+  
+  /* Bleu médical - Confiance, professionalisme (WCAG AAA compliant) */
+  --color-medical-blue-50: 238 242 255;
+  --color-medical-blue-100: 224 231 255;
+  --color-medical-blue-200: 199 210 254;
+  --color-medical-blue-300: 165 180 252;
+  --color-medical-blue-400: 129 140 248;
+  --color-medical-blue-500: 99 102 241;
+  --color-medical-blue-600: 37 99 235;   /* Principal - CTAs, actions */
+  --color-medical-blue-700: 29 78 216;   /* Principal fort - boutons primaires */
+  --color-medical-blue-800: 30 64 175;
+  --color-medical-blue-900: 30 58 138;
+  
+  /* Vert santé - Guérison, bien-être, succès */
+  --color-medical-green-50: 236 253 245;
+  --color-medical-green-100: 209 250 229;
+  --color-medical-green-200: 167 243 208;
+  --color-medical-green-300: 110 231 183;
+  --color-medical-green-400: 52 211 153;
+  --color-medical-green-500: 16 185 129;
+  --color-medical-green-600: 22 163 74;   /* Success principal */
+  --color-medical-green-700: 21 128 61;
+  --color-medical-green-800: 22 101 52;
+  --color-medical-green-900: 20 83 45;
+  
+  /* Jaune attention - Warnings, alertes modérées */
+  --color-medical-yellow-50: 255 251 235;
+  --color-medical-yellow-100: 254 243 199;
+  --color-medical-yellow-200: 253 230 138;
+  --color-medical-yellow-300: 252 211 77;
+  --color-medical-yellow-400: 251 191 36;
+  --color-medical-yellow-500: 245 158 11;  /* Warning principal */
+  --color-medical-yellow-600: 217 119 6;
+  --color-medical-yellow-700: 180 83 9;
+  --color-medical-yellow-800: 146 64 14;
+  --color-medical-yellow-900: 120 53 15;
+  
+  /* Gris médicaux - Neutralité, professionalisme */
+  --color-medical-gray-50: 249 250 251;   /* Background très léger */
+  --color-medical-gray-100: 242 244 247;  /* Background léger - sections */
+  --color-medical-gray-200: 234 236 240;  /* Bordures légères */
+  --color-medical-gray-300: 208 213 221;  /* Bordures normales */
+  --color-medical-gray-400: 152 162 179;  /* Texte secondaire */
+  --color-medical-gray-500: 102 112 133;  /* Texte tertiaire */
+  --color-medical-gray-600: 71 80 103;    /* Texte principal */
+  --color-medical-gray-700: 52 64 84;     /* Texte important */
+  --color-medical-gray-800: 29 41 57;     /* Titres */
+  --color-medical-gray-900: 11 18 32;     /* Texte très important */
+  
+  /* Rouge urgences/erreurs */
+  --color-medical-red-50: 254 242 242;
+  --color-medical-red-100: 254 226 226;
+  --color-medical-red-200: 254 202 202;
+  --color-medical-red-300: 252 165 165;
+  --color-medical-red-400: 248 113 113;
+  --color-medical-red-500: 239 68 68;
+  --color-medical-red-600: 223 63 64;     /* Principal erreur/urgence */
+  --color-medical-red-700: 220 38 38;
+  --color-medical-red-800: 185 28 28;
+  --color-medical-red-900: 153 27 27;
+  
+  /* ==================== COULEURS CONTEXTUELLES ==================== */
+  
+  /* Urgences médicales */
+  --color-emergency-critical: rgb(var(--color-medical-red-600));
+  --color-emergency-urgent: rgb(var(--color-medical-yellow-600));
+  --color-emergency-moderate: rgb(var(--color-medical-blue-600));
+  --color-emergency-low: rgb(var(--color-medical-green-600));
+  
+  /* Statuts d'appointments */
+  --color-status-healthy: rgb(var(--color-medical-green-600));
+  --color-status-pending: rgb(var(--color-medical-yellow-600));
+  --color-status-completed: rgb(var(--color-medical-blue-600));
+  --color-status-cancelled: rgb(var(--color-medical-gray-500));
+  --color-status-no-show: rgb(var(--color-medical-red-600));
+  
+  /* Couleurs de confiance */
+  --color-trust-primary: rgb(var(--color-medical-blue-600));
+  --color-trust-secondary: rgb(var(--color-medical-green-600));
+  --color-trust-accent: rgb(var(--color-medical-yellow-600));
+  
+  /* ==================== ESPACEMENT MÉDICAL ==================== */
+  
+  --spacing-medical-field-gap: 12px;      /* Entre champs de formulaire */
+  --spacing-medical-group-gap: 24px;      /* Entre groupes de champs */
+  --spacing-medical-section-gap: 40px;    /* Entre sections importantes */
+  --spacing-medical-card-padding: 16px;   /* Padding interne des cards */
+  --spacing-medical-card-gap: 16px;       /* Espacement dans cards */
+  --spacing-medical-widget-gap: 20px;     /* Widgets dashboard */
+  --spacing-medical-content-margin: 32px; /* Marges de contenu principal */
+  --spacing-emergency-padding: 20px;      /* Padding boutons urgence */
+  --spacing-emergency-margin: 16px;       /* Marges éléments urgence */
+  
+  /* ==================== CIBLES TACTILES (ACCESSIBILITÉ) ==================== */
+  
+  --touch-target-min: 44px;               /* WCAG AA minimum */
+  --touch-target-ios: 44px;               /* iOS guidelines */
+  --touch-target-android: 48px;           /* Android guidelines */
+  --touch-target-medical: 56px;           /* Recommandé médical */
+  --touch-target-medical-large: 64px;     /* Actions importantes */
+  --touch-target-medical-emergency: 72px; /* Boutons d'urgence */
+  
+  /* ==================== HAUTEURS SPÉCIALISÉES ==================== */
+  
+  --height-medical-input: 48px;           /* Champs de saisie */
+  --height-medical-select: 48px;          /* Sélecteurs */
+  --height-medical-button: 44px;          /* Boutons standards */
+  --height-medical-button-large: 56px;    /* Boutons importants */
+  --height-medical-table-row: 56px;       /* Lignes de tableau */
+  --height-medical-table-header: 48px;    /* En-têtes de tableau */
+  
+  /* ==================== LARGEURS SPÉCIALISÉES ==================== */
+  
+  --width-medical-card-min: 280px;        /* Largeur minimale des cards */
+  --width-medical-card-max: 400px;        /* Largeur maximale des cards */
+  
+  /* ==================== BORDURES MÉDICALES ==================== */
+  
+  --border-radius-medical-small: 6px;     /* Inputs, petits boutons */
+  --border-radius-medical-medium: 12px;   /* Cards, boutons normaux */
+  --border-radius-medical-large: 16px;    /* Grandes cards, sections */
+  --border-radius-medical-round: 50%;     /* Avatars, badges */
+  
+  /* ==================== OMBRES MÉDICALES ==================== */
+  
+  --shadow-medical-subtle: 0 1px 3px 0 rgba(16, 24, 40, 0.1), 0 1px 2px 0 rgba(16, 24, 40, 0.06);
+  --shadow-medical-card: 0 4px 8px -2px rgba(16, 24, 40, 0.1), 0 2px 4px -2px rgba(16, 24, 40, 0.06);
+  --shadow-medical-elevated: 0 12px 16px -4px rgba(16, 24, 40, 0.08), 0 4px 6px -2px rgba(16, 24, 40, 0.03);
+  --shadow-medical-modal: 0 20px 24px -4px rgba(16, 24, 40, 0.08), 0 8px 8px -4px rgba(16, 24, 40, 0.03);
+  --shadow-medical-success: 0 4px 12px rgba(16, 163, 74, 0.15);
+  --shadow-medical-warning: 0 4px 12px rgba(245, 158, 11, 0.15);
+  --shadow-medical-error: 0 4px 12px rgba(223, 63, 64, 0.15);
+  --shadow-medical-info: 0 4px 12px rgba(37, 99, 235, 0.15);
+  
+  /* ==================== TYPOGRAPHIE MÉDICALE ==================== */
+  
+  --font-size-medical-value: 16px;        /* Taille de base */
+  --font-size-medical-rdv: 18px;          /* Page RDV spéciale pour lisibilité */
+  --font-weight-medical-normal: 400;
+  --font-weight-medical-medium: 500;
+  --font-weight-medical-semibold: 600;
+  --font-weight-medical-bold: 700;
+  
+  /* Échelle typographique harmonique */
+  --nova-font-base: 16px;
+  --nova-font-rdv: 18px;
+  --nova-line-height: 1.5;
+  --nova-h1: 48px;
+  --nova-h2: 36px;
+  --nova-h3: 30px;
+  --nova-h4: 24px;
+  --nova-body: 16px;
+  --nova-body-rdv: 18px;
+  --nova-small: 14px;
+  
+  /* ==================== ANIMATIONS MÉDICALES ==================== */
+  
+  --motion-duration-short: 150ms;         /* Micro-interactions */
+  --motion-duration-medium: 250ms;        /* Transitions standard */
+  --motion-duration-long: 350ms;          /* Animations complexes */
+  --motion-emergency-pulse: 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --motion-ease-medical: cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* ==================== FOCUS & ACCESSIBILITÉ ==================== */
+  
+  --focus-ring-width: 3px;
+  --focus-ring-offset: 2px;
+  --focus-ring-color: rgb(var(--color-trust-primary));
+  --focus-emergency-width: 4px;
+  --focus-emergency-color: rgb(var(--color-emergency-critical));
+  
+  /* ==================== VARIABLES DE COMPATIBILITÉ ==================== */
+  
+  /* Compatibilité avec l'ancien système */
+  --nova-primary: rgb(var(--color-medical-blue-600));
+  --nova-primary-hover: rgb(var(--color-medical-blue-700));
+  --nova-primary-active: rgb(var(--color-medical-blue-800));
+  --nova-primary-light: rgb(var(--color-medical-blue-100));
+  
+  --nova-success: rgb(var(--color-medical-green-600));
+  --nova-success-light: rgb(var(--color-medical-green-100));
+  
+  --nova-warning: rgb(var(--color-medical-yellow-500));
+  --nova-warning-light: rgb(var(--color-medical-yellow-100));
+  
+  --nova-critical: rgb(var(--color-medical-red-600));
+  --nova-critical-light: rgb(var(--color-medical-red-100));
+  
+  --nova-text-primary: rgb(var(--color-medical-gray-900));
+  --nova-text-secondary: rgb(var(--color-medical-gray-700));
+  --nova-text-tertiary: rgb(var(--color-medical-gray-600));
+  --nova-text-muted: rgb(var(--color-medical-gray-400));
+  --nova-border: rgb(var(--color-medical-gray-200));
+  --nova-bg-secondary: rgb(var(--color-medical-gray-100));
+  --nova-bg-white: #FFFFFF;
+  
+  /* Ombres compatibles */
+  --nova-shadow-xs: var(--shadow-medical-subtle);
+  --nova-shadow-sm: var(--shadow-medical-card);
+  --nova-shadow-md: var(--shadow-medical-elevated);
+  --nova-shadow-lg: var(--shadow-medical-modal);
+  --nova-shadow-xl: var(--shadow-medical-modal);
+  
+  /* Radius compatibles */
+  --nova-radius-small: var(--border-radius-medical-small);
+  --nova-radius-large: var(--border-radius-medical-medium);
+  
+  /* Hauteurs compatibles */
+  --nova-cta-height: var(--height-medical-button-large);
+  --nova-cta-height-large: var(--touch-target-medical-emergency);
+  --nova-input-height: var(--height-medical-input);
+  --nova-touch-target: var(--touch-target-medical);
+  --nova-touch-target-large: var(--touch-target-medical-large);
+  --nova-touch-target-emergency: var(--touch-target-medical-emergency);
+}
+
+/* ==================== STYLES DE BASE ==================== */
+
+body {
+  font-size: var(--nova-font-base);
+  line-height: var(--nova-line-height);
+  color: var(--nova-text-primary);
+  background-color: var(--nova-bg-white);
+}
+
+/* ==================== MEDIA QUERIES ACCESSIBILITÉ ==================== */
+
+/* Mode sombre médical */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Inversion des gris pour le mode sombre */
+    --color-medical-gray-50: 11 18 32;
+    --color-medical-gray-100: 29 41 57;
+    --color-medical-gray-200: 52 64 84;
+    --color-medical-gray-300: 71 80 103;
+    --color-medical-gray-400: 102 112 133;
+    --color-medical-gray-500: 152 162 179;
+    --color-medical-gray-600: 208 213 221;
+    --color-medical-gray-700: 234 236 240;
+    --color-medical-gray-800: 242 244 247;
+    --color-medical-gray-900: 249 250 251;
+    
+    /* Ajustement des ombres pour le mode sombre */
+    --shadow-medical-subtle: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+    --shadow-medical-card: 0 4px 8px -2px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+    --shadow-medical-elevated: 0 12px 16px -4px rgba(0, 0, 0, 0.25), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+    --shadow-medical-modal: 0 20px 24px -4px rgba(0, 0, 0, 0.25), 0 8px 8px -4px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Réduction de mouvement pour accessibilité */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-duration-short: 0ms;
+    --motion-duration-medium: 0ms;
+    --motion-duration-long: 0ms;
+    --motion-emergency-pulse: none;
+  }
+  
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Contraste élevé pour accessibilité */
+@media (prefers-contrast: high) {
+  :root {
+    /* Renforcement des contrastes pour WCAG AAA */
+    --color-medical-blue-600: 0 0 150;      /* Bleu plus foncé */
+    --color-medical-green-600: 0 120 0;     /* Vert plus foncé */
+    --color-medical-red-600: 180 0 0;       /* Rouge plus foncé */
+    --color-medical-yellow-600: 150 100 0;  /* Jaune plus foncé */
+    
+    /* Bordures plus marquées */
+    --shadow-medical-card: 0 0 0 2px rgba(0, 0, 0, 0.8);
+    --focus-ring-width: 4px;
+  }
+}
+
+/* ==================== CLASSES UTILITAIRES MÉDICALES ==================== */
+
+/* Classes de base pour composants médicaux */
+.medical-card {
+  background: rgb(var(--color-medical-gray-50));
+  border: 1px solid rgb(var(--color-medical-gray-200));
+  border-radius: var(--border-radius-medical-medium);
+  padding: var(--spacing-medical-card-padding);
+  box-shadow: var(--shadow-medical-card);
+  transition: box-shadow var(--motion-duration-medium) var(--motion-ease-medical);
+}
+
+.medical-card:hover {
+  box-shadow: var(--shadow-medical-elevated);
+}
+
+.medical-button {
+  height: var(--height-medical-button);
+  min-width: var(--touch-target-medical);
+  padding: 0 var(--spacing-medical-card-padding);
+  border-radius: var(--border-radius-medical-small);
+  font-size: var(--font-size-medical-value);
+  font-weight: var(--font-weight-medical-medium);
+  transition: all var(--motion-duration-medium) var(--motion-ease-medical);
+  border: 1px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.medical-input {
+  height: var(--height-medical-input);
+  padding: 0 var(--spacing-medical-field-gap);
+  border: 1px solid rgb(var(--color-medical-gray-300));
+  border-radius: var(--border-radius-medical-small);
+  font-size: var(--font-size-medical-value);
+  transition: border-color var(--motion-duration-medium) var(--motion-ease-medical);
+  background-color: rgb(var(--color-medical-gray-50));
+  color: rgb(var(--color-medical-gray-900));
+}
+
+.medical-input:focus {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+  border-color: rgb(var(--color-medical-blue-600));
+}
+
+/* États des boutons médicaux */
+.medical-button-primary {
+  background-color: rgb(var(--color-medical-blue-600));
+  color: white;
+  border-color: rgb(var(--color-medical-blue-600));
+}
+
+.medical-button-primary:hover {
+  background-color: rgb(var(--color-medical-blue-700));
+  border-color: rgb(var(--color-medical-blue-700));
+}
+
+.medical-button-primary:focus {
+  outline: var(--focus-ring-width) solid rgb(var(--color-medical-blue-300));
+  outline-offset: var(--focus-ring-offset);
+}
+
+.medical-button-secondary {
+  background-color: transparent;
+  color: rgb(var(--color-medical-blue-600));
+  border-color: rgb(var(--color-medical-blue-600));
+}
+
+.medical-button-secondary:hover {
+  background-color: rgb(var(--color-medical-blue-50));
+}
+
+.medical-button-urgent {
+  background-color: rgb(var(--color-medical-red-600));
+  color: white;
+  border-color: rgb(var(--color-medical-red-600));
+  min-height: var(--touch-target-medical-emergency);
+  font-weight: var(--font-weight-medical-bold);
+}
+
+.medical-button-urgent:hover {
+  background-color: rgb(var(--color-medical-red-700));
+}
+
+.medical-button-urgent:focus {
+  outline: var(--focus-emergency-width) solid rgb(var(--color-medical-red-300));
+  outline-offset: var(--focus-ring-offset);
+  box-shadow: 0 0 0 var(--focus-emergency-width) rgba(var(--color-medical-red-600), 0.2);
+}
+
+.medical-button-ghost {
+  background-color: transparent;
+  color: rgb(var(--color-medical-gray-600));
+  border-color: transparent;
+}
+
+.medical-button-ghost:hover {
+  background-color: rgb(var(--color-medical-gray-100));
+  color: rgb(var(--color-medical-gray-700));
+}
+
+/* Classes pour les statuts */
+.status-healthy {
+  color: rgb(var(--color-medical-green-700));
+  background-color: rgb(var(--color-medical-green-50));
+  border-color: rgb(var(--color-medical-green-200));
+}
+
+.status-pending {
+  color: rgb(var(--color-medical-yellow-700));
+  background-color: rgb(var(--color-medical-yellow-50));
+  border-color: rgb(var(--color-medical-yellow-200));
+}
+
+.status-completed {
+  color: rgb(var(--color-medical-blue-700));
+  background-color: rgb(var(--color-medical-blue-50));
+  border-color: rgb(var(--color-medical-blue-200));
+}
+
+.status-cancelled {
+  color: rgb(var(--color-medical-gray-700));
+  background-color: rgb(var(--color-medical-gray-50));
+  border-color: rgb(var(--color-medical-gray-200));
+}
+
+.status-no-show {
+  color: rgb(var(--color-medical-red-700));
+  background-color: rgb(var(--color-medical-red-50));
+  border-color: rgb(var(--color-medical-red-200));
+}
+
+/* Classes pour l'accessibilité */
+.medical-focus-ring {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: var(--border-radius-medical-small);
+}
+
+.emergency-focus-ring {
+  outline: var(--focus-emergency-width) solid var(--focus-emergency-color);
+  outline-offset: var(--focus-ring-offset);
+  box-shadow: 0 0 0 var(--focus-emergency-width) rgba(var(--color-emergency-critical), 0.2);
+}
+
+.touch-target {
+  min-height: var(--touch-target-min);
+  min-width: var(--touch-target-min);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.medical-touch-target {
+  min-height: var(--touch-target-medical);
+  min-width: var(--touch-target-medical);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-medical-field-gap);
+}
+
+.emergency-touch-target {
+  min-height: var(--touch-target-medical-emergency);
+  min-width: var(--touch-target-medical-emergency);
+  padding: var(--spacing-emergency-padding);
+}
+
+/* Classes d'animation */
+.medical-pulse {
+  animation: var(--motion-emergency-pulse);
+}
+
+@keyframes medical-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.medical-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgb(var(--color-medical-gray-100)) 0%,
+    rgb(var(--color-medical-gray-200)) 50%,
+    rgb(var(--color-medical-gray-100)) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite linear;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Classes pour skip links */
+.skip-to-content {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: rgb(var(--color-medical-gray-50));
+  color: rgb(var(--color-medical-gray-900));
+  padding: 8px;
+  text-decoration: none;
+  border-radius: var(--border-radius-medical-small);
+  border: 2px solid rgb(var(--color-medical-gray-300));
+  z-index: var(--z-index-medical-emergency);
+  font-weight: var(--font-weight-medical-medium);
+}
+
+.skip-to-content:focus {
+  top: 6px;
+}
+
+/* ==================== COMPATIBILITÉ AVEC L'ANCIEN SYSTÈME ==================== */
+
+.nova-primary {
+  background-color: var(--nova-primary);
+  color: var(--nova-bg-white);
+}
+
+.nova-primary:hover {
+  background-color: var(--nova-primary-hover);
+}
+
+.nova-primary:active {
+  background-color: var(--nova-primary-active);
+}

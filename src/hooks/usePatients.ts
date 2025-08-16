@@ -160,7 +160,7 @@ export function usePatients(initialFilters?: PatientFilters): UsePatientResult {
     if (initialFilters) {
       fetchPatients(initialFilters);
     }
-  }, []);
+  }, [fetchPatients, initialFilters]);
 
   return {
     patients,

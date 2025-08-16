@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { AnalyticsService } from '@/lib/services/analytics-service';
 import { TimeGranularity } from '@/lib/models/analytics';
+import { AnalyticsService } from '@/lib/services/analytics-service';
 
 export async function GET(request: NextRequest) {
   try {
@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
     const cabinetId = searchParams.get('cabinetId');
     const startDate = searchParams.get('startDate');
     const endDate = searchParams.get('endDate');
-    const granularity = searchParams.get('granularity') as TimeGranularity || TimeGranularity.DAY;
+    const _granularity = searchParams.get('granularity') as TimeGranularity || TimeGranularity.DAY;
 
     if (!cabinetId || !startDate || !endDate) {
       return NextResponse.json(
@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
       success: true,
       data: analytics
     });
-  } catch (_error) {
+  } catch (error) {
     console.error('Error in analytics/cabinet API:', error);
     return NextResponse.json(
       { 

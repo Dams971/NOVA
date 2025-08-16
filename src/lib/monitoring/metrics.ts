@@ -69,7 +69,7 @@ class MetricsCollector {
       // Process uptime
       this.recordMetric('system.uptime', process.uptime());
 
-    } catch (error) {
+    } catch (_error) {
       this.logger.error('Failed to collect system metrics', error);
     }
   }

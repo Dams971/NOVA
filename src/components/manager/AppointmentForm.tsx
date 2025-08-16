@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { format } from 'date-fns';
 import { X, Calendar, Clock, User, Stethoscope, FileText, DollarSign, Search, Plus, Repeat } from 'lucide-react';
 import { 
@@ -108,9 +108,9 @@ export default function AppointmentForm({
   useEffect(() => {
     loadPatients();
     initializeForm();
-  }, [appointment, initialDate, initialTime]);
+  }, [appointment, initialDate, initialTime, loadPatients, initializeForm]);
 
-  const loadPatients = async () => {
+  const loadPatients = useCallback(async () => {
     // Mock patients - in real implementation, this would fetch from API
     const mockPatients: Patient[] = [
       {
@@ -155,9 +155,9 @@ export default function AppointmentForm({
       }
     ];
     setPatients(mockPatients);
-  };
+  }, [cabinetId]);
 
-  const initializeForm = () => {
+  const initializeForm = useCallback(() => {
     if (appointment) {
       // Edit mode
       setFormData({
@@ -187,7 +187,7 @@ export default function AppointmentForm({
         scheduledAt
       }));
     }
-  };
+  }, [appointment, initialDate, initialTime]);
 
   const handleInputChange = (field: keyof FormData, value: string | number) => {
     setFormData(prev => ({

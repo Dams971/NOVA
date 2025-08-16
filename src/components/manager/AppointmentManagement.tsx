@@ -123,7 +123,7 @@ export default function AppointmentManagement({ cabinetId }: AppointmentManageme
           appointmentId: eventId
         });
       }
-    } catch (error) {
+    } catch (_error) {
       addNotification({
         type: 'error',
         category: 'system',
@@ -197,7 +197,7 @@ export default function AppointmentManagement({ cabinetId }: AppointmentManageme
           message: result.error || 'Impossible de mettre à jour le statut.'
         });
       }
-    } catch (error) {
+    } catch (_error) {
       addNotification({
         type: 'error',
         title: 'Erreur',
@@ -226,7 +226,7 @@ export default function AppointmentManagement({ cabinetId }: AppointmentManageme
           message: result.error || 'Impossible de supprimer le rendez-vous.'
         });
       }
-    } catch (error) {
+    } catch (_error) {
       addNotification({
         type: 'error',
         title: 'Erreur',

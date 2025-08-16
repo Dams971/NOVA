@@ -1,20 +1,32 @@
 @import "tailwindcss";
+@import "../styles/nova-theme.css";
+@import "../styles/medical-tokens.css";
+@import "../styles/tokens.css";
 @import "../styles/accessibility.css";
 
 :root {
-  /* Couleurs principales Nova */
-  --nova-blue: #1565C0;
-  --nova-blue-light: #1E88E5;
-  --nova-blue-dark: #0D47A1;
+  /* NOVA Medical Color System - Softer Blue */
+  --nova-blue: primary-600;
+  --nova-blue-hover: primary-700;
+  --nova-blue-active: #2968B2;
+  --nova-blue-light: primary-100;
   --white: #FFFFFF;
-  --beige-warm: #F5F3F0;
-  --beige-dark: #E8E6E1;
-
-  /* Couleurs secondaires */
-  --success: #4CAF50;
-  --warning: #FF9800;
-  --error: #F44336;
-  --neutral: #9E9E9E;
+  
+  /* Healthcare Colors */
+  --success: success-600;
+  --success-light: success-100;
+  --warning: warning-600;
+  --warning-light: warning-100;
+  --error: error-600;
+  --error-light: error-100;
+  
+  /* Neutrals */
+  --text-primary: neutral-900;
+  --text-secondary: neutral-800;
+  --text-tertiary: neutral-600;
+  --text-muted: neutral-400;
+  --border-default: neutral-200;
+  --bg-secondary: neutral-100;
 
   /* Typography */
   --font-heading: 'Montserrat', sans-serif;
@@ -60,13 +72,45 @@ body {
   .font-body {
     font-family: var(--font-body);
   }
+
+  /* NOVA Medical System Utilities */
+  .medical-focus {
+    outline: 3px solid rgb(var(--color-trust-primary));
+    outline-offset: 2px;
+    border-radius: var(--border-radius-medical-small);
+  }
+
+  .emergency-focus {
+    outline: 4px solid rgb(var(--color-emergency-critical));
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgb(var(--color-emergency-critical) / 0.2);
+  }
+
+  .skip-to-content {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: rgb(var(--color-background));
+    color: rgb(var(--color-foreground));
+    padding: 8px;
+    text-decoration: none;
+    border-radius: var(--border-radius-medical-small);
+    border: 2px solid rgb(var(--color-border));
+    z-index: var(--z-index-notification);
+  }
+
+  .skip-to-content:focus {
+    top: 6px;
+  }
   
   .btn-primary {
-    background-color: var(--nova-blue);
+    background-color: primary-600;
     color: white;
-    padding: 1rem 2rem;
-    border-radius: 0.5rem;
+    min-height: 64px;
+    padding: 1.25rem 2.5rem;
+    border-radius: 20px;
     font-weight: 600;
+    font-size: 18px;
     transition: all 0.2s ease-in-out;
     border: none;
     cursor: pointer;
@@ -74,12 +118,17 @@ body {
     align-items: center;
     justify-content: center;
     text-decoration: none;
+    box-shadow: 0 4px 6px -1px rgba(11, 18, 32, 0.07);
   }
   
   .btn-primary:hover {
-    filter: brightness(1.1);
+    background-color: primary-700;
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(21, 101, 192, 0.15);
+    box-shadow: 0 10px 15px -3px rgba(11, 18, 32, 0.08);
+  }
+  
+  .btn-primary:active {
+    background-color: #2968B2;
   }
   
   .btn-secondary {

@@ -1,6 +1,4 @@
 'use client';
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { ChevronLeft, ChevronRight, Calendar } from 'lucide-react';
 import { 
   format, 
   startOfMonth, 
@@ -17,7 +15,9 @@ import {
   isToday,
   getDay
 } from 'date-fns';
-import React, { fr } from 'date-fns/locale';
+import { fr } from 'date-fns/locale';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { ChevronLeft, ChevronRight, Calendar } from 'lucide-react';
 
 interface DatePickerProps {
   label: string;

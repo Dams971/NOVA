@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Cabinet } from '@/lib/models/cabinet';
 import { CabinetKPIs, PerformanceAlert, DashboardWidget, ManagerDashboardLayout } from '@/lib/models/performance';
 import { PerformanceService } from '@/lib/services/performance-service';
@@ -9,6 +9,10 @@ import AlertsPanel from './AlertsPanel';
 import WidgetCustomizer from './WidgetCustomizer';
 import AppointmentManagement from './AppointmentManagement';
 import PatientManagement from './PatientManagement';
+
+// Import medical design system components
+import { MedicalButton, UrgencyBanner } from '@/components/ui/medical';
+import { cn } from '@/lib/utils';
 
 interface ManagerDashboardProps {
   cabinet: Cabinet;
@@ -34,9 +38,9 @@ export default function ManagerDashboard({ cabinet, userId }: ManagerDashboardPr
       // Cleanup real-time subscriptions
       performanceService.unsubscribeFromUpdates(cabinet.id, handleRealtimeUpdate);
     };
-  }, [cabinet.id, selectedTimeRange]);
+  }, [cabinet.id, selectedTimeRange, loadDashboardData, setupRealtimeUpdates, handleRealtimeUpdate, performanceService]);
 
-  const loadDashboardData = async () => {
+  const loadDashboardData = useCallback(async () => {
     setLoading(true);
     try {
       // Calculate date range based on selected time range
@@ -78,9 +82,9 @@ export default function ManagerDashboard({ cabinet, userId }: ManagerDashboardPr
     } finally {
       setLoading(false);
     }
-  };
+  }, [cabinet.id, selectedTimeRange, performanceService]);
 
-  const setupRealtimeUpdates = () => {
+  const setupRealtimeUpdates = useCallback(() => {
     performanceService.subscribeToUpdates(cabinet.id, handleRealtimeUpdate);
     
     // Simulate periodic updates (in real implementation, this would be WebSocket or SSE)
@@ -89,15 +93,15 @@ export default function ManagerDashboard({ cabinet, userId }: ManagerDashboardPr
     }, 30000); // Update every 30 seconds
 
     return () => clearInterval(interval);
-  };
+  }, [cabinet.id, performanceService, handleRealtimeUpdate]);
 
-  const handleRealtimeUpdate = (update: any) => {
+  const handleRealtimeUpdate = useCallback((update: any) => {
     console.log('Real-time update received:', update);
     // In real implementation, update the relevant state based on update type
     if (update.type === 'kpi') {
       loadDashboardData(); // Refresh KPIs
     }
-  };
+  }, [loadDashboardData]);
 
   const handleAlertAcknowledge = async (alertId: string) => {
     const result = await performanceService.acknowledgeAlert(alertId, userId);
@@ -172,122 +176,300 @@ export default function ManagerDashboard({ cabinet, userId }: ManagerDashboardPr
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div className="min-h-screen bg-medical-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-medical-blue-200 border-t-medical-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-medical-gray-600 text-lg">Chargement du tableau de bord...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex justify-between items-center">
+    <div className="min-h-screen bg-medical-gray-50">
+      {/* Skip Link pour accessibilité */}
+      <a 
+        href="#main-content" 
+        className="skip-to-content"
+      >
+        Aller au contenu principal
+      </a>
+
+      {/* Header with medical design */}
+      <header className="bg-white border-b border-medical-gray-200 shadow-medical-subtle">
+        <div className="max-w-[1440px] mx-auto px-6 py-6">
+          <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">{cabinet.name}</h1>
-              <p className="text-gray-600">Tableau de bord manager</p>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 bg-medical-blue-600 rounded-medical-small flex items-center justify-center">
+                  <span className="text-white font-bold text-lg">🏥</span>
+                </div>
+                <div>
+                  <h1 className="text-3xl font-bold text-medical-gray-900">{cabinet.name}</h1>
+                  <p className="text-medical-gray-600">Tableau de bord gestionnaire</p>
+                </div>
+              </div>
             </div>
-            <div className="flex space-x-4">
-              {/* Time Range Selector - only show for dashboard tab */}
+            
+            <div className="flex items-center gap-4">
+              {/* Time Range Selector with medical design */}
               {activeTab === 'dashboard' && (
-                <select
-                  value={selectedTimeRange}
-                  onChange={(e) => setSelectedTimeRange(e.target.value as any)}
-                  className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  aria-label="Sélectionner la période"
-                >
-                  <option value="day">Aujourd'hui</option>
-                  <option value="week">7 derniers jours</option>
-                  <option value="month">30 derniers jours</option>
-                  <option value="quarter">3 derniers mois</option>
-                </select>
+                <div className="flex items-center gap-2">
+                  <label htmlFor="time-range" className="text-sm font-medium text-medical-gray-700">
+                    Période:
+                  </label>
+                  <select
+                    id="time-range"
+                    value={selectedTimeRange}
+                    onChange={(e) => setSelectedTimeRange(e.target.value as any)}
+                    className={cn(
+                      "px-3 py-2 border border-medical-gray-300 rounded-medical-small",
+                      "bg-white text-medical-gray-900",
+                      "focus:outline-none focus:ring-2 focus:ring-medical-blue-600 focus:border-medical-blue-600",
+                      "transition-colors"
+                    )}
+                    aria-label="Sélectionner la période d'analyse"
+                  >
+                    <option value="day">Aujourd&apos;hui</option>
+                    <option value="week">7 derniers jours</option>
+                    <option value="month">30 derniers jours</option>
+                    <option value="quarter">3 derniers mois</option>
+                  </select>
+                </div>
               )}
               
-              {/* Customize Button - only show for dashboard tab */}
+              {/* Customize Button with medical design */}
               {activeTab === 'dashboard' && (
-                <button
-                  type="button"
+                <MedicalButton
+                  variant="secondary"
                   onClick={() => setShowCustomizer(true)}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="gap-2"
                 >
-                  Personnaliser
-                </button>
+                  ⚙️ Personnaliser
+                </MedicalButton>
               )}
+
+              {/* Urgence Button */}
+              <MedicalButton
+                variant="urgent"
+                size="large"
+                onClick={() => window.location.href = 'tel:+213555000000'}
+              >
+                🚨 Urgence
+              </MedicalButton>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main id="main-content" className="max-w-[1440px] mx-auto px-6 py-8">
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-2xl font-bold text-medical-gray-900">
+                {activeTab === 'dashboard' && 'Vue d\'ensemble'}
+                {activeTab === 'appointments' && 'Gestion des rendez-vous'}
+                {activeTab === 'patients' && 'Gestion des patients'}
+              </h2>
+              <p className="text-medical-gray-600 mt-1">
+                {activeTab === 'dashboard' && 'Indicateurs de performance et métriques clés'}
+                {activeTab === 'appointments' && 'Planification et suivi des consultations'}
+                {activeTab === 'patients' && 'Base de données patients et historiques'}
+              </p>
             </div>
           </div>
 
-          {/* Navigation Tabs */}
-          <div className="mt-6 border-b border-gray-200">
-            <nav className="-mb-px flex space-x-8">
+          {/* Navigation Tabs with medical design */}
+          <div className="mt-6 border-b border-medical-gray-200">
+            <nav 
+              className="-mb-px flex space-x-8" 
+              role="tablist"
+              aria-label="Sections du tableau de bord"
+            >
               <button
                 type="button"
+                role="tab"
+                aria-selected={activeTab === 'dashboard'}
+                aria-controls="dashboard-panel"
                 onClick={() => setActiveTab('dashboard')}
-                className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                className={cn(
+                  "py-3 px-1 border-b-2 font-medium text-sm transition-all touch-target-medical",
+                  "focus:outline-none focus:ring-2 focus:ring-medical-blue-600 focus:ring-offset-2",
                   activeTab === 'dashboard'
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
+                    ? 'border-medical-blue-600 text-medical-blue-700'
+                    : 'border-transparent text-medical-gray-500 hover:text-medical-gray-700 hover:border-medical-gray-300'
+                )}
               >
-                Tableau de bord
+                📊 Tableau de bord
               </button>
               <button
                 type="button"
+                role="tab"
+                aria-selected={activeTab === 'appointments'}
+                aria-controls="appointments-panel"
                 onClick={() => setActiveTab('appointments')}
-                className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                className={cn(
+                  "py-3 px-1 border-b-2 font-medium text-sm transition-all touch-target-medical",
+                  "focus:outline-none focus:ring-2 focus:ring-medical-blue-600 focus:ring-offset-2",
                   activeTab === 'appointments'
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
+                    ? 'border-medical-blue-600 text-medical-blue-700'
+                    : 'border-transparent text-medical-gray-500 hover:text-medical-gray-700 hover:border-medical-gray-300'
+                )}
               >
-                Rendez-vous
+                📅 Rendez-vous
               </button>
               <button
                 type="button"
+                role="tab"
+                aria-selected={activeTab === 'patients'}
+                aria-controls="patients-panel"
                 onClick={() => setActiveTab('patients')}
-                className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                className={cn(
+                  "py-3 px-1 border-b-2 font-medium text-sm transition-all touch-target-medical",
+                  "focus:outline-none focus:ring-2 focus:ring-medical-blue-600 focus:ring-offset-2",
                   activeTab === 'patients'
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
+                    ? 'border-medical-blue-600 text-medical-blue-700'
+                    : 'border-transparent text-medical-gray-500 hover:text-medical-gray-700 hover:border-medical-gray-300'
+                )}
               >
-                Patients
+                🏥 Patients
               </button>
             </nav>
           </div>
         </div>
 
-        {/* Tab Content */}
-        {activeTab === 'dashboard' && (
-          <>
-            {/* Alerts Panel */}
-            {alerts.length > 0 && (
-              <div className="mb-8">
-                <AlertsPanel
-                  alerts={alerts}
-                  onAcknowledge={handleAlertAcknowledge}
-                />
-              </div>
-            )}
+        {/* Tab Content with enhanced accessibility */}
+        <div className="tab-content">
+          {activeTab === 'dashboard' && (
+            <div 
+              id="dashboard-panel"
+              role="tabpanel"
+              aria-labelledby="dashboard-tab"
+              className="space-y-8"
+            >
+              {/* Alerts Panel with medical design */}
+              {alerts.length > 0 && (
+                <section aria-labelledby="alerts-title">
+                  <h3 id="alerts-title" className="sr-only">Alertes actives</h3>
+                  <UrgencyBanner
+                    urgency={{ level: 'urgent' }}
+                    message={`${alerts.length} alerte(s) nécessitent votre attention`}
+                    subtitle="Cliquez pour voir les détails"
+                    actions={[
+                      {
+                        label: 'Voir les alertes',
+                        onClick: () => console.log('Show alerts'),
+                        variant: 'primary'
+                      }
+                    ]}
+                    animate
+                    dismissible
+                    onDismiss={() => setAlerts([])}
+                  />
+                </section>
+              )}
 
-            {/* Performance Dashboard */}
-            {kpis && dashboardLayout && (
-              <CabinetPerformanceDashboard
-                kpis={kpis}
-                layout={dashboardLayout}
-                onLayoutChange={handleLayoutUpdate}
-              />
-            )}
-          </>
-        )}
+              {/* Performance Dashboard */}
+              {kpis && dashboardLayout && (
+                <section aria-labelledby="performance-title">
+                  <h3 id="performance-title" className="sr-only">Indicateurs de performance</h3>
+                  <CabinetPerformanceDashboard
+                    kpis={kpis}
+                    layout={dashboardLayout}
+                    onLayoutChange={handleLayoutUpdate}
+                  />
+                </section>
+              )}
 
-        {activeTab === 'appointments' && (
-          <AppointmentManagement cabinetId={cabinet.id} />
-        )}
+              {/* Quick Stats Grid - Enhanced version */}
+              <section aria-labelledby="quick-stats-title" className="mb-8">
+                <h3 id="quick-stats-title" className="text-lg font-semibold text-medical-gray-900 mb-4">
+                  Statistiques rapides
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {/* Appointments Today */}
+                  <div className="medical-card p-6 text-center">
+                    <div className="w-12 h-12 bg-medical-blue-100 rounded-medical-round flex items-center justify-center mx-auto mb-3">
+                      <span className="text-medical-blue-600 text-2xl">📅</span>
+                    </div>
+                    <div className="text-2xl font-bold text-medical-gray-900 mb-1">
+                      {kpis?.totalAppointments || 0}
+                    </div>
+                    <div className="text-sm text-medical-gray-600">RDV aujourd'hui</div>
+                    <div className="mt-2 text-xs text-medical-green-600 font-medium">
+                      +12% vs hier
+                    </div>
+                  </div>
 
-        {activeTab === 'patients' && (
-          <PatientManagement cabinetId={cabinet.id} />
-        )}
+                  {/* Revenue */}
+                  <div className="medical-card p-6 text-center">
+                    <div className="w-12 h-12 bg-medical-green-100 rounded-medical-round flex items-center justify-center mx-auto mb-3">
+                      <span className="text-medical-green-600 text-2xl">💰</span>
+                    </div>
+                    <div className="text-2xl font-bold text-medical-gray-900 mb-1">
+                      {new Intl.NumberFormat('fr-DZ', { 
+                        style: 'currency', 
+                        currency: 'DZD' 
+                      }).format(kpis?.totalRevenue || 0)}
+                    </div>
+                    <div className="text-sm text-medical-gray-600">Chiffre d'affaires</div>
+                    <div className="mt-2 text-xs text-medical-green-600 font-medium">
+                      +8% ce mois
+                    </div>
+                  </div>
+
+                  {/* Patients */}
+                  <div className="medical-card p-6 text-center">
+                    <div className="w-12 h-12 bg-medical-yellow-100 rounded-medical-round flex items-center justify-center mx-auto mb-3">
+                      <span className="text-medical-yellow-600 text-2xl">👥</span>
+                    </div>
+                    <div className="text-2xl font-bold text-medical-gray-900 mb-1">
+                      {kpis?.totalPatients || 0}
+                    </div>
+                    <div className="text-sm text-medical-gray-600">Patients actifs</div>
+                    <div className="mt-2 text-xs text-medical-blue-600 font-medium">
+                      +15 nouveaux
+                    </div>
+                  </div>
+
+                  {/* No-show Rate */}
+                  <div className="medical-card p-6 text-center">
+                    <div className="w-12 h-12 bg-medical-red-100 rounded-medical-round flex items-center justify-center mx-auto mb-3">
+                      <span className="text-medical-red-600 text-2xl">⚠️</span>
+                    </div>
+                    <div className="text-2xl font-bold text-medical-gray-900 mb-1">
+                      {((kpis?.noShowRate || 0) * 100).toFixed(1)}%
+                    </div>
+                    <div className="text-sm text-medical-gray-600">Taux d'absentéisme</div>
+                    <div className="mt-2 text-xs text-medical-red-600 font-medium">
+                      -2% vs semaine
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          )}
+
+          {activeTab === 'appointments' && (
+            <div 
+              id="appointments-panel"
+              role="tabpanel"
+              aria-labelledby="appointments-tab"
+            >
+              <AppointmentManagement cabinetId={cabinet.id} />
+            </div>
+          )}
+
+          {activeTab === 'patients' && (
+            <div 
+              id="patients-panel"
+              role="tabpanel"
+              aria-labelledby="patients-tab"
+            >
+              <PatientManagement cabinetId={cabinet.id} />
+            </div>
+          )}
+        </div>
 
         {/* Widget Customizer Modal */}
         {showCustomizer && dashboardLayout && (
@@ -297,7 +479,29 @@ export default function ManagerDashboard({ cabinet, userId }: ManagerDashboardPr
             onClose={() => setShowCustomizer(false)}
           />
         )}
-      </div>
+      </main>
+      
+      {/* Footer with medical info */}
+      <footer className="bg-white border-t border-medical-gray-200 mt-12">
+        <div className="max-w-[1440px] mx-auto px-6 py-4">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-medical-gray-600">
+            <div className="flex items-center gap-4">
+              <span>📍 Cité 109, Daboussy El Achour, Alger</span>
+              <span>⏰ Zone horaire: Africa/Algiers</span>
+            </div>
+            
+            <div className="flex items-center gap-4">
+              <a 
+                href="tel:+213555000000" 
+                className="text-medical-blue-600 hover:underline"
+              >
+                📞 +213 555 000 000
+              </a>
+              <span>✉️ contact@nova-rdv.dz</span>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

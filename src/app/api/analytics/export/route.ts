@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { ExportOptions } from '@/lib/models/analytics';
+import { ExportOptions, CabinetAnalytics, TimeSeriesData, DrillDownData } from '@/lib/models/analytics';
 import { AnalyticsService } from '@/lib/services/analytics-service';
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { cabinetId, format, includeCharts, sections, dateRange } = body as ExportOptions & { cabinetId: string };
+    const { cabinetId, format, dateRange } = body as ExportOptions & { cabinetId: string };
 
     if (!cabinetId || !format || !dateRange) {
       return NextResponse.json(
@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
-  } catch (_error) {
+  } catch (error) {
     console.error('Error in analytics/export API:', error);
     return NextResponse.json(
       { 
@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-function generateCSVContent(analytics: any): string {
+function generateCSVContent(analytics: CabinetAnalytics): string {
   const lines: string[] = [];
   
   // Header
@@ -96,14 +96,14 @@ function generateCSVContent(analytics: any): string {
   // Time Series Data
   lines.push('Daily Appointments');
   lines.push('Date,Appointments');
-  analytics.timeSeries.appointments.forEach((item: any) => {
+  analytics.timeSeries.appointments.forEach((item: TimeSeriesData) => {
     lines.push(`${item.date},${item.value}`);
   });
   lines.push('');
   
   lines.push('Daily Revenue');
   lines.push('Date,Revenue');
-  analytics.timeSeries.revenue.forEach((item: any) => {
+  analytics.timeSeries.revenue.forEach((item: TimeSeriesData) => {
     lines.push(`${item.date},${item.value}`);
   });
   lines.push('');
@@ -111,14 +111,14 @@ function generateCSVContent(analytics: any): string {
   // Breakdown Data
   lines.push('Appointments by Type');
   lines.push('Type,Count,Percentage,Trend');
-  analytics.breakdown.appointmentsByType.forEach((item: any) => {
+  analytics.breakdown.appointmentsByType.forEach((item: DrillDownData) => {
     lines.push(`${item.category},${item.value},${item.percentage}%,${item.trendValue}%`);
   });
   lines.push('');
   
   lines.push('Revenue by Service');
   lines.push('Service,Revenue,Percentage,Trend');
-  analytics.breakdown.revenueByService.forEach((item: any) => {
+  analytics.breakdown.revenueByService.forEach((item: DrillDownData) => {
     lines.push(`${item.category},${item.value},${item.percentage}%,${item.trendValue}%`);
   });
   

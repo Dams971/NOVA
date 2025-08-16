@@ -140,7 +140,7 @@ export class CabinetProvisioningService {
           defaultAppointmentDuration: 20
         },
         branding: {
-          primaryColor: '#F59E0B'
+          primaryColor: 'warning-600'
         }
       }
     };

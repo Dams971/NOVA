@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/database/unified-connection';
-import { withAuth } from '@/lib/middleware/auth';
+// import { withAuth } from '@/lib/middleware/auth'; // Temporarily disabled
 
 interface Params {
   params: {

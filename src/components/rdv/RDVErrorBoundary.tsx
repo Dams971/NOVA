@@ -7,9 +7,9 @@
 
 'use client';
 
+import { AlertTriangle, RefreshCw, MessageCircle, Phone } from 'lucide-react';
 import React, { Component, ReactNode } from 'react';
 import { motion } from 'framer-motion';
-import { AlertTriangle, RefreshCw, MessageCircle, Phone } from 'lucide-react';
 import { logger } from '@/lib/logging/logger';
 
 interface Props {

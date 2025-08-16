@@ -4,8 +4,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { 
   LineChart, 
   Line, 
-  AreaChart, 
-  Area, 
+  
   BarChart, 
   Bar, 
   ScatterChart,
@@ -25,19 +24,17 @@ import {
   AlertTriangle,
   Award,
   Target,
-  Filter,
   RefreshCw,
-  Download,
   Eye,
   EyeOff,
   BarChart3,
   Activity,
   Zap
 } from 'lucide-react';
-import { format, subDays, subWeeks, subMonths } from 'date-fns';
+import { format, subDays } from 'date-fns';
 
 import { Cabinet } from '@/lib/models/cabinet';
-import { CabinetAnalytics, DateRange, TimeGranularity, MetricType } from '@/lib/models/analytics';
+import { CabinetAnalytics, DateRange, MetricType } from '@/lib/models/analytics';
 import { AnalyticsService } from '@/lib/services/analytics-service';
 
 interface ComparativeAnalyticsDashboardProps {
@@ -74,7 +71,7 @@ type DateRangePreset = '7d' | '30d' | '90d' | 'custom';
 type ComparisonView = 'overview' | 'trends' | 'benchmarks' | 'anomalies';
 
 const CHART_COLORS = [
-  '#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', 
+  '#3B82F6', '#10B981', 'warning-600', '#EF4444', '#8B5CF6', 
   '#06B6D4', '#84CC16', '#F97316', '#EC4899', '#6366F1'
 ];
 
@@ -249,6 +246,7 @@ export default function ComparativeAnalyticsDashboard({
 
   useEffect(() => {
     fetchComparativeData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cabinets, dateRange]);
 
   useEffect(() => {

@@ -192,6 +192,7 @@ export default function ChatWidget({
         websocketRef.current.close();
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [minimized]);
 
   // Connect to WebSocket server
@@ -243,10 +244,11 @@ export default function ChatWidget({
       console.error('Failed to connect WebSocket:', error);
       setConnectionStatus('error');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionId, userId, tenantId, userRole, userEmail, minimized]);
 
   // Handle WebSocket messages
-  const handleWebSocketMessage = useCallback((message: any) => {
+  const handleWebSocketMessage = useCallback((message: unknown) => {
     switch (message.type) {
       case 'status':
         if (message.data.status === 'authenticated') {
@@ -674,7 +676,7 @@ export default function ChatWidget({
               isLoading ? 'animate-pulse' : 'hover:shadow-lg'
             }`}
             style={{ 
-              backgroundColor: isLoading ? '#9CA3AF' : primaryColor,
+              backgroundColor: isLoading ? 'neutral-400' : primaryColor,
               transform: isLoading ? 'scale(0.95)' : 'scale(1)'
             }}
           >

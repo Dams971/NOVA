@@ -5,6 +5,7 @@ import { CabinetKPIs, ManagerDashboardLayout, DashboardWidget } from '@/lib/mode
 import KPIWidget from './widgets/KPIWidget';
 import ChartWidget from './widgets/ChartWidget';
 import AlertWidget from './widgets/AlertWidget';
+import { cn } from '@/lib/utils';
 
 interface CabinetPerformanceDashboardProps {
   kpis: CabinetKPIs;
@@ -21,13 +22,13 @@ export default function CabinetPerformanceDashboard({
   const renderWidget = (widget: DashboardWidget) => {
     if (!widget.isVisible) return null;
 
-    const baseClasses = "bg-white rounded-lg shadow-sm border border-gray-200 p-6";
+    const baseClasses = "medical-card p-6";
     const gridClasses = `col-span-${widget.position.width} row-span-${widget.position.height}`;
 
     switch (widget.type) {
       case 'kpi':
         return (
-          <div key={widget.id} className={`${baseClasses} ${gridClasses}`}>
+          <div key={widget.id} className={cn(baseClasses, gridClasses)}>
             <KPIWidget
               widget={widget}
               kpis={kpis}
@@ -37,7 +38,7 @@ export default function CabinetPerformanceDashboard({
       
       case 'chart':
         return (
-          <div key={widget.id} className={`${baseClasses} ${gridClasses}`}>
+          <div key={widget.id} className={cn(baseClasses, gridClasses)}>
             <ChartWidget
               widget={widget}
               kpis={kpis}
@@ -47,7 +48,7 @@ export default function CabinetPerformanceDashboard({
       
       case 'alert':
         return (
-          <div key={widget.id} className={`${baseClasses} ${gridClasses}`}>
+          <div key={widget.id} className={cn(baseClasses, gridClasses)}>
             <AlertWidget
               widget={widget}
             />
@@ -60,173 +61,275 @@ export default function CabinetPerformanceDashboard({
   };
 
   return (
-    <div className="space-y-6">
-      {/* Quick Stats Row */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-              </div>
+    <div className="space-y-8">
+      {/* Enhanced KPI Cards with Medical Design */}
+      <section aria-labelledby="kpi-overview">
+        <h3 id="kpi-overview" className="text-lg font-semibold text-medical-gray-900 mb-6">
+          Vue d'ensemble des performances
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Rendez-vous Card */}
+          <div className="medical-card p-6 text-center">
+            <div className="w-14 h-14 bg-medical-blue-100 rounded-medical-round flex items-center justify-center mx-auto mb-4">
+              <span className="text-medical-blue-600 text-2xl">📅</span>
             </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Rendez-vous</p>
-              <p className="text-2xl font-semibold text-gray-900">{kpis.totalAppointments}</p>
+            <div className="space-y-2">
+              <h4 className="text-sm font-medium text-medical-gray-600">Rendez-vous</h4>
+              <p className="text-3xl font-bold text-medical-gray-900">{kpis.totalAppointments}</p>
               {kpis.trends.appointments !== 0 && (
-                <p className={`text-sm ${kpis.trends.appointments > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                <div className={cn(
+                  "inline-flex items-center gap-1 px-2 py-1 rounded-medical-small text-xs font-medium",
+                  kpis.trends.appointments > 0 
+                    ? 'bg-medical-green-100 text-medical-green-700' 
+                    : 'bg-medical-red-100 text-medical-red-700'
+                )}>
+                  <span>{kpis.trends.appointments > 0 ? '↗️' : '↘️'}</span>
                   {kpis.trends.appointments > 0 ? '+' : ''}{kpis.trends.appointments.toFixed(1)}%
-                </p>
+                </div>
               )}
             </div>
           </div>
-        </div>
 
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-                </svg>
-              </div>
+          {/* Revenue Card */}
+          <div className="medical-card p-6 text-center">
+            <div className="w-14 h-14 bg-medical-green-100 rounded-medical-round flex items-center justify-center mx-auto mb-4">
+              <span className="text-medical-green-600 text-2xl">💰</span>
             </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Chiffre d'affaires</p>
-              <p className="text-2xl font-semibold text-gray-900">{kpis.totalRevenue.toLocaleString('fr-FR')}€</p>
+            <div className="space-y-2">
+              <h4 className="text-sm font-medium text-medical-gray-600">Chiffre d'affaires</h4>
+              <p className="text-3xl font-bold text-medical-gray-900">
+                {new Intl.NumberFormat('fr-DZ', { 
+                  style: 'currency', 
+                  currency: 'DZD',
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 0
+                }).format(kpis.totalRevenue)}
+              </p>
               {kpis.trends.revenue !== 0 && (
-                <p className={`text-sm ${kpis.trends.revenue > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                <div className={cn(
+                  "inline-flex items-center gap-1 px-2 py-1 rounded-medical-small text-xs font-medium",
+                  kpis.trends.revenue > 0 
+                    ? 'bg-medical-green-100 text-medical-green-700' 
+                    : 'bg-medical-red-100 text-medical-red-700'
+                )}>
+                  <span>{kpis.trends.revenue > 0 ? '↗️' : '↘️'}</span>
                   {kpis.trends.revenue > 0 ? '+' : ''}{kpis.trends.revenue.toFixed(1)}%
-                </p>
+                </div>
               )}
             </div>
           </div>
-        </div>
 
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                <svg className="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-              </div>
+          {/* Patients Card */}
+          <div className="medical-card p-6 text-center">
+            <div className="w-14 h-14 bg-medical-yellow-100 rounded-medical-round flex items-center justify-center mx-auto mb-4">
+              <span className="text-medical-yellow-600 text-2xl">👥</span>
             </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Patients</p>
-              <p className="text-2xl font-semibold text-gray-900">{kpis.totalPatients}</p>
-              <p className="text-sm text-gray-500">{kpis.newPatients} nouveaux</p>
+            <div className="space-y-2">
+              <h4 className="text-sm font-medium text-medical-gray-600">Patients actifs</h4>
+              <p className="text-3xl font-bold text-medical-gray-900">{kpis.totalPatients}</p>
+              <div className="text-xs text-medical-gray-500">
+                <span className="inline-flex items-center gap-1 px-2 py-1 bg-medical-blue-100 text-medical-blue-700 rounded-medical-small font-medium">
+                  +{kpis.newPatients} nouveaux
+                </span>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                kpis.noShowRate > 15 ? 'bg-red-100' : kpis.noShowRate > 10 ? 'bg-yellow-100' : 'bg-green-100'
-              }`}>
-                <svg className={`w-4 h-4 ${
-                  kpis.noShowRate > 15 ? 'text-red-600' : kpis.noShowRate > 10 ? 'text-yellow-600' : 'text-green-600'
-                }`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.268 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                </svg>
-              </div>
+          {/* No-show Rate Card */}
+          <div className="medical-card p-6 text-center">
+            <div className={cn(
+              "w-14 h-14 rounded-medical-round flex items-center justify-center mx-auto mb-4",
+              kpis.noShowRate > 15 ? 'bg-medical-red-100' : 
+              kpis.noShowRate > 10 ? 'bg-medical-yellow-100' : 'bg-medical-green-100'
+            )}>
+              <span className={cn(
+                "text-2xl",
+                kpis.noShowRate > 15 ? 'text-medical-red-600' : 
+                kpis.noShowRate > 10 ? 'text-medical-yellow-600' : 'text-medical-green-600'
+              )}>
+                {kpis.noShowRate > 15 ? '🚨' : kpis.noShowRate > 10 ? '⚠️' : '✅'}
+              </span>
             </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Taux de no-show</p>
-              <p className="text-2xl font-semibold text-gray-900">{kpis.noShowRate.toFixed(1)}%</p>
+            <div className="space-y-2">
+              <h4 className="text-sm font-medium text-medical-gray-600">Taux d'absentéisme</h4>
+              <p className="text-3xl font-bold text-medical-gray-900">{kpis.noShowRate.toFixed(1)}%</p>
               {kpis.trends.noShowRate !== 0 && (
-                <p className={`text-sm ${kpis.trends.noShowRate < 0 ? 'text-green-600' : 'text-red-600'}`}>
+                <div className={cn(
+                  "inline-flex items-center gap-1 px-2 py-1 rounded-medical-small text-xs font-medium",
+                  kpis.trends.noShowRate < 0 
+                    ? 'bg-medical-green-100 text-medical-green-700' 
+                    : 'bg-medical-red-100 text-medical-red-700'
+                )}>
+                  <span>{kpis.trends.noShowRate < 0 ? '↘️' : '↗️'}</span>
                   {kpis.trends.noShowRate > 0 ? '+' : ''}{kpis.trends.noShowRate.toFixed(1)}%
-                </p>
+                </div>
               )}
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Performance Metrics */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">Taux de performance</h3>
-          <div className="space-y-4">
-            <div>
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-600">Taux de complétion</span>
-                <span className="font-medium">{kpis.completionRate.toFixed(1)}%</span>
+      {/* Performance Metrics with Medical Design */}
+      <section aria-labelledby="performance-metrics">
+        <h3 id="performance-metrics" className="text-lg font-semibold text-medical-gray-900 mb-6">
+          Métriques détaillées
+        </h3>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Performance Rates */}
+          <div className="medical-card p-6">
+            <h4 className="text-lg font-medium text-medical-gray-900 mb-6 flex items-center gap-2">
+              📊 Taux de performance
+            </h4>
+            <div className="space-y-6">
+              {/* Completion Rate */}
+              <div>
+                <div className="flex justify-between items-center text-sm mb-2">
+                  <span className="text-medical-gray-600 font-medium">Taux de complétion</span>
+                  <span className="font-bold text-medical-gray-900">{kpis.completionRate.toFixed(1)}%</span>
+                </div>
+                <div className="w-full bg-medical-gray-200 rounded-medical-small h-3">
+                  <div 
+                    className="bg-medical-green-600 h-3 rounded-medical-small transition-all duration-500" 
+                    style={{ width: `${kpis.completionRate}%` }}
+                  />
+                </div>
+                <div className="text-xs text-medical-gray-500 mt-1">
+                  {kpis.completionRate > 90 ? 'Excellent' : kpis.completionRate > 80 ? 'Bon' : 'À améliorer'}
+                </div>
               </div>
-              <div className="mt-1 w-full bg-gray-200 rounded-full h-2">
-                <div 
-                  className="bg-green-600 h-2 rounded-full" 
-                  style={{ width: `${kpis.completionRate}%` }}
-                ></div>
+              
+              {/* Utilization Rate */}
+              <div>
+                <div className="flex justify-between items-center text-sm mb-2">
+                  <span className="text-medical-gray-600 font-medium">Taux d'occupation</span>
+                  <span className="font-bold text-medical-gray-900">{kpis.appointmentUtilization}%</span>
+                </div>
+                <div className="w-full bg-medical-gray-200 rounded-medical-small h-3">
+                  <div 
+                    className={cn(
+                      "h-3 rounded-medical-small transition-all duration-500",
+                      kpis.appointmentUtilization > 80 ? 'bg-medical-green-600' : 
+                      kpis.appointmentUtilization > 60 ? 'bg-medical-yellow-500' : 'bg-medical-red-500'
+                    )}
+                    style={{ width: `${kpis.appointmentUtilization}%` }}
+                  />
+                </div>
+                <div className="text-xs text-medical-gray-500 mt-1">
+                  {kpis.appointmentUtilization > 80 ? 'Optimale' : 
+                   kpis.appointmentUtilization > 60 ? 'Correcte' : 'Faible'}
+                </div>
+              </div>
+
+              {/* Cancellation Rate */}
+              <div>
+                <div className="flex justify-between items-center text-sm mb-2">
+                  <span className="text-medical-gray-600 font-medium">Taux d'annulation</span>
+                  <span className="font-bold text-medical-gray-900">{kpis.cancellationRate.toFixed(1)}%</span>
+                </div>
+                <div className="w-full bg-medical-gray-200 rounded-medical-small h-3">
+                  <div 
+                    className="bg-medical-yellow-500 h-3 rounded-medical-small transition-all duration-500" 
+                    style={{ width: `${kpis.cancellationRate}%` }}
+                  />
+                </div>
+                <div className="text-xs text-medical-gray-500 mt-1">
+                  {kpis.cancellationRate < 5 ? 'Faible' : kpis.cancellationRate < 10 ? 'Normal' : 'Élevé'}
+                </div>
               </div>
             </div>
-            
-            <div>
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-600">Taux d'occupation</span>
-                <span className="font-medium">{kpis.appointmentUtilization}%</span>
-              </div>
-              <div className="mt-1 w-full bg-gray-200 rounded-full h-2">
-                <div 
-                  className={`h-2 rounded-full ${
-                    kpis.appointmentUtilization > 80 ? 'bg-green-600' : 
-                    kpis.appointmentUtilization > 60 ? 'bg-yellow-500' : 'bg-red-500'
-                  }`}
-                  style={{ width: `${kpis.appointmentUtilization}%` }}
-                ></div>
-              </div>
-            </div>
+          </div>
 
-            <div>
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-600">Taux d'annulation</span>
-                <span className="font-medium">{kpis.cancellationRate.toFixed(1)}%</span>
+          {/* Operational Metrics */}
+          <div className="medical-card p-6">
+            <h4 className="text-lg font-medium text-medical-gray-900 mb-6 flex items-center gap-2">
+              ⚙️ Métriques opérationnelles
+            </h4>
+            <div className="space-y-4">
+              {/* Wait Time */}
+              <div className="flex items-center justify-between p-3 bg-medical-blue-50 rounded-medical-small">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-medical-blue-600 rounded-medical-small flex items-center justify-center">
+                    <span className="text-white text-sm">⏱️</span>
+                  </div>
+                  <span className="text-medical-gray-700 font-medium">Temps d'attente moyen</span>
+                </div>
+                <span className="font-bold text-medical-blue-700">{kpis.averageWaitTime} min</span>
               </div>
-              <div className="mt-1 w-full bg-gray-200 rounded-full h-2">
-                <div 
-                  className="bg-orange-500 h-2 rounded-full" 
-                  style={{ width: `${kpis.cancellationRate}%` }}
-                ></div>
+              
+              {/* Average Value */}
+              <div className="flex items-center justify-between p-3 bg-medical-green-50 rounded-medical-small">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-medical-green-600 rounded-medical-small flex items-center justify-center">
+                    <span className="text-white text-sm">💰</span>
+                  </div>
+                  <span className="text-medical-gray-700 font-medium">Valeur moyenne par RDV</span>
+                </div>
+                <span className="font-bold text-medical-green-700">
+                  {new Intl.NumberFormat('fr-DZ', { 
+                    style: 'currency', 
+                    currency: 'DZD',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                  }).format(kpis.averageAppointmentValue)}
+                </span>
+              </div>
+              
+              {/* Returning Patients */}
+              <div className="flex items-center justify-between p-3 bg-medical-yellow-50 rounded-medical-small">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-medical-yellow-600 rounded-medical-small flex items-center justify-center">
+                    <span className="text-white text-sm">🔄</span>
+                  </div>
+                  <span className="text-medical-gray-700 font-medium">Patients récurrents</span>
+                </div>
+                <span className="font-bold text-medical-yellow-700">{kpis.returningPatients}</span>
+              </div>
+              
+              {/* New Patients */}
+              <div className="flex items-center justify-between p-3 bg-medical-gray-100 rounded-medical-small">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-medical-gray-600 rounded-medical-small flex items-center justify-center">
+                    <span className="text-white text-sm">✨</span>
+                  </div>
+                  <span className="text-medical-gray-700 font-medium">Nouveaux patients</span>
+                </div>
+                <span className="font-bold text-medical-gray-700">{kpis.newPatients}</span>
               </div>
             </div>
           </div>
         </div>
+      </section>
 
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">Métriques opérationnelles</h3>
-          <div className="space-y-4">
-            <div className="flex justify-between">
-              <span className="text-gray-600">Temps d'attente moyen</span>
-              <span className="font-medium">{kpis.averageWaitTime} min</span>
-            </div>
-            
-            <div className="flex justify-between">
-              <span className="text-gray-600">Valeur moyenne par RDV</span>
-              <span className="font-medium">{kpis.averageAppointmentValue.toFixed(0)}€</span>
-            </div>
-            
-            <div className="flex justify-between">
-              <span className="text-gray-600">Patients récurrents</span>
-              <span className="font-medium">{kpis.returningPatients}</span>
-            </div>
-            
-            <div className="flex justify-between">
-              <span className="text-gray-600">Nouveaux patients</span>
-              <span className="font-medium">{kpis.newPatients}</span>
-            </div>
-          </div>
+      {/* Custom Widgets Grid with Medical Design */}
+      <section aria-labelledby="custom-widgets">
+        <h3 id="custom-widgets" className="text-lg font-semibold text-medical-gray-900 mb-6">
+          Widgets personnalisés
+        </h3>
+        <div className="grid grid-cols-12 gap-6 auto-rows-min">
+          {layout.widgets.map(renderWidget)}
         </div>
-      </div>
-
-      {/* Custom Widgets Grid */}
-      <div className="grid grid-cols-12 gap-6 auto-rows-min">
-        {layout.widgets.map(renderWidget)}
-      </div>
+        
+        {/* Empty State */}
+        {layout.widgets.filter(w => w.isVisible).length === 0 && (
+          <div className="medical-card p-12 text-center">
+            <div className="w-16 h-16 bg-medical-gray-100 rounded-medical-round flex items-center justify-center mx-auto mb-4">
+              <span className="text-medical-gray-400 text-2xl">📊</span>
+            </div>
+            <h4 className="text-lg font-medium text-medical-gray-900 mb-2">
+              Aucun widget configuré
+            </h4>
+            <p className="text-medical-gray-600 mb-4 max-w-sm mx-auto">
+              Personnalisez votre tableau de bord en ajoutant des widgets pour suivre vos métriques importantes.
+            </p>
+            <button
+              onClick={() => console.log('Open widget customizer')}
+              className="px-4 py-2 bg-medical-blue-600 text-white rounded-medical-medium hover:bg-medical-blue-700 focus:outline-none focus:ring-2 focus:ring-medical-blue-500 focus:ring-offset-2 transition-colors"
+            >
+              ⚙️ Ajouter des widgets
+            </button>
+          </div>
+        )}
+      </section>
     </div>
   );
 }

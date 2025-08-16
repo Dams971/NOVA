@@ -1,4 +1,5 @@
 import { EventEmitter } from 'events';
+import { WebSocketMessage } from '@/types/websocket';
 
 export interface ChatMessage {
   id: string;
@@ -7,7 +8,7 @@ export interface ChatMessage {
   timestamp: Date;
   isBot: boolean;
   suggestedReplies?: string[];
-  metadata?: any;
+  metadata?: Record<string, unknown>;
 }
 
 export interface WebSocketConfig {
@@ -23,7 +24,7 @@ export class WebSocketClient extends EventEmitter {
   private reconnectAttempts = 0;
   private isConnected = false;
   private sessionId: string | null = null;
-  private messageQueue: any[] = [];
+  private messageQueue: WebSocketMessage[] = [];
 
   constructor(config: WebSocketConfig = {}) {
     super();
@@ -97,7 +98,7 @@ export class WebSocketClient extends EventEmitter {
     }, this.config.reconnectInterval);
   }
 
-  private handleMessage(data: any): void {
+  private handleMessage(data: WebSocketMessage): void {
     switch (data.type) {
       case 'welcome':
         this.sessionId = data.sessionId;
@@ -138,7 +139,7 @@ export class WebSocketClient extends EventEmitter {
     }
   }
 
-  send(data: any): void {
+  send(data: WebSocketMessage): void {
     if (!this.isConnected) {
       this.messageQueue.push(data);
       return;

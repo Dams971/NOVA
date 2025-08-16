@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Calendar, Clock, MapPin, User, Phone, Mail, ChevronRight } from 'lucide-react';
+import { Calendar, Clock, MapPin, User, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface Cabinet {

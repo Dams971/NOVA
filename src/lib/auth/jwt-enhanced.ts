@@ -191,7 +191,7 @@ class EnhancedJWTManager {
 
       return newTokenPair;
 
-    } catch (_error) {
+    } catch (error) {
       console.error('Token refresh error:', error);
       
       if (error instanceof jwt.JsonWebTokenError) {
@@ -201,7 +201,7 @@ class EnhancedJWTManager {
           if (decoded?.tokenFamily) {
             await this.revokeTokenFamily(decoded.tokenFamily, 'Invalid token reuse attempt');
           }
-        } catch {
+        } catch (_decodeError) {
           // Ignore decode errors
         }
       }
@@ -224,7 +224,7 @@ class EnhancedJWTManager {
       }
 
       return decoded;
-    } catch (_error) {
+    } catch (error) {
       console.error('Access token verification error:', error);
       return null;
     }

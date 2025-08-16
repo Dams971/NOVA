@@ -396,7 +396,7 @@ export function withErrorHandling<T extends any[], R>(
   return async (...args: T): Promise<R> => {
     try {
       return await fn(...args);
-    } catch (error) {
+    } catch (_error) {
       throw normalizeError(error, { context, args: args.slice(0, 2) }); // Limiter les args loggés
     }
   };

@@ -1,0 +1,389 @@
+/* 
+  NOVA Design System - Inspiré de Maiia/Doctolib mais unique
+  Évite le style générique IA
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Marianne:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Couleurs uniques NOVA - Pas les gradients IA typiques */
+  --nova-primary: #107ACA;  /* Bleu médical confiance */
+  --nova-primary-dark: #0B5394;
+  --nova-primary-light: #E8F4FD;
+  --nova-primary-lighter: #F5FAFE;
+  
+  --nova-secondary: #00C896;  /* Vert médical moderne */
+  --nova-accent: #FFB951;  /* Orange doux pour CTAs */
+  --nova-urgent: #DC2626;  /* Rouge urgence */
+  
+  /* Gris nuancés - Pas le gray-600 générique */
+  --nova-text-primary: #1A1F36;
+  --nova-text-secondary: #64748B;
+  --nova-text-muted: #94A3B8;
+  --nova-border: #E2E8F0;
+  --nova-bg: #FAFBFC;
+  --nova-bg-card: #FFFFFF;
+  
+  /* Typographie professionnelle */
+  --font-heading: 'Marianne', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  
+  /* Tailles précises - Pas les text-5xl génériques */
+  --text-hero: 52px;
+  --text-h1: 40px;
+  --text-h2: 32px;
+  --text-h3: 24px;
+  --text-body: 16px;
+  --text-small: 14px;
+  --text-tiny: 12px;
+  
+  /* Espacements cohérents */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  
+  /* Border radius subtils */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+  
+  /* Ombres douces médicales */
+  --shadow-xs: 0 1px 2px rgba(26, 31, 54, 0.06);
+  --shadow-sm: 0 2px 4px rgba(26, 31, 54, 0.08);
+  --shadow-md: 0 4px 8px rgba(26, 31, 54, 0.1);
+  --shadow-lg: 0 8px 16px rgba(26, 31, 54, 0.12);
+  --shadow-xl: 0 16px 32px rgba(26, 31, 54, 0.14);
+  
+  /* Transitions professionnelles */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 350ms ease;
+}
+
+/* Reset des styles IA génériques */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typographie médicale professionnelle */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--nova-text-primary);
+  letter-spacing: -0.02em;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: 1.6;
+  color: var(--nova-text-secondary);
+}
+
+/* Boutons médicaux professionnels - Pas les rounded-full partout */
+.btn-nova-primary {
+  background: var(--nova-primary);
+  color: white;
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  font-size: 15px;
+  transition: all var(--transition-base);
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 1px 2px rgba(16, 122, 202, 0.1);
+}
+
+.btn-nova-primary:hover {
+  background: var(--nova-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 122, 202, 0.2);
+}
+
+.btn-nova-secondary {
+  background: white;
+  color: var(--nova-primary);
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  font-size: 15px;
+  transition: all var(--transition-base);
+  border: 1.5px solid var(--nova-border);
+  cursor: pointer;
+}
+
+.btn-nova-secondary:hover {
+  background: var(--nova-primary-lighter);
+  border-color: var(--nova-primary);
+}
+
+.btn-nova-urgent {
+  background: var(--nova-urgent);
+  color: white;
+  padding: 14px 28px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 16px;
+  animation: pulse-urgent 2s infinite;
+}
+
+@keyframes pulse-urgent {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(220, 38, 38, 0); }
+}
+
+/* Cards médicales - Pas les shadow-lg hover:shadow-xl génériques */
+.card-nova {
+  background: var(--nova-bg-card);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  border: 1px solid var(--nova-border);
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.card-nova:hover {
+  border-color: var(--nova-primary);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.card-nova-featured {
+  border: 2px solid var(--nova-primary);
+  background: linear-gradient(135deg, var(--nova-primary-lighter) 0%, white 100%);
+}
+
+/* Badges médicaux */
+.badge-nova {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: var(--text-tiny);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.badge-nova-primary {
+  background: var(--nova-primary-light);
+  color: var(--nova-primary);
+}
+
+.badge-nova-success {
+  background: #ECFDF5;
+  color: #047857;
+}
+
+.badge-nova-urgent {
+  background: #FEF2F2;
+  color: var(--nova-urgent);
+  animation: blink-urgent 1.5s infinite;
+}
+
+@keyframes blink-urgent {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* Input médicaux - Pas les focus:border-blue-500 génériques */
+.input-nova {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid var(--nova-border);
+  border-radius: var(--radius-md);
+  font-size: var(--text-body);
+  transition: all var(--transition-fast);
+  background: white;
+}
+
+.input-nova:focus {
+  outline: none;
+  border-color: var(--nova-primary);
+  box-shadow: 0 0 0 3px rgba(16, 122, 202, 0.1);
+}
+
+.input-nova::placeholder {
+  color: var(--nova-text-muted);
+}
+
+/* Icônes médicales custom - Éviter lucide-react partout */
+.icon-medical {
+  width: 20px;
+  height: 20px;
+  stroke-width: 1.5;
+  color: var(--nova-text-secondary);
+}
+
+.icon-medical-primary {
+  color: var(--nova-primary);
+}
+
+/* Animations subtiles médicales */
+.fade-in-up {
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Header médical sticky */
+.header-nova {
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--nova-border);
+  transition: all var(--transition-base);
+}
+
+.header-nova.scrolled {
+  box-shadow: var(--shadow-sm);
+}
+
+/* Section hero médicale */
+.hero-nova {
+  background: linear-gradient(180deg, var(--nova-primary-lighter) 0%, white 50%);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-nova::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 80%;
+  height: 80%;
+  background: radial-gradient(circle, var(--nova-primary-light) 0%, transparent 70%);
+  opacity: 0.3;
+  border-radius: 50%;
+  filter: blur(60px);
+}
+
+/* Grid système médical */
+.container-nova {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--space-5);
+}
+
+@media (min-width: 768px) {
+  .container-nova {
+    padding: 0 var(--space-8);
+  }
+}
+
+/* Statistiques médicales */
+.stat-nova {
+  text-align: center;
+  padding: var(--space-6);
+  background: white;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--nova-border);
+}
+
+.stat-nova-value {
+  font-size: var(--text-h2);
+  font-weight: 700;
+  color: var(--nova-primary);
+  font-family: var(--font-heading);
+  line-height: 1;
+  margin-bottom: var(--space-2);
+}
+
+.stat-nova-label {
+  font-size: var(--text-small);
+  color: var(--nova-text-muted);
+  font-weight: 500;
+}
+
+/* Spécialités médicales tags */
+.tag-specialty {
+  display: inline-block;
+  padding: 6px 12px;
+  background: var(--nova-bg);
+  color: var(--nova-text-secondary);
+  border-radius: var(--radius-md);
+  font-size: var(--text-small);
+  font-weight: 500;
+  border: 1px solid var(--nova-border);
+  transition: all var(--transition-fast);
+}
+
+.tag-specialty:hover {
+  background: var(--nova-primary-light);
+  color: var(--nova-primary);
+  border-color: var(--nova-primary);
+}
+
+/* Calendrier médical */
+.calendar-nova {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  border: 1px solid var(--nova-border);
+}
+
+.calendar-day {
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.calendar-day:hover {
+  background: var(--nova-primary-lighter);
+}
+
+.calendar-day.available {
+  background: var(--nova-secondary);
+  color: white;
+  font-weight: 600;
+}
+
+.calendar-day.selected {
+  background: var(--nova-primary);
+  color: white;
+  font-weight: 600;
+}
+
+/* Footer médical */
+.footer-nova {
+  background: var(--nova-text-primary);
+  color: white;
+  padding: var(--space-16) 0 var(--space-8);
+}
+
+.footer-nova a {
+  color: var(--nova-text-muted);
+  transition: color var(--transition-fast);
+}
+
+.footer-nova a:hover {
+  color: white;
+}

@@ -68,7 +68,7 @@ export interface AppointmentResponseV3Auth {
     type: string;
     label: string;
     action?: string;
-    data?: any;
+    data?: Record<string, unknown>;
     style?: string;
     accessibility?: {
       aria_label?: string;
@@ -137,8 +137,13 @@ export interface DialogStateV3 extends SessionStateV3 {
     role: 'user' | 'bot';
     message: string;
     timestamp: Date;
-    extractedData?: any;
-    outOfScopeDetection?: any;
+    extractedData?: Record<string, unknown>;
+    outOfScopeDetection?: {
+      isOutOfScope: boolean;
+      category?: string;
+      confidence?: number;
+      patterns?: string[];
+    };
   }>;
   promptVariations: {
     namePrompts: string[];
@@ -336,7 +341,7 @@ export class DialogManagerV3 {
     hasNewInfo: boolean;
     validationErrors: string[];
   } {
-    const result: any = { hasNewInfo: false, validationErrors: [] };
+    const result: { hasNewInfo: boolean; validationErrors: string[]; name?: string; phone?: string; email?: string; } = { hasNewInfo: false, validationErrors: [] };
     
     // Extract emails with validation
     const emails = EmailExtractorV3.extractEmails(message);
@@ -373,7 +378,12 @@ export class DialogManagerV3 {
    */
   private async checkAuthStatus(email: string, state: DialogStateV3): Promise<{
     hasAccount: boolean;
-    patient?: any;
+    patient?: {
+      id: string;
+      name?: string;
+      email?: string;
+      phone?: string;
+    };
     shouldSignIn: boolean;
     shouldSignUp: boolean;
   }> {
@@ -426,7 +436,7 @@ export class DialogManagerV3 {
       } else {
         return { success: false, otpSent: false, error: result.error };
       }
-    } catch (error) {
+    } catch (_error) {
       return { success: false, otpSent: false, error: 'Sign-in initiation failed' };
     }
   }
@@ -440,7 +450,12 @@ export class DialogManagerV3 {
     state: DialogStateV3
   ): Promise<{
     success: boolean;
-    patient?: any;
+    patient?: {
+      id: string;
+      name?: string;
+      email?: string;
+      phone?: string;
+    };
     sessionId?: string;
     error?: string;
   }> {
@@ -467,7 +482,7 @@ export class DialogManagerV3 {
         state.authState.otpAttempts++;
         return { success: false, error: result.error };
       }
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: 'Sign-in completion failed' };
     }
   }
@@ -482,7 +497,12 @@ export class DialogManagerV3 {
     state: DialogStateV3
   ): Promise<{
     success: boolean;
-    patient?: any;
+    patient?: {
+      id: string;
+      name?: string;
+      email?: string;
+      phone?: string;
+    };
     error?: string;
   }> {
     try {
@@ -511,7 +531,7 @@ export class DialogManagerV3 {
       } else {
         return { success: false, error: result.error };
       }
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: 'Account creation failed' };
     }
   }
@@ -521,7 +541,17 @@ export class DialogManagerV3 {
    */
   private async sendAppointmentSummary(
     email: string,
-    appointmentData: any,
+    appointmentData: {
+      patient_id?: string;
+      patient_name?: string;
+      patient_phone_e164?: string;
+      patient_email?: string;
+      start_iso?: string;
+      end_iso?: string;
+      reason?: string;
+      clinic_address?: string;
+      duration_minutes?: number;
+    },
     state: DialogStateV3
   ): Promise<{ success: boolean; error?: string }> {
     try {
@@ -533,7 +563,7 @@ export class DialogManagerV3 {
       } else {
         return { success: false, error: result.error };
       }
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: 'Email sending failed' };
     }
   }
@@ -967,7 +997,16 @@ export class DialogManagerV3 {
   /**
    * Generate welcome UI elements
    */
-  private generateWelcomeElements(): any[] {
+  private generateWelcomeElements(): Array<{
+    type: string;
+    label: string;
+    action: string;
+    style: string;
+    accessibility?: {
+      aria_label?: string;
+      role?: string;
+    };
+  }> {
     return [
       {
         type: 'button',

@@ -67,7 +67,7 @@ export default function ChartWidget({ widget, kpis }: ChartWidgetProps) {
               y1={padding + ratio * (height - 2 * padding)}
               x2={width - padding}
               y2={padding + ratio * (height - 2 * padding)}
-              stroke="#E5E7EB"
+              stroke="neutral-200"
               strokeWidth="1"
             />
           ))}
@@ -140,7 +140,7 @@ export default function ChartWidget({ widget, kpis }: ChartWidgetProps) {
     const centerX = 80;
     const centerY = 80;
     
-    const colors = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#06B6D4'];
+    const colors = ['#3B82F6', '#10B981', 'warning-600', '#EF4444', '#8B5CF6', '#06B6D4'];
     
     return (
       <div className="flex items-center space-x-4">

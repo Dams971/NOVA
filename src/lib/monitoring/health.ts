@@ -9,7 +9,7 @@ export interface HealthCheckResult {
   message?: string;
   responseTime: number;
   timestamp: number;
-  details?: any;
+  details?: Record<string, unknown>;
 }
 
 export interface SystemHealth {
@@ -67,7 +67,7 @@ class HealthMonitor {
         this.checkDiskSpace(),
         this.checkAPIResponseTime()
       ]);
-    } catch (error) {
+    } catch (_error) {
       this.logger.error('Error running health checks', error);
     }
   }
@@ -210,7 +210,7 @@ class HealthMonitor {
     
     try {
       // Simple disk space check using fs.statSync
-      const fs = require('fs');
+      const fs = await import('fs');
       const stats = fs.statSync('.');
       
       // This is a simplified check - in production, you'd want more detailed disk space monitoring

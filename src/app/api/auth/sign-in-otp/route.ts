@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { SupabaseAuthService } from '@/services/supabase-auth.service'
+import { NextResponse } from 'next/server'
 import { IONOSEmailService } from '@/services/ionos-email.service'
+import { SupabaseAuthService } from '@/services/supabase-auth.service'
 
 export interface SignInOTPRequest {
   email: string

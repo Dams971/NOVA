@@ -15,27 +15,25 @@ import {
   YAxis, 
   CartesianGrid, 
   Tooltip, 
-  Legend, 
+  
   ResponsiveContainer 
 } from 'recharts';
 import { 
-  Calendar, 
+  
   Download, 
   TrendingUp, 
   TrendingDown, 
   Minus, 
   Users, 
   DollarSign, 
-  Clock, 
+  
   Activity,
   ArrowLeft,
-  Filter,
   RefreshCw,
-  FileText,
   BarChart3,
   PieChart as PieChartIcon
 } from 'lucide-react';
-import { format, subDays, subWeeks, subMonths, startOfDay, endOfDay } from 'date-fns';
+import { format, subDays, startOfDay, endOfDay } from 'date-fns';
 
 import { Cabinet } from '@/lib/models/cabinet';
 import { CabinetAnalytics, DateRange, TimeGranularity, ExportOptions, MetricType } from '@/lib/models/analytics';
@@ -48,7 +46,7 @@ interface CabinetDetailViewProps {
 
 type DateRangePreset = '7d' | '30d' | '90d' | 'custom';
 
-const COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#06B6D4'];
+const COLORS = ['#3B82F6', '#10B981', 'warning-600', '#EF4444', '#8B5CF6', '#06B6D4'];
 
 export default function CabinetDetailView({ cabinet, onBack }: CabinetDetailViewProps) {
   const [analytics, setAnalytics] = useState<CabinetAnalytics | null>(null);
@@ -108,6 +106,7 @@ export default function CabinetDetailView({ cabinet, onBack }: CabinetDetailView
 
   useEffect(() => {
     fetchAnalytics();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cabinet.id, dateRange, granularity]);
 
   const handleExport = async (format: 'pdf' | 'excel' | 'csv') => {
@@ -556,7 +555,7 @@ export default function CabinetDetailView({ cabinet, onBack }: CabinetDetailView
                   <XAxis dataKey="category" />
                   <YAxis />
                   <Tooltip />
-                  <Bar dataKey="value" fill="#F59E0B" />
+                  <Bar dataKey="value" fill="warning-600" />
                 </BarChart>
               </ResponsiveContainer>
             </div>

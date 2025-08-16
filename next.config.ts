@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   eslint: {
     // WARNING: This allows production builds to successfully complete even if
     // your project has ESLint errors.
+    // This is temporarily enabled to allow deployment with warnings
     ignoreDuringBuilds: true,
     dirs: ['src']
   },

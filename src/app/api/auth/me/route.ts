@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { withAuth } from '@/lib/middleware/auth';
 
-export const GET = withAuth(async (request) => {
+export const GET = withAuth(async (request: { user: unknown; permissions: unknown }) => {
   try {
     // User is already authenticated and available in request.user
     return NextResponse.json({
@@ -9,7 +9,7 @@ export const GET = withAuth(async (request) => {
       user: request.user,
       permissions: request.permissions
     });
-  } catch (_error) {
+  } catch (error) {
     console.error('Get current user API error:', error);
     return NextResponse.json({
       success: false,

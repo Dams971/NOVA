@@ -128,7 +128,7 @@ export default function AppointmentCalendar({
         eventId
       );
       return !result.success || !result.data;
-    } catch (error) {
+    } catch (_error) {
       return true; // Assume conflict on error
     }
   }, [appointmentService, cabinetId, draggedEvent]);

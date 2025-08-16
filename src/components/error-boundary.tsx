@@ -38,15 +38,15 @@ export class ErrorBoundary extends Component<Props, State> {
           <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-6">
             <div className="flex items-center space-x-3 text-red-600 mb-4">
               <AlertTriangle className="h-6 w-6" />
-              <h2 className="text-xl font-semibold">Une erreur s'est produite</h2>
+              <h2 className="text-xl font-semibold">Une erreur s&apos;est produite</h2>
             </div>
             <p className="text-gray-600 mb-4">
-              Nous sommes désolés, une erreur inattendue s'est produite. 
+              Nous sommes désolés, une erreur inattendue s&apos;est produite. 
               Veuillez rafraîchir la page ou réessayer plus tard.
             </p>
             {process.env.NODE_ENV === 'development' && this.state.error && (
               <details className="mt-4 p-4 bg-gray-100 rounded text-sm">
-                <summary className="cursor-pointer font-medium">Détails de l'erreur</summary>
+                <summary className="cursor-pointer font-medium">Détails de l&apos;erreur</summary>
                 <pre className="mt-2 whitespace-pre-wrap text-xs">
                   {this.state.error.toString()}
                   {this.state.error.stack}

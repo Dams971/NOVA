@@ -225,7 +225,7 @@ export class NotificationService {
       }
 
       return { success: true, data: transitionsProcessed };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: 'Failed to process status transitions' };
     }
   }
@@ -269,7 +269,7 @@ export class NotificationService {
       }
 
       return { success: true, data: remindersCreated };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: 'Failed to process reminders' };
     }
   }

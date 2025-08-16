@@ -1,0 +1,511 @@
+/**
+ * NOVA Medical-Grade Theme CSS
+ * Enhanced healthcare design system with medical-specific tokens
+ * Extends tokens.css with medical-specific variables and utilities
+ * WCAG 2.2 AA compliant, NHS Digital guidelines compliant
+ */
+
+/* ==================== MEDICAL-SPECIFIC COLOR PALETTE ==================== */
+
+:root {
+  /* Medical Emergency Colors - High contrast, color-blind safe */
+  --color-emergency-critical: 220 38 38;    /* #DC2626 - Critical alerts */
+  --color-emergency-urgent: 245 158 11;     /* warning-600 - Urgent situations */
+  --color-emergency-moderate: 251 191 36;   /* #FBBF24 - Moderate priority */
+  --color-emergency-low: 34 197 94;         /* #22C55E - Low priority */
+  
+  /* Medical Status Colors */
+  --color-status-healthy: 34 197 94;        /* #22C55E - Healthy/Normal */
+  --color-status-pending: 59 130 246;       /* #3B82F6 - Pending/Scheduled */
+  --color-status-completed: 20 184 166;     /* #14B8A6 - Completed */
+  --color-status-cancelled: 107 114 128;    /* #6B7280 - Cancelled */
+  --color-status-no-show: 239 68 68;        /* #EF4444 - No show */
+  
+  /* Medical Trust Colors - Professional, calming */
+  --color-trust-primary: 37 99 235;         /* #2563EB - Professional blue */
+  --color-trust-secondary: 13 148 136;      /* #0D9488 - Calming teal */
+  --color-trust-accent: 147 51 234;         /* #9333EA - Premium purple */
+  
+  /* Medical Data Visualization */
+  --color-chart-positive: 34 197 94;        /* #22C55E - Positive trends */
+  --color-chart-negative: 239 68 68;        /* #EF4444 - Negative trends */
+  --color-chart-neutral: 107 114 128;       /* #6B7280 - Neutral data */
+  --color-chart-bg: 249 250 251;            /* #F9FAFB - Chart background */
+  
+  /* Medical Form States */
+  --color-form-required: 220 38 38;         /* #DC2626 - Required fields */
+  --color-form-optional: 107 114 128;       /* #6B7280 - Optional fields */
+  --color-form-valid: 34 197 94;            /* #22C55E - Valid input */
+  --color-form-invalid: 239 68 68;          /* #EF4444 - Invalid input */
+  --color-form-disabled: 156 163 175;       /* neutral-400 - Disabled state */
+}
+
+/* ==================== MEDICAL TYPOGRAPHY ==================== */
+
+:root {
+  /* Medical-specific font sizes for different content types */
+  --font-size-medical-label: clamp(0.875rem, 1vw + 0.7rem, 1rem);      /* Form labels */
+  --font-size-medical-value: clamp(1rem, 1.2vw + 0.8rem, 1.125rem);    /* Data values */
+  --font-size-medical-caption: clamp(0.75rem, 0.9vw + 0.6rem, 0.875rem); /* Small text */
+  --font-size-medical-alert: clamp(1.125rem, 1.4vw + 0.9rem, 1.25rem); /* Alert text */
+  
+  /* Medical line heights for readability */
+  --line-height-medical-dense: 1.25;     /* Dense medical data */
+  --line-height-medical-normal: 1.5;     /* Standard readability */
+  --line-height-medical-relaxed: 1.75;   /* Important instructions */
+  
+  /* Letter spacing for medical content */
+  --letter-spacing-medical-normal: 0em;
+  --letter-spacing-medical-wide: 0.025em;   /* For better readability */
+  --letter-spacing-medical-caps: 0.1em;     /* For uppercase medical terms */
+}
+
+/* ==================== MEDICAL SPACING & LAYOUT ==================== */
+
+:root {
+  /* Medical form spacing */
+  --spacing-medical-field-gap: 1rem;        /* Between form fields */
+  --spacing-medical-group-gap: 1.5rem;      /* Between field groups */
+  --spacing-medical-section-gap: 2rem;      /* Between sections */
+  
+  /* Medical card spacing */
+  --spacing-medical-card-padding: 1.5rem;   /* Card internal padding */
+  --spacing-medical-card-gap: 1rem;         /* Between cards */
+  
+  /* Medical dashboard spacing */
+  --spacing-medical-widget-gap: 1.5rem;     /* Between widgets */
+  --spacing-medical-content-margin: 2rem;   /* Content margins */
+  
+  /* Emergency spacing - increased for urgency */
+  --spacing-emergency-padding: 2rem;        /* Emergency content padding */
+  --spacing-emergency-margin: 1.5rem;       /* Emergency element margins */
+}
+
+/* ==================== MEDICAL COMPONENT SIZING ==================== */
+
+:root {
+  /* Medical touch targets - larger for healthcare environment */
+  --touch-target-medical: 48px;             /* Standard medical touch target */
+  --touch-target-medical-large: 56px;       /* Large medical buttons */
+  --touch-target-medical-emergency: 64px;   /* Emergency action buttons */
+  
+  /* Medical input heights */
+  --height-medical-input: 48px;             /* Form inputs */
+  --height-medical-select: 48px;            /* Select dropdowns */
+  --height-medical-button: 48px;            /* Standard buttons */
+  --height-medical-button-large: 56px;      /* Large action buttons */
+  
+  /* Medical card dimensions */
+  --width-medical-card-min: 280px;          /* Minimum card width */
+  --width-medical-card-max: 400px;          /* Maximum card width */
+  --height-medical-card-min: 200px;         /* Minimum card height */
+  
+  /* Medical table row heights */
+  --height-medical-table-row: 48px;         /* Table row height */
+  --height-medical-table-header: 56px;      /* Table header height */
+}
+
+/* ==================== MEDICAL BORDER & RADIUS ==================== */
+
+:root {
+  /* Medical border styles */
+  --border-medical-thin: 1px;
+  --border-medical-thick: 2px;
+  --border-medical-heavy: 3px;              /* For high contrast needs */
+  
+  /* Medical border radius - conservative for professional look */
+  --border-radius-medical-small: 4px;       /* Small elements */
+  --border-radius-medical-medium: 8px;      /* Cards, forms */
+  --border-radius-medical-large: 12px;      /* Large containers */
+  --border-radius-medical-round: 50%;       /* Circular elements */
+}
+
+/* ==================== MEDICAL SHADOWS ==================== */
+
+:root {
+  /* Medical shadows - subtle and professional */
+  --shadow-medical-subtle: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  --shadow-medical-card: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06);
+  --shadow-medical-elevated: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.05);
+  --shadow-medical-modal: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  
+  /* Medical colored shadows for status indication */
+  --shadow-medical-success: 0 4px 14px 0 rgb(34 197 94 / 0.15);
+  --shadow-medical-warning: 0 4px 14px 0 rgb(245 158 11 / 0.15);
+  --shadow-medical-error: 0 4px 14px 0 rgb(239 68 68 / 0.15);
+  --shadow-medical-info: 0 4px 14px 0 rgb(59 130 246 / 0.15);
+}
+
+/* ==================== MEDICAL FOCUS STATES ==================== */
+
+:root {
+  /* Medical focus rings - enhanced visibility */
+  --focus-medical-width: 3px;               /* Thicker for medical context */
+  --focus-medical-offset: 2px;
+  --focus-medical-color: rgb(var(--color-trust-primary));
+  --focus-medical-style: solid;
+  
+  /* Emergency focus states */
+  --focus-emergency-width: 4px;             /* Extra thick for emergencies */
+  --focus-emergency-color: rgb(var(--color-emergency-critical));
+  
+  /* High contrast focus states */
+  --focus-high-contrast-width: 4px;
+  --focus-high-contrast-offset: 3px;
+}
+
+/* ==================== MEDICAL MOTION ==================== */
+
+:root {
+  /* Medical-appropriate motion - conservative timing */
+  --motion-medical-fast: 150ms ease-out;     /* Quick feedback */
+  --motion-medical-normal: 250ms ease-out;   /* Standard transitions */
+  --motion-medical-slow: 400ms ease-out;     /* Deliberate changes */
+  
+  /* Emergency motion - more urgent timing */
+  --motion-emergency-fast: 100ms ease-out;
+  --motion-emergency-pulse: 1s ease-in-out infinite;
+  
+  /* Medical easing curves */
+  --ease-medical-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-medical-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-medical-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==================== MEDICAL ACCESSIBILITY ENHANCEMENTS ==================== */
+
+/* Enhanced focus styles for medical context */
+.medical-focus:focus-visible {
+  outline: var(--focus-medical-width) var(--focus-medical-style) var(--focus-medical-color);
+  outline-offset: var(--focus-medical-offset);
+  border-radius: var(--border-radius-medical-small);
+}
+
+/* Emergency focus styles */
+.emergency-focus:focus-visible {
+  outline: var(--focus-emergency-width) solid var(--focus-emergency-color);
+  outline-offset: var(--focus-medical-offset);
+  box-shadow: 0 0 0 var(--focus-emergency-width) rgb(var(--color-emergency-critical) / 0.2);
+}
+
+/* Medical touch targets */
+.medical-touch-target {
+  min-height: var(--touch-target-medical);
+  min-width: var(--touch-target-medical);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-2);
+}
+
+.medical-touch-target-large {
+  min-height: var(--touch-target-medical-large);
+  min-width: var(--touch-target-medical-large);
+  padding: var(--spacing-3);
+}
+
+.emergency-touch-target {
+  min-height: var(--touch-target-medical-emergency);
+  min-width: var(--touch-target-medical-emergency);
+  padding: var(--spacing-4);
+}
+
+/* Medical form field styling */
+.medical-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+  margin-bottom: var(--spacing-medical-field-gap);
+}
+
+.medical-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-medical-field-gap);
+  margin-bottom: var(--spacing-medical-group-gap);
+}
+
+.medical-section {
+  margin-bottom: var(--spacing-medical-section-gap);
+}
+
+/* Medical status indicators */
+.status-healthy {
+  color: rgb(var(--color-status-healthy));
+  background-color: rgb(var(--color-status-healthy) / 0.1);
+  border-color: rgb(var(--color-status-healthy) / 0.3);
+}
+
+.status-pending {
+  color: rgb(var(--color-status-pending));
+  background-color: rgb(var(--color-status-pending) / 0.1);
+  border-color: rgb(var(--color-status-pending) / 0.3);
+}
+
+.status-completed {
+  color: rgb(var(--color-status-completed));
+  background-color: rgb(var(--color-status-completed) / 0.1);
+  border-color: rgb(var(--color-status-completed) / 0.3);
+}
+
+.status-cancelled {
+  color: rgb(var(--color-status-cancelled));
+  background-color: rgb(var(--color-status-cancelled) / 0.1);
+  border-color: rgb(var(--color-status-cancelled) / 0.3);
+}
+
+.status-no-show {
+  color: rgb(var(--color-status-no-show));
+  background-color: rgb(var(--color-status-no-show) / 0.1);
+  border-color: rgb(var(--color-status-no-show) / 0.3);
+}
+
+/* Emergency states */
+.emergency-critical {
+  color: rgb(var(--color-emergency-critical));
+  background-color: rgb(var(--color-emergency-critical) / 0.1);
+  border: var(--border-medical-thick) solid rgb(var(--color-emergency-critical));
+  box-shadow: var(--shadow-medical-error);
+}
+
+.emergency-urgent {
+  color: rgb(var(--color-emergency-urgent));
+  background-color: rgb(var(--color-emergency-urgent) / 0.1);
+  border: var(--border-medical-thick) solid rgb(var(--color-emergency-urgent));
+  box-shadow: var(--shadow-medical-warning);
+}
+
+/* Medical card styling */
+.medical-card {
+  background: rgb(var(--color-background));
+  border: var(--border-medical-thin) solid rgb(var(--color-border));
+  border-radius: var(--border-radius-medical-medium);
+  padding: var(--spacing-medical-card-padding);
+  box-shadow: var(--shadow-medical-card);
+  transition: box-shadow var(--motion-medical-normal);
+}
+
+.medical-card:hover {
+  box-shadow: var(--shadow-medical-elevated);
+}
+
+.medical-card-emergency {
+  border-color: rgb(var(--color-emergency-critical));
+  box-shadow: var(--shadow-medical-error);
+}
+
+/* Medical button styling */
+.medical-button {
+  height: var(--height-medical-button);
+  min-width: var(--touch-target-medical);
+  padding: 0 var(--spacing-4);
+  border-radius: var(--border-radius-medical-small);
+  font-size: var(--font-size-medical-value);
+  font-weight: var(--font-weight-medium);
+  transition: all var(--motion-medical-normal);
+  border: var(--border-medical-thin) solid transparent;
+}
+
+.medical-button-large {
+  height: var(--height-medical-button-large);
+  min-width: var(--touch-target-medical-large);
+  padding: 0 var(--spacing-6);
+  font-size: var(--font-size-medical-alert);
+}
+
+.medical-button-emergency {
+  height: var(--touch-target-medical-emergency);
+  min-width: var(--touch-target-medical-emergency);
+  background-color: rgb(var(--color-emergency-critical));
+  color: white;
+  border: var(--border-medical-thick) solid rgb(var(--color-emergency-critical));
+  box-shadow: var(--shadow-medical-error);
+}
+
+.medical-button-emergency:hover {
+  background-color: rgb(var(--color-emergency-critical) / 0.9);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-medical-elevated);
+}
+
+/* Medical input styling */
+.medical-input {
+  height: var(--height-medical-input);
+  padding: 0 var(--spacing-3);
+  border: var(--border-medical-thin) solid rgb(var(--color-border));
+  border-radius: var(--border-radius-medical-small);
+  font-size: var(--font-size-medical-value);
+  transition: border-color var(--motion-medical-normal);
+  background-color: rgb(var(--color-input));
+}
+
+.medical-input:focus {
+  border-color: rgb(var(--color-trust-primary));
+  box-shadow: 0 0 0 3px rgb(var(--color-trust-primary) / 0.1);
+}
+
+.medical-input.invalid {
+  border-color: rgb(var(--color-form-invalid));
+  background-color: rgb(var(--color-form-invalid) / 0.05);
+}
+
+.medical-input.valid {
+  border-color: rgb(var(--color-form-valid));
+  background-color: rgb(var(--color-form-valid) / 0.05);
+}
+
+/* Medical table styling */
+.medical-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: var(--border-medical-thin) solid rgb(var(--color-border));
+  border-radius: var(--border-radius-medical-medium);
+  overflow: hidden;
+}
+
+.medical-table thead tr {
+  height: var(--height-medical-table-header);
+  background-color: rgb(var(--color-muted));
+}
+
+.medical-table tbody tr {
+  height: var(--height-medical-table-row);
+  border-bottom: var(--border-medical-thin) solid rgb(var(--color-border));
+}
+
+.medical-table tbody tr:hover {
+  background-color: rgb(var(--color-muted) / 0.5);
+}
+
+.medical-table th,
+.medical-table td {
+  padding: var(--spacing-3);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.medical-table th {
+  font-weight: var(--font-weight-semibold);
+  color: rgb(var(--color-foreground));
+}
+
+/* Medical loading states */
+.medical-skeleton {
+  background: linear-gradient(
+    90deg,
+    rgb(var(--color-muted)) 0%,
+    rgb(var(--color-muted) / 0.8) 50%,
+    rgb(var(--color-muted)) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite linear;
+  border-radius: var(--border-radius-medical-small);
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.medical-spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid rgb(var(--color-muted));
+  border-top: 2px solid rgb(var(--color-trust-primary));
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Medical pulse animation for critical alerts */
+.medical-pulse {
+  animation: medical-pulse var(--motion-emergency-pulse);
+}
+
+@keyframes medical-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.02);
+  }
+}
+
+/* ==================== MEDICAL DARK MODE OVERRIDES ==================== */
+
+.dark {
+  /* Medical colors adjusted for dark mode */
+  --color-medical-card-bg: var(--color-neutral-900);
+  --color-medical-elevated-bg: var(--color-neutral-800);
+  --color-medical-border: var(--color-neutral-700);
+  
+  /* Medical shadows for dark mode */
+  --shadow-medical-card: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -1px rgb(0 0 0 / 0.3);
+  --shadow-medical-elevated: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -2px rgb(0 0 0 / 0.3);
+}
+
+/* ==================== MEDICAL RESPONSIVE DESIGN ==================== */
+
+/* Tablet adjustments */
+@media (min-width: 768px) {
+  :root {
+    --spacing-medical-card-padding: 2rem;
+    --spacing-medical-widget-gap: 2rem;
+    --width-medical-card-min: 320px;
+  }
+}
+
+/* Desktop adjustments */
+@media (min-width: 1024px) {
+  :root {
+    --spacing-medical-content-margin: 3rem;
+    --width-medical-card-max: 480px;
+  }
+}
+
+/* Large screen adjustments */
+@media (min-width: 1280px) {
+  :root {
+    --spacing-medical-section-gap: 3rem;
+    --spacing-medical-content-margin: 4rem;
+  }
+}
+
+/* ==================== MEDICAL PRINT STYLES ==================== */
+
+@media print {
+  .medical-card {
+    box-shadow: none;
+    border: var(--border-medical-thick) solid rgb(var(--color-border));
+  }
+  
+  .medical-button,
+  .emergency-focus,
+  .medical-focus {
+    outline: var(--border-medical-thick) solid rgb(var(--color-border));
+    outline-offset: 0;
+  }
+  
+  .medical-pulse {
+    animation: none;
+  }
+  
+  .medical-skeleton,
+  .medical-spinner {
+    display: none;
+  }
+}

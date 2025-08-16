@@ -189,7 +189,7 @@ export class AppointmentService {
       logger.info(`Nouveau patient créé: ${patientId}`);
 
       return { id: patientId, isNew: true };
-    } catch (error) {
+    } catch (_error) {
       logger.error('Erreur création/recherche patient:', error);
       throw new Error('Échec de la gestion du patient');
     }
@@ -247,7 +247,7 @@ export class AppointmentService {
         practitionerId: practitionerId,
         careType: careType
       }));
-    } catch (error) {
+    } catch (_error) {
       logger.error('Erreur récupération créneaux:', error);
       throw new Error('Impossible de récupérer les créneaux disponibles');
     }
@@ -270,7 +270,7 @@ export class AppointmentService {
       `, [startTime, durationMinutes, practitionerId || null, excludeAppointmentId || null]);
 
       return result.rows[0].is_available;
-    } catch (error) {
+    } catch (_error) {
       logger.error('Erreur vérification disponibilité:', error);
       return false;
     }
@@ -710,7 +710,7 @@ export class AppointmentService {
         aiResponse.status === 'CONFIRMED',
         'claude-3-7-sonnet-20250219'
       ]);
-    } catch (error) {
+    } catch (_error) {
       logger.error('Erreur sauvegarde conversation IA:', error);
     }
   }
@@ -780,7 +780,7 @@ export class AppointmentService {
         scheduledFor
       ]);
 
-    } catch (error) {
+    } catch (_error) {
       logger.error('Erreur programmation notification:', error);
     }
   }

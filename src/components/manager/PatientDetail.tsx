@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { 
@@ -46,9 +46,9 @@ export default function PatientDetail({ patient, onEdit, onClose }: PatientDetai
     if (activeTab === 'communication') {
       loadCommunicationHistory();
     }
-  }, [activeTab, patient.id]);
+  }, [activeTab, patient.id, loadCommunicationHistory]);
 
-  const loadCommunicationHistory = async () => {
+  const loadCommunicationHistory = useCallback(async () => {
     setLoading(true);
     try {
       const result = await communicationService.getCommunicationHistory(patient.id);
@@ -60,7 +60,7 @@ export default function PatientDetail({ patient, onEdit, onClose }: PatientDetai
     } finally {
       setLoading(false);
     }
-  };
+  }, [patient.id]);
 
   const getAge = (dateOfBirth: Date) => {
     const today = new Date();
@@ -220,7 +220,7 @@ export default function PatientDetail({ patient, onEdit, onClose }: PatientDetai
             {/* Emergency Contact */}
             {patient.emergencyContact && (
               <div className="bg-gray-50 rounded-lg p-4">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Contact d'urgence</h3>
+                <h3 className="text-lg font-medium text-gray-900 mb-4">Contact d&apos;urgence</h3>
                 <div className="space-y-2">
                   <p className="text-sm font-medium text-gray-900">{patient.emergencyContact.name}</p>
                   <p className="text-sm text-gray-600">{patient.emergencyContact.phone}</p>

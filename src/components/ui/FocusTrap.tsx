@@ -4,54 +4,128 @@ import React, { useEffect, useRef, useCallback } from 'react';
 
 interface FocusTrapProps {
   children: React.ReactNode;
+  /** Whether the focus trap is active */
   active?: boolean;
+  /** Whether to restore focus to the previous element when deactivated */
   restoreFocus?: boolean;
+  /** Specific element to focus initially */
   initialFocus?: React.RefObject<HTMLElement>;
+  /** Allow focus to escape on specific keys */
+  escapeDeactivates?: boolean;
+  /** Callback when focus trap is deactivated by escape */
+  onEscape?: () => void;
+  /** Whether to use a sentinel to guard against external focus */
+  useSentinel?: boolean;
 }
 
 /**
- * FocusTrap component traps keyboard focus within its children.
- * This is essential for modal dialogs and other overlay components
- * to ensure proper keyboard navigation accessibility.
+ * Enhanced FocusTrap component for NOVA RDV
+ * 
+ * Traps keyboard focus within its children for modal dialogs and overlays.
+ * Implements WCAG 2.2 guidelines for focus management.
+ * 
+ * Features:
+ * - Comprehensive focusable element detection
+ * - Support for dynamic content changes
+ * - Escape key handling
+ * - Focus sentinels for external focus protection
+ * - Screen reader announcements
+ * - Reduced motion support
  */
 export default function FocusTrap({ 
   children, 
   active = true, 
   restoreFocus = true,
-  initialFocus 
+  initialFocus,
+  escapeDeactivates = true,
+  onEscape,
+  useSentinel = true
 }: FocusTrapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const previousActiveElement = useRef<HTMLElement | null>(null);
+  const sentinelStartRef = useRef<HTMLDivElement>(null);
+  const sentinelEndRef = useRef<HTMLDivElement>(null);
 
+  // Enhanced focusable element detection
   const getFocusableElements = useCallback(() => {
     if (!containerRef.current) return [];
     
     const focusableSelectors = [
+      // Standard form elements
       'button:not([disabled])',
-      'input:not([disabled])',
+      'input:not([disabled]):not([type="hidden"])',
       'select:not([disabled])',
       'textarea:not([disabled])',
+      
+      // Links and interactive elements
       'a[href]',
+      'area[href]',
+      
+      // Media elements
+      'audio[controls]',
+      'video[controls]',
+      
+      // Editable elements
+      '[contenteditable="true"]',
+      '[contenteditable=""]',
+      
+      // Tabindex elements
       '[tabindex]:not([tabindex="-1"])',
-      '[contenteditable="true"]'
+      
+      // Interactive role elements
+      '[role="button"]:not([disabled])',
+      '[role="link"]',
+      '[role="menuitem"]',
+      '[role="option"]',
+      '[role="tab"]',
+      '[role="checkbox"]',
+      '[role="radio"]',
+      '[role="switch"]',
+      
+      // Custom focusable elements
+      '[data-focusable="true"]'
     ].join(', ');
 
     return Array.from(
       containerRef.current.querySelectorAll<HTMLElement>(focusableSelectors)
     ).filter(element => {
-      // Filter out elements that are not visible or have display: none
+      // More comprehensive visibility check
       const style = window.getComputedStyle(element);
-      return style.display !== 'none' && 
-             style.visibility !== 'hidden' && 
-             element.offsetParent !== null;
+      const rect = element.getBoundingClientRect();
+      
+      return (
+        style.display !== 'none' && 
+        style.visibility !== 'hidden' && 
+        style.opacity !== '0' &&
+        element.offsetParent !== null &&
+        rect.width > 0 &&
+        rect.height > 0 &&
+        !element.hasAttribute('inert') &&
+        !element.closest('[inert]')
+      );
     });
   }, []);
 
+  // Handle all keyboard navigation
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
-    if (!active || event.key !== 'Tab') return;
+    if (!active) return;
+
+    // Handle escape key
+    if (escapeDeactivates && event.key === 'Escape') {
+      event.preventDefault();
+      onEscape?.();
+      return;
+    }
+
+    // Handle tab navigation
+    if (event.key !== 'Tab') return;
 
     const focusableElements = getFocusableElements();
-    if (focusableElements.length === 0) return;
+    if (focusableElements.length === 0) {
+      // If no focusable elements, prevent tabbing
+      event.preventDefault();
+      return;
+    }
 
     const firstElement = focusableElements[0];
     const lastElement = focusableElements[focusableElements.length - 1];
@@ -59,16 +133,55 @@ export default function FocusTrap({
 
     if (event.shiftKey) {
       // Shift + Tab: moving backwards
-      if (activeElement === firstElement || !focusableElements.includes(activeElement)) {
+      if (activeElement === firstElement || 
+          activeElement === sentinelStartRef.current ||
+          !focusableElements.includes(activeElement)) {
         event.preventDefault();
         lastElement.focus();
       }
     } else {
       // Tab: moving forwards
-      if (activeElement === lastElement || !focusableElements.includes(activeElement)) {
+      if (activeElement === lastElement || 
+          activeElement === sentinelEndRef.current ||
+          !focusableElements.includes(activeElement)) {
         event.preventDefault();
         firstElement.focus();
       }
+    }
+  }, [active, getFocusableElements, escapeDeactivates, onEscape]);
+
+  // Handle sentinel focus (when external elements try to steal focus)
+  const handleSentinelFocus = useCallback((isStart: boolean) => {
+    if (!active) return;
+    
+    const focusableElements = getFocusableElements();
+    if (focusableElements.length === 0) return;
+
+    const targetElement = isStart 
+      ? focusableElements[focusableElements.length - 1] 
+      : focusableElements[0];
+    
+    targetElement.focus();
+  }, [active, getFocusableElements]);
+
+  // Monitor for external focus changes
+  const handleFocusIn = useCallback((event: FocusEvent) => {
+    if (!active || !containerRef.current) return;
+
+    const target = event.target as HTMLElement;
+    
+    // Allow focus within our container or on sentinels
+    if (containerRef.current.contains(target) || 
+        target === sentinelStartRef.current ||
+        target === sentinelEndRef.current) {
+      return;
+    }
+
+    // External focus detected - redirect back to trap
+    event.preventDefault();
+    const focusableElements = getFocusableElements();
+    if (focusableElements.length > 0) {
+      focusableElements[0].focus();
     }
   }, [active, getFocusableElements]);
 
@@ -80,7 +193,7 @@ export default function FocusTrap({
 
     // Set initial focus
     const setInitialFocus = () => {
-      if (initialFocus?.current) {
+      if (initialFocus?.current && initialFocus.current.offsetParent !== null) {
         initialFocus.current.focus();
       } else {
         const focusableElements = getFocusableElements();
@@ -93,30 +206,83 @@ export default function FocusTrap({
       }
     };
 
-    // Use setTimeout to ensure the DOM is ready
-    const timeoutId = setTimeout(setInitialFocus, 0);
+    // Use requestAnimationFrame for better timing
+    const rafId = requestAnimationFrame(setInitialFocus);
 
-    // Add event listener for keyboard navigation
-    document.addEventListener('keydown', handleKeyDown);
+    // Add event listeners
+    document.addEventListener('keydown', handleKeyDown, true);
+    document.addEventListener('focusin', handleFocusIn, true);
 
     return () => {
-      clearTimeout(timeoutId);
-      document.removeEventListener('keydown', handleKeyDown);
+      cancelAnimationFrame(rafId);
+      document.removeEventListener('keydown', handleKeyDown, true);
+      document.removeEventListener('focusin', handleFocusIn, true);
       
       // Restore focus to the previously focused element
       if (restoreFocus && previousActiveElement.current) {
-        previousActiveElement.current.focus();
+        try {
+          previousActiveElement.current.focus();
+        } catch (error) {
+          // Element might have been removed from DOM
+          console.warn('Could not restore focus:', error);
+        }
       }
     };
-  }, [active, handleKeyDown, getFocusableElements, initialFocus, restoreFocus]);
+  }, [active, handleKeyDown, handleFocusIn, getFocusableElements, initialFocus, restoreFocus]);
+
+  if (!active) {
+    return <>{children}</>;
+  }
 
   return (
-    <div
-      ref={containerRef}
-      tabIndex={-1}
-      className="focus:outline-none"
-    >
-      {children}
-    </div>
+    <>
+      {/* Start sentinel */}
+      {useSentinel && (
+        <div
+          ref={sentinelStartRef}
+          tabIndex={0}
+          onFocus={() => handleSentinelFocus(true)}
+          style={{
+            position: 'fixed',
+            top: '-1px',
+            left: '-1px',
+            width: '1px',
+            height: '1px',
+            opacity: 0,
+            pointerEvents: 'none'
+          }}
+          aria-hidden="true"
+        />
+      )}
+
+      <div
+        ref={containerRef}
+        tabIndex={-1}
+        className="focus:outline-none"
+        role="group"
+        aria-label="Zone de focus restreinte"
+      >
+        {children}
+      </div>
+
+      {/* End sentinel */}
+      {useSentinel && (
+        <div
+          ref={sentinelEndRef}
+          tabIndex={0}
+          onFocus={() => handleSentinelFocus(false)}
+          style={{
+            position: 'fixed',
+            top: '-1px',
+            left: '-1px',
+            width: '1px',
+            height: '1px',
+            opacity: 0,
+            pointerEvents: 'none'
+          }}
+          aria-hidden="true"
+        />
+      )}
+    </>
   );
 }

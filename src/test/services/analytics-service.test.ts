@@ -7,7 +7,7 @@ import {
   DateRange,
   ExportOptions 
 } from '@/lib/models/analytics';
-import { subDays, format } from 'date-fns';
+import { subDays, eachDayOfInterval } from 'date-fns';
 
 // Mock fetch globally
 global.fetch = vi.fn();
@@ -232,7 +232,7 @@ describe('AnalyticsService', () => {
       const result = analyticsService.generateMockAnalytics('test-cabinet', mockDateRange);
       
       // Use eachDayOfInterval to get the exact same calculation as the service
-      const expectedDays = require('date-fns').eachDayOfInterval({ start: mockDateRange.start, end: mockDateRange.end }).length;
+      const expectedDays = eachDayOfInterval({ start: mockDateRange.start, end: mockDateRange.end }).length;
       
       expect(result.timeSeries.appointments).toHaveLength(expectedDays);
       expect(result.timeSeries.revenue).toHaveLength(expectedDays);

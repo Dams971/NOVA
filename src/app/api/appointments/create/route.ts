@@ -1,8 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
+import { NextResponse } from 'next/server'
+import { createClient } from '@supabase/supabase-js'
 import { IONOSEmailService } from '@/services/ionos-email.service'
-import { SupabaseAuthService } from '@/services/supabase-auth.service'
 
 export interface CreateAppointmentRequest {
   patient_name: string
@@ -15,17 +14,35 @@ export interface CreateAppointmentRequest {
   send_confirmation_email?: boolean
 }
 
+export interface AppointmentData {
+  id: string
+  user_id: string
+  patient_name: string
+  patient_phone_e164: string
+  patient_email?: string | null
+  reason?: string | null
+  start_at: string
+  end_at: string
+  status: string
+  clinic_address: string
+  created_at?: string
+  updated_at?: string
+  duration_minutes?: number
+  start_at_local?: string
+  end_at_local?: string
+}
+
 export interface CreateAppointmentResponse {
   success: boolean
   message: string
   data?: {
-    appointment: any
+    appointment: AppointmentData
     email_sent?: boolean
   }
   error?: string
 }
 
-export async function POST(): Promise<NextResponse<CreateAppointmentResponse>> {
+export async function POST(request: Request): Promise<NextResponse<CreateAppointmentResponse>> {
   try {
     const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -300,7 +317,7 @@ export async function POST(): Promise<NextResponse<CreateAppointmentResponse>> {
       }
     })
 
-  } catch (_error) {
+  } catch (error) {
     console.error('Create appointment error:', error)
     
     return NextResponse.json(

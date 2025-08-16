@@ -77,7 +77,7 @@ export class CabinetHealthService {
       );
 
       await Promise.allSettled(monitoringPromises);
-    } catch (error) {
+    } catch (_error) {
       this.logger.error('Error in continuous cabinet monitoring', error);
     }
   }

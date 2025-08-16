@@ -195,7 +195,7 @@ export class PatientCommunicationService {
       templates.sort((a, b) => a.name.localeCompare(b.name));
 
       return { success: true, data: templates };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: 'Failed to fetch templates' };
     }
   }
@@ -211,7 +211,7 @@ export class PatientCommunicationService {
 
       this.templates.set(newTemplate.id, newTemplate);
       return { success: true, data: newTemplate };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: 'Failed to create template' };
     }
   }
@@ -235,7 +235,7 @@ export class PatientCommunicationService {
           unreadCount
         }
       };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: 'Failed to fetch communication history' };
     }
   }
@@ -270,7 +270,7 @@ export class PatientCommunicationService {
 
       this.messages.set(message.id, message);
       return { success: true, data: message };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: 'Failed to send message' };
     }
   }
@@ -289,7 +289,7 @@ export class PatientCommunicationService {
       }
 
       return { success: true, data: true };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: 'Failed to mark message as read' };
     }
   }
@@ -338,7 +338,7 @@ export class PatientCommunicationService {
       }
 
       return { success: true, data: messages };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: 'Failed to send templated message' };
     }
   }

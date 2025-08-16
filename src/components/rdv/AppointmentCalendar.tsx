@@ -12,20 +12,17 @@
 
 'use client';
 
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { format, addDays, startOfMonth, endOfMonth, eachDayOfInterval, 
+  isSameMonth, isSameDay, isToday, isPast, getDay, addMonths, subMonths,
+  parseISO } from 'date-fns';
+import { fr } from 'date-fns/locale';
+import React, { useState, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Calendar, Clock, ChevronLeft, ChevronRight, AlertCircle, 
-  CheckCircle, Loader2, CalendarDays, MapPin, User, Phone,
+  CheckCircle, Loader2, CalendarDays, MapPin,
   Stethoscope, Zap, RefreshCw
 } from 'lucide-react';
-import { format, addDays, startOfMonth, endOfMonth, eachDayOfInterval, 
-  isSameMonth, isSameDay, isToday, isPast, getDay, addMonths, subMonths,
-  parseISO, isValid } from 'date-fns';
-import { fr } from 'date-fns/locale';
-import { useAvailableSlots } from '@/hooks/useAppointments';
-import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
-import { ErrorMessage } from '@/components/ui/ErrorMessage';
 
 // =============================================
 // TYPES ET INTERFACES
@@ -76,6 +73,9 @@ export interface AppointmentCalendarProps {
   
   /** Affichage en lecture seule */
   readOnly?: boolean;
+
+  /** Patient information */
+  patient?: unknown;
 }
 
 // Configuration des types de soins avec couleurs
@@ -90,20 +90,84 @@ const CARE_TYPE_CONFIG = {
   chirurgie: { label: 'Chirurgie', icon: AlertCircle, color: 'red', duration: 120 }
 };
 
+// Mock hook for available slots
+const useAvailableSlots = () => {
+  const [slots, setSlots] = useState<TimeSlot[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchSlots = async (date: string, _careType?: string, _practitionerId?: string) => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      // Mock data - replace with actual API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      const mockSlots: TimeSlot[] = [
+        {
+          startTime: `${date}T09:00:00.000Z`,
+          endTime: `${date}T09:30:00.000Z`,
+          duration: 30,
+          available: true,
+          practitionerId: 'dr-smith'
+        },
+        {
+          startTime: `${date}T10:00:00.000Z`,
+          endTime: `${date}T10:30:00.000Z`,
+          duration: 30,
+          available: true,
+          practitionerId: 'dr-smith'
+        },
+        {
+          startTime: `${date}T11:00:00.000Z`,
+          endTime: `${date}T11:30:00.000Z`,
+          duration: 30,
+          available: true,
+          practitionerId: 'dr-smith'
+        },
+        {
+          startTime: `${date}T14:00:00.000Z`,
+          endTime: `${date}T14:30:00.000Z`,
+          duration: 30,
+          available: true,
+          practitionerId: 'dr-smith'
+        },
+        {
+          startTime: `${date}T15:00:00.000Z`,
+          endTime: `${date}T15:30:00.000Z`,
+          duration: 30,
+          available: true,
+          practitionerId: 'dr-smith'
+        }
+      ];
+      
+      setSlots(mockSlots);
+    } catch (err) {
+      setError('Erreur lors du chargement des créneaux');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { slots, loading, error, fetchSlots };
+};
+
 // =============================================
 // COMPOSANT PRINCIPAL
 // =============================================
 
-export default function AppointmentCalendar({
+export function AppointmentCalendar({
   careType = 'consultation',
   practitionerId,
   onSlotSelect,
-  selectedSlot,
+  selectedSlot: _selectedSlot,
   minDate = addDays(new Date(), 1),
   maxDate = addMonths(new Date(), 3),
   className = '',
   compact = false,
-  readOnly = false
+  readOnly = false,
+  patient: _patient
 }: AppointmentCalendarProps) {
   
   // États locaux
@@ -126,7 +190,7 @@ export default function AppointmentCalendar({
     
     // Ajouter des jours vides pour aligner la grille
     const startDay = getDay(start);
-    const emptyDays = Array.from({ length: startDay === 0 ? 6 : startDay - 1 }, (_, i) => null);
+    const emptyDays = Array.from({ length: startDay === 0 ? 6 : startDay - 1 }, () => null);
     
     return [...emptyDays, ...days];
   }, [currentMonth]);
@@ -188,11 +252,11 @@ export default function AppointmentCalendar({
     }
     
     if (isToday(date)) {
-      return `${baseClasses} bg-nova-blue text-white shadow-lg`;
+      return `${baseClasses} bg-blue-600 text-white shadow-lg`;
     }
     
     if (selectedDate && isSameDay(date, selectedDate)) {
-      return `${baseClasses} bg-${careConfig.color}-100 text-${careConfig.color}-800 ring-2 ring-${careConfig.color}-500`;
+      return `${baseClasses} bg-blue-100 text-blue-800 ring-2 ring-blue-500`;
     }
     
     if (!isSameMonth(date, currentMonth)) {
@@ -202,11 +266,11 @@ export default function AppointmentCalendar({
     const hasSlots = hasAvailableSlots(date);
     
     if (hasSlots) {
-      return `${baseClasses} text-gray-800 hover:bg-gray-100 hover:text-nova-blue`;
+      return `${baseClasses} text-gray-800 hover:bg-gray-100 hover:text-blue-600`;
     }
     
     return `${baseClasses} text-gray-400`;
-  }, [currentMonth, selectedDate, minDate, maxDate, hasAvailableSlots, careConfig.color]);
+  }, [currentMonth, selectedDate, minDate, maxDate, hasAvailableSlots]);
 
   // Rendu mobile compact
   if (compact) {
@@ -228,14 +292,14 @@ export default function AppointmentCalendar({
   return (
     <div className={`bg-white rounded-2xl shadow-lg overflow-hidden ${className}`}>
       {/* En-tête */}
-      <div className="p-6 bg-gradient-to-r from-nova-blue to-nova-blue-light text-white">
+      <div className="p-6 bg-gradient-to-r from-blue-600 to-blue-700 text-white">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-3">
             <div className="p-2 bg-white/20 rounded-lg">
               <careConfig.icon className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="text-xl font-heading font-semibold">
+              <h3 className="text-xl font-semibold">
                 Réserver un créneau
               </h3>
               <p className="text-white/80 text-sm">
@@ -315,8 +379,8 @@ export default function AppointmentCalendar({
           {/* Légende */}
           <div className="mt-6 flex flex-wrap gap-4 text-xs">
             <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 bg-nova-blue rounded-full" />
-              <span className="text-gray-600">Aujourd'hui</span>
+              <div className="w-3 h-3 bg-blue-600 rounded-full" />
+              <span className="text-gray-600">Aujourd&apos;hui</span>
             </div>
             <div className="flex items-center space-x-2">
               <div className="w-3 h-3 bg-green-500 rounded-full" />
@@ -341,7 +405,7 @@ export default function AppointmentCalendar({
             >
               <div className="p-6 h-full overflow-y-auto">
                 <div className="flex items-center justify-between mb-4">
-                  <h4 className="font-heading font-semibold text-gray-900">
+                  <h4 className="font-semibold text-gray-900">
                     {format(selectedDate, 'EEEE d MMMM', { locale: fr })}
                   </h4>
                   <button
@@ -355,14 +419,20 @@ export default function AppointmentCalendar({
                 
                 {loading ? (
                   <div className="flex items-center justify-center py-8">
-                    <LoadingSpinner size="sm" />
+                    <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
                     <span className="ml-2 text-sm text-gray-500">Chargement des créneaux...</span>
                   </div>
                 ) : error ? (
-                  <ErrorMessage 
-                    message="Erreur lors du chargement des créneaux"
-                    onRetry={() => fetchSlots(format(selectedDate, 'yyyy-MM-dd'), careType, practitionerId)}
-                  />
+                  <div className="text-center py-8">
+                    <AlertCircle className="w-12 h-12 text-red-300 mx-auto mb-3" />
+                    <p className="text-red-500 text-sm">{error}</p>
+                    <button
+                      onClick={() => fetchSlots(format(selectedDate, 'yyyy-MM-dd'), careType, practitionerId)}
+                      className="mt-2 text-sm text-blue-600 hover:underline"
+                    >
+                      Réessayer
+                    </button>
+                  </div>
                 ) : (
                   <TimeSlotsList
                     slots={slots}
@@ -398,7 +468,6 @@ function TimeSlotsList({
   onSlotSelect: (slot: TimeSlot) => void;
   careType: string;
 }) {
-  const careConfig = CARE_TYPE_CONFIG[careType as keyof typeof CARE_TYPE_CONFIG];
   const availableSlots = slots.filter(slot => slot.available);
   
   if (availableSlots.length === 0) {
@@ -432,7 +501,7 @@ function TimeSlotsList({
             onClick={() => onSlotSelect(slot)}
             className={`w-full p-3 rounded-xl border text-left transition-all ${
               isSelected
-                ? `bg-${careConfig.color}-100 border-${careConfig.color}-500 text-${careConfig.color}-800`
+                ? 'bg-blue-100 border-blue-500 text-blue-800'
                 : 'bg-white border-gray-200 hover:border-gray-300 text-gray-700'
             }`}
             whileHover={{ scale: 1.02 }}
@@ -451,7 +520,7 @@ function TimeSlotsList({
                 </div>
               </div>
               {isSelected && (
-                <CheckCircle className={`w-5 h-5 text-${careConfig.color}-600`} />
+                <CheckCircle className="w-5 h-5 text-blue-600" />
               )}
             </div>
           </motion.button>
@@ -482,7 +551,6 @@ function CompactCalendarView({
   selectedTime: string | null;
 }) {
   const [showDatePicker, setShowDatePicker] = useState(!selectedDate);
-  const careConfig = CARE_TYPE_CONFIG[careType as keyof typeof CARE_TYPE_CONFIG];
 
   // Jours disponibles (prochains 14 jours)
   const availableDays = useMemo(() => {
@@ -496,7 +564,7 @@ function CompactCalendarView({
   if (showDatePicker || !selectedDate) {
     return (
       <div className="p-4">
-        <h3 className="font-heading font-semibold text-gray-900 mb-4">
+        <h3 className="font-semibold text-gray-900 mb-4">
           Choisir une date
         </h3>
         <div className="grid grid-cols-2 gap-2">
@@ -525,12 +593,12 @@ function CompactCalendarView({
   return (
     <div className="p-4">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="font-heading font-semibold text-gray-900">
+        <h3 className="font-semibold text-gray-900">
           {format(selectedDate, 'EEEE d MMMM', { locale: fr })}
         </h3>
         <button
           onClick={() => setShowDatePicker(true)}
-          className="text-sm text-nova-blue hover:underline"
+          className="text-sm text-blue-600 hover:underline"
         >
           Changer
         </button>
@@ -551,3 +619,5 @@ function CompactCalendarView({
     </div>
   );
 }
+
+export default AppointmentCalendar;

@@ -15,13 +15,13 @@ import { v4 as uuidv4 } from 'uuid';
 
 // Enhanced logger for comprehensive tracking
 const logger = {
-  info: (message: string, data?: any) => {
+  info: (message: string, data?: unknown) => {
     console.log(`[RDV-API] ${message}`, data ? JSON.stringify(data, null, 2) : '');
   },
-  error: (message: string, error?: any) => {
+  error: (message: string, error?: unknown) => {
     console.error(`[RDV-API ERROR] ${message}`, error);
   },
-  debug: (message: string, data?: any) => {
+  debug: (message: string, data?: unknown) => {
     if (process.env.NODE_ENV === 'development') {
       console.log(`[RDV-DEBUG] ${message}`, data || '');
     }
@@ -29,10 +29,10 @@ const logger = {
 };
 
 // In-memory session storage (replace with Redis in production)
-const sessionStore = new Map<string, any>();
+const sessionStore = new Map<string, unknown>();
 
 // Session management utilities
-function getSessionId(request: NextRequest): string {
+function getSessionId(request: Request): string {
   const sessionId = request.headers.get('x-session-id') || 
                    request.headers.get('x-chat-session') ||
                    uuidv4();
@@ -516,7 +516,7 @@ export async function GET() {
 }
 
 // Cleanup function to periodically clean old sessions (call from cron job)
-export async function cleanup() {
+export async function _cleanup() {
   try {
     const dialogManager = getSharedDialogManager();
     const cleanedSessions = dialogManager.cleanupSessions();

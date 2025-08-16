@@ -529,7 +529,7 @@ export class AuthService {
       }
 
       return { valid: true, patient, session: foundSession };
-    } catch (error) {
+    } catch (_error) {
       return { valid: false, error: 'Invalid token' };
     }
   }

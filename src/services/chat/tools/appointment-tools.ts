@@ -308,7 +308,7 @@ export class AppointmentTools {
 
       return result;
 
-    } catch (error) {
+    } catch (_error) {
       await connection.rollback();
       throw error;
     } finally {
@@ -411,7 +411,7 @@ export class AppointmentTools {
         status: appointment.status
       };
 
-    } catch (error) {
+    } catch (_error) {
       await connection.rollback();
       throw error;
     } finally {

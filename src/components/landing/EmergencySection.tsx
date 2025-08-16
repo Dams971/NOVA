@@ -94,7 +94,7 @@ export default function EmergencySection() {
         >
           <div className="inline-flex items-center space-x-2 bg-red-100 text-red-800 px-4 py-2 rounded-full mb-4">
             <AlertTriangle className="w-4 h-4" />
-            <span className="text-sm font-medium">Service d'urgence 24h/7j</span>
+            <span className="text-sm font-medium">Service d&apos;urgence 24h/7j</span>
           </div>
           
           <h2 className="text-3xl md:text-4xl font-heading font-bold text-gray-900 mb-4">
@@ -115,7 +115,7 @@ export default function EmergencySection() {
           viewport={{ once: true }}
         >
           <Phone className="w-12 h-12 mx-auto mb-4" />
-          <h3 className="text-2xl font-bold mb-2">Ligne d'urgence Nova</h3>
+          <h3 className="text-2xl font-bold mb-2">Ligne d&apos;urgence Nova</h3>
           <a 
             href="tel:+33123456789"
             className="text-4xl font-bold hover:text-red-200 transition-colors"

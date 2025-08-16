@@ -135,7 +135,7 @@ select {
 
 :root {
   /* Text colors - 4.5:1 minimum for normal text */
-  --text-primary: #111827; /* Gray-900, 19.3:1 on white */
+  --text-primary: neutral-800; /* Gray-900, 19.3:1 on white */
   --text-secondary: #374151; /* Gray-700, 7.04:1 on white */
   --text-tertiary: #4b5563; /* Gray-600, 5.74:1 on white */
   --text-disabled: #6b7280; /* Gray-500, 4.5:1 on white */

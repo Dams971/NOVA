@@ -134,7 +134,7 @@ class Bootstrap {
         this.logger.info('Graceful shutdown completed');
         process.exit(0);
 
-      } catch (error) {
+      } catch (_error) {
         this.logger.error('Error during graceful shutdown', error);
         process.exit(1);
       }
@@ -181,7 +181,7 @@ class Bootstrap {
       
       this.logger.info(`Cabinet database created successfully: ${cabinetId}`);
       
-    } catch (error) {
+    } catch (_error) {
       this.logger.error(`Failed to create cabinet database: ${cabinetId}`, error);
       
       // Record failure metric

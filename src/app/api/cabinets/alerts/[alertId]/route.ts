@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { CabinetHealthService } from '@/lib/services/cabinet-health-service';
 import APIGateway from '@/lib/api/gateway';
 
-const gateway = new APIGateway({
+const _gateway = new APIGateway({
   auth: { required: true, roles: ['super_admin', 'admin'] },
   rateLimit: { maxRequests: 60, windowMs: 60000 }
 });
