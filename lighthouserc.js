@@ -8,9 +8,10 @@ module.exports = {
         'http://localhost:3000/chat',
         'http://localhost:3000/demo-nova'
       ],
-      startServerCommand: 'npm run start',
-      startServerReadyPattern: 'ready started server on',
-      startServerReadyTimeout: 30000,
+      // Server should already be started by GitHub Actions
+      // startServerCommand: 'npm run start',
+      // startServerReadyPattern: 'ready started server on',
+      // startServerReadyTimeout: 30000,
       numberOfRuns: 3,
       settings: {
         preset: 'desktop',
