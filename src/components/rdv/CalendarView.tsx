@@ -1,6 +1,6 @@
 import { ChevronLeft, ChevronRight, Calendar, Clock } from 'lucide-react';
 import { useState } from 'react';
-import { ButtonMedical } from '@/components/ui/nova/ButtonMedical';
+import { ButtonMedical } from '@/components/ui/nova';
 import { cn } from '@/lib/utils';
 
 interface TimeSlot {

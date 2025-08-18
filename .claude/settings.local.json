@@ -50,7 +50,9 @@
       "Bash(NODE_OPTIONS=\"--max-old-space-size=4096\" timeout 60 npm run build)",
       "Bash(export NODE_OPTIONS=\"--max-old-space-size=4096\")",
       "Bash(powershell:*)",
-      "Bash(cmd /c \"rmdir /s /q .next\")"
+      "Bash(cmd /c \"rmdir /s /q .next\")",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": [],

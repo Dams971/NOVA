@@ -1,6 +1,6 @@
 import { Send, Bot, User } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
-import { ButtonMedical } from '@/components/ui/nova/ButtonMedical';
+import { ButtonMedical } from '@/components/ui/nova';
 import { cn } from '@/lib/utils';
 
 interface Message {
