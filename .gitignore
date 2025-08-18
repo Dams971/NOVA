@@ -39,8 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-.gitignore
-nul
 
 # Lighthouse CI
 .lighthouseci/*
@@ -48,3 +46,57 @@ nul
 lhci_reports/
 *.report.json
 *.report.html
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+Thumbs.db
+
+# Test results
+test-results/
+playwright-report/
+playwright/.cache/
+vitest-results.json
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+tmp/
+temp/
+
+# Build artifacts
+dist/
+
+# PWA files
+public/sw.js
+public/workbox-*.js
+public/worker-*.js
+public/sw.js.map
+public/workbox-*.js.map
+public/worker-*.js.map
+
+# Sentry
+.sentryclirc
+
+# Database
+*.sqlite
+*.sqlite3
+*.db
+
+# Local env files (but keep .env.example)
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Package manager
+pnpm-lock.yaml
+package-lock.json
+!yarn.lock
