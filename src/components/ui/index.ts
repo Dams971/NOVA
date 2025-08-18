@@ -4,6 +4,10 @@ export { default as Header } from '../layout/Header';
 export { default as DatePicker } from './calendar/DatePicker';
 export * from './Skeleton';
 
+// Nova Design System components
+export { ButtonMedical, buttonVariants } from './nova/ButtonMedical';
+export type { ButtonMedicalProps } from './nova/ButtonMedical';
+
 // Utility components - Named exports
 export { ErrorMessage, FieldError, FormError } from './ErrorMessage';
 export { default as FocusTrap } from './FocusTrap';
