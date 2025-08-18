@@ -10,10 +10,10 @@
  * - Messages d'erreur en français
  */
 
-import React from 'react'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { axe } from 'jest-axe'
+import React from 'react'
 import { vi } from 'vitest'
 import { MedicalInput } from '@/components/ui/medical/MedicalInput'
 

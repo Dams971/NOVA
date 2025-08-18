@@ -3,10 +3,10 @@
  * Comprehensive type definitions for request/response payloads
  */
 
-import { User } from './auth';
 import { Appointment, AppointmentStatus } from './appointment';
-import { Patient } from './patient';
+import { User } from './auth';
 import { Cabinet, CabinetHealth } from './cabinet';
+import { Patient } from './patient';
 
 // Base API Response structure
 export interface ApiResponse<T = unknown> {

@@ -1,12 +1,12 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { AppointmentAssistant } from '../lib/llm/appointments';
-import { appointmentService } from '../services/appointment.service';
 import { 
   appointmentSchema, 
   patientSchema, 
   slotSchema,
   phoneE164Schema 
 } from '../lib/validation/rdv-validation';
+import { appointmentService } from '../services/appointment.service';
 
 describe('RDV System Validation Tests', () => {
   

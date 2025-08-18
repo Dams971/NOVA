@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { CabinetKPIs } from '@/lib/models/performance';
 import { PerformanceService } from '@/lib/services/performance-service';
-import { CabinetKPIs, PerformanceAlert } from '@/lib/models/performance';
 
 describe('PerformanceService', () => {
   let performanceService: PerformanceService;

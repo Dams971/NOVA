@@ -9,10 +9,10 @@
  * - Error handling
  */
 
-import { render, screen, fireEvent, waitFor, within } from '@/test/test-utils';
+import userEvent from '@testing-library/user-event';
 import { RDVPage } from '@/app/rdv/page';
 import { setupMockFetch, createTestAppointment, createTestCabinet } from '@/test/setup';
-import userEvent from '@testing-library/user-event';
+import { render, screen, fireEvent, waitFor, within } from '@/test/test-utils';
 
 // Mock the ChatRDV component to avoid WebSocket issues in tests
 vi.mock('@/components/rdv/ChatRDV', () => ({

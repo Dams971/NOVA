@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
 import { X, Calendar, Users, Filter } from 'lucide-react';
+import React, { useState } from 'react';
 import { PatientFilters } from '@/lib/models/patient';
 
 interface PatientFiltersPanelProps {
@@ -13,7 +13,7 @@ interface PatientFiltersPanelProps {
 export default function PatientFiltersPanel({ filters, onFiltersChange, onClose }: PatientFiltersPanelProps) {
   const [localFilters, setLocalFilters] = useState<PatientFilters>(filters);
 
-  const handleFilterChange = (key: keyof PatientFilters, value: any) => {
+  const handleFilterChange = (key: keyof PatientFilters, value: string | number | boolean | undefined) => {
     const newFilters = { ...localFilters, [key]: value };
     setLocalFilters(newFilters);
   };

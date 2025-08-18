@@ -32,7 +32,7 @@ async function handleEnableMFA(request: AuthenticatedRequest): Promise<NextRespo
       message: 'MFA has been successfully enabled for your account'
     });
 
-  } catch (_error) {
+  } catch (error) {
     console.error('MFA enable error:', error);
 
     if (error instanceof MFAError) {

@@ -99,7 +99,7 @@ export default function KPIWidget({ widget, kpis }: KPIWidgetProps) {
     }
   };
 
-  const getIconColor = (metric: keyof CabinetKPIs, value: any) => {
+  const getIconColor = (metric: keyof CabinetKPIs, value: number) => {
     switch (metric) {
       case 'totalRevenue':
       case 'totalAppointments':

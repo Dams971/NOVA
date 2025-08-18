@@ -1,7 +1,7 @@
 'use client';
 
-import React, { forwardRef, useState, useId } from 'react';
 import { Eye, EyeOff, AlertCircle, CheckCircle, Info } from 'lucide-react';
+import React, { forwardRef, useState, useId } from 'react';
 import { cn } from '@/lib/utils';
 
 export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {

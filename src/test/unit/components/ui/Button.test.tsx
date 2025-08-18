@@ -9,10 +9,10 @@
  * - French language support
  */
 
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen, userEvent, checkAccessibility } from '@/test/test-utils';
-import Button from '@/components/ui/forms/Button';
 import { CheckIcon, UserIcon } from 'lucide-react';
+import { describe, it, expect, vi } from 'vitest';
+import Button from '@/components/ui/forms/Button';
+import { render, screen, userEvent, checkAccessibility } from '@/test/test-utils';
 
 describe('Button Component', () => {
   describe('Basic Rendering', () => {

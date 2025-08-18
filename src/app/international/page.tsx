@@ -1,7 +1,7 @@
 // src/app/international/page.tsx - Page dédiée à la présence internationale
-import Navigation from '@/components/landing/Navigation'
-import InternationalExpansion from '@/components/landing/InternationalExpansion'
 import Footer from '@/components/landing/Footer'
+import InternationalExpansion from '@/components/landing/InternationalExpansion'
+import Navigation from '@/components/landing/Navigation'
 
 export default function InternationalPage() {
   return (
@@ -14,7 +14,7 @@ export default function InternationalPage() {
           </h1>
           <p className="text-xl text-white/90 max-w-3xl mx-auto">
             Un réseau dentaire mondial en expansion constante, présent dans 12 pays 
-            avec des plans d'ouverture dans 6 nouveaux marchés d'ici 2025.
+            avec des plans d&apos;ouverture dans 6 nouveaux marchés d&apos;ici 2025.
           </p>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-12 max-w-4xl mx-auto">

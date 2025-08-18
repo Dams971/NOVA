@@ -5,14 +5,18 @@
  * Implements OTP sign-in, sign-up, and profile management
  */
 
-import { supabase } from '@/lib/supabase/client';
 import { parsePhoneNumber, isValidPhoneNumber } from 'libphonenumber-js';
+import { supabase } from '@/lib/supabase/client';
 
 export interface SignInResult {
   success: boolean;
   message: string;
   requiresVerification?: boolean;
-  user?: any;
+  user?: Record<string, unknown>;
+  session?: Record<string, unknown>;
+  error?: {
+    message: string;
+  };
 }
 
 export interface SignUpData {
@@ -40,22 +44,30 @@ export class SupabaseAuthService {
         if (error.message.includes('User not found') && !shouldCreateUser) {
           return {
             success: false,
-            message: 'Aucun compte trouvé avec cet email. Veuillez vous inscrire.'
+            message: 'Aucun compte trouvé avec cet email. Veuillez vous inscrire.',
+            error: { message: error.message }
           };
         }
-        throw error;
+        return {
+          success: false,
+          message: error.message || 'Erreur lors de la connexion',
+          error: { message: error.message }
+        };
       }
 
       return {
         success: true,
         message: 'Un email de connexion a été envoyé. Vérifiez votre boîte mail.',
-        requiresVerification: true
+        requiresVerification: true,
+        user: data.user,
+        session: data.session
       };
-    } catch (error: any) {
+    } catch (error) {
       console.error('SignIn error:', error);
       return {
         success: false,
-        message: error.message || 'Erreur lors de la connexion'
+        message: (error as Error).message || 'Erreur lors de la connexion',
+        error: { message: (error as Error).message }
       };
     }
   }
@@ -110,7 +122,7 @@ export class SupabaseAuthService {
         message: 'Compte créé avec succès! Un email de vérification a été envoyé.',
         requiresVerification: true
       };
-    } catch (error: any) {
+    } catch (error) {
       console.error('SignUp error:', error);
       return {
         success: false,
@@ -144,7 +156,7 @@ export class SupabaseAuthService {
         });
 
       if (error) throw error;
-    } catch (_error) {
+    } catch (error) {
       console.error('Profile upsert error:', error);
       throw error;
     }
@@ -171,7 +183,7 @@ export class SupabaseAuthService {
         });
 
       if (error) throw error;
-    } catch (_error) {
+    } catch (error) {
       console.error('Consent recording error:', error);
       // Don't throw - consent recording failure shouldn't block signup
     }
@@ -198,6 +210,13 @@ export class SupabaseAuthService {
 
     if (error) throw error;
     return data;
+  }
+
+  /**
+   * Check if user exists (alias for checkAccountExists)
+   */
+  async checkUserExists(email: string): Promise<boolean> {
+    return this.checkAccountExists(email);
   }
 
   /**
@@ -246,7 +265,7 @@ export class SupabaseAuthService {
         message: 'Connexion réussie!',
         user: data.user
       };
-    } catch (error: any) {
+    } catch (error) {
       return {
         success: false,
         message: 'Code invalide ou expiré'
@@ -270,7 +289,7 @@ export class SupabaseAuthService {
   /**
    * Listen to auth state changes
    */
-  onAuthStateChange(callback: (event: string, session: any) => void) {
+  onAuthStateChange(callback: (event: string, session: unknown) => void) {
     return supabase.auth.onAuthStateChange(callback);
   }
 }

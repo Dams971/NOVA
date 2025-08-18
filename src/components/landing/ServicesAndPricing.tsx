@@ -1,6 +1,5 @@
 'use client';
 
-import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   Activity,
@@ -14,6 +13,7 @@ import {
   CreditCard,
   FileText
 } from 'lucide-react';
+import React, { useState } from 'react';
 
 interface Service {
   id: string;
@@ -132,7 +132,7 @@ export default function ServicesAndPricing() {
     : services.filter(service => service.category === activeCategory);
 
   const handleBookService = (serviceId: string) => {
-    console.log(`Réserver le service ${serviceId}`);
+    console.warn(`Réserver le service ${serviceId}`);
     // Logique de redirection vers la prise de RDV avec service pré-sélectionné
   };
 

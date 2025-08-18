@@ -1,8 +1,5 @@
 'use client';
 
-import React, { useState } from 'react';
-import { format } from 'date-fns';
-import { fr } from 'date-fns/locale';
 import { 
   User, 
   Mail, 
@@ -16,6 +13,7 @@ import {
   Clock,
   AlertCircle
 } from 'lucide-react';
+import React, { useState } from 'react';
 import { Patient } from '@/lib/models/patient';
 
 interface PatientListProps {

@@ -1,3 +1,4 @@
+import DatabaseManager from '../database/connection';
 import { 
   Cabinet, 
   CreateCabinetRequest, 
@@ -7,7 +8,6 @@ import {
 } from '../models/cabinet';
 import { CabinetRepository, MySQLCabinetRepository } from '../repositories/cabinet-repository';
 import { validateCreateCabinet, validateUpdateCabinet, ValidationResult } from '../validation/cabinet';
-import DatabaseManager from '../database/connection';
 
 export interface CabinetServiceResult<T> {
   success: boolean;
@@ -74,10 +74,10 @@ export class CabinetService {
         data: cabinet
       };
     } catch (_error) {
-      console.error('Error in createCabinet:', error);
+      console.error('Error in createCabinet:', _error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error occurred'
+        error: _error instanceof Error ? _error.message : 'Unknown error occurred'
       };
     }
   }

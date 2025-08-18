@@ -1,4 +1,4 @@
-import { User, Phone, Calendar, Clock } from 'lucide-react';
+import { User, Calendar, Clock } from 'lucide-react';
 
 export function PatientContext() {
   return (
@@ -70,7 +70,7 @@ export function PatientContext() {
       <div className="p-4 bg-warning-50 border border-warning-200 rounded-medical-small">
         <h4 className="font-medium text-warning-900 mb-2">À prévoir</h4>
         <ul className="text-sm text-warning-800 space-y-1">
-          <li>• Carte d'identité</li>
+          <li>• Carte d&apos;identité</li>
           <li>• Carte vitale</li>
           <li>• Ordonnances récentes</li>
         </ul>

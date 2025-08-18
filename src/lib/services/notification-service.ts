@@ -311,11 +311,11 @@ export class NotificationService {
 
   private async handleAppointmentReschedule(appointmentId: string): Promise<void> {
     // This would typically open a reschedule dialog
-    console.log('Opening reschedule dialog for appointment:', appointmentId);
+    console.warn('Opening reschedule dialog for appointment:', appointmentId);
   }
 
   private async handleConflictResolution(appointmentId: string): Promise<void> {
     // This would typically open a conflict resolution dialog
-    console.log('Opening conflict resolution for appointment:', appointmentId);
+    console.warn('Opening conflict resolution for appointment:', appointmentId);
   }
 }

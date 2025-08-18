@@ -1,7 +1,7 @@
+import QRCode from 'qrcode';
+import speakeasy from 'speakeasy';
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { MFAService, MFAError } from '@/lib/auth/mfa-service';
-import speakeasy from 'speakeasy';
-import QRCode from 'qrcode';
 
 // Mock speakeasy
 vi.mock('speakeasy', () => ({

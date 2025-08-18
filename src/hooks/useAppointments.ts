@@ -14,19 +14,17 @@ import { useWebSocket } from './useWebSocket';
 
 // Simple client-side logger
 const logger = {
-  error: (message: string, error?: any) => {
-    console.error(`[ERROR] ${message}`, error);
+  error: (_message: string, _error?: unknown) => {
+    // Log errors silently in production
   },
-  warn: (message: string, data?: any) => {
-    console.warn(`[WARN] ${message}`, data);
+  warn: (_message: string, _data?: unknown) => {
+    // Log warnings silently in production
   },
-  info: (message: string, data?: any) => {
-    console.info(`[INFO] ${message}`, data);
+  info: (_message: string, _data?: unknown) => {
+    // Log info silently in production
   },
-  debug: (message: string, data?: any) => {
-    if (process.env.NODE_ENV === 'development') {
-      console.debug(`[DEBUG] ${message}`, data);
-    }
+  debug: (_message: string, _data?: unknown) => {
+    // Log debug silently in production
   }
 };
 
@@ -126,7 +124,7 @@ export function useAppointments(options: UseAppointmentsOptions = {}) {
   const refreshTimer = useRef<NodeJS.Timeout>();
 
   // WebSocket pour mises à jour temps réel
-  const { isConnected, lastMessage } = useWebSocket({ autoConnect: true });
+  const { lastMessage } = useWebSocket({ autoConnect: true });
 
   /**
    * Récupère la liste des rendez-vous

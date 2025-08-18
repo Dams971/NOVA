@@ -1,8 +1,8 @@
 'use client';
 
+import { motion, AnimatePresence } from 'framer-motion';
 import { X, Calendar, Clock, CheckCircle2, Loader2 } from 'lucide-react';
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { AppointmentFormData, careTypes } from './types';
 
 interface AppointmentFormModalProps {

@@ -1,8 +1,8 @@
-import DatabaseManager from '../database/connection';
 import EnvironmentManager from '../config/environment';
+import DatabaseManager from '../database/connection';
 import Logger from '../logging/logger';
-import MetricsCollector from '../monitoring/metrics';
 import HealthMonitor from '../monitoring/health';
+import MetricsCollector from '../monitoring/metrics';
 
 /**
  * Bootstrap class to initialize core infrastructure

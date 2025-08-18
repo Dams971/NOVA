@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { CreateCabinetRequest, UpdateCabinetRequest, CabinetStatus, UserRole } from '../../lib/models/cabinet';
 import { 
   validateCreateCabinet, 
   validateUpdateCabinet,
@@ -7,7 +8,6 @@ import {
   validateSlug,
   validateUserRole
 } from '../../lib/validation/cabinet';
-import { CreateCabinetRequest, UpdateCabinetRequest, CabinetStatus, UserRole } from '../../lib/models/cabinet';
 
 describe('Cabinet Validation', () => {
   describe('validateCreateCabinet', () => {

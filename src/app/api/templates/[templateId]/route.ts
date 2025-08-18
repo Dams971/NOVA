@@ -3,10 +3,10 @@ import { CabinetProvisioningService } from '../../../../lib/services/cabinet-pro
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { templateId: string } }
+  { params }: { params: Promise<{ templateId: string }> }
 ) {
   try {
-    const { templateId } = params;
+    const { templateId } = await params;
 
     if (!templateId) {
       return NextResponse.json(
@@ -30,7 +30,7 @@ export async function GET(
       data: template
     });
 
-  } catch (_error) {
+  } catch (error) {
     console.error('Get template API error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
@@ -41,10 +41,10 @@ export async function GET(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { templateId: string } }
+  { params }: { params: Promise<{ templateId: string }> }
 ) {
   try {
-    const { templateId } = params;
+    const { templateId } = await params;
 
     if (!templateId) {
       return NextResponse.json(
@@ -85,7 +85,7 @@ export async function DELETE(
       message: 'Template removed successfully'
     });
 
-  } catch (_error) {
+  } catch (error) {
     console.error('Delete template API error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },

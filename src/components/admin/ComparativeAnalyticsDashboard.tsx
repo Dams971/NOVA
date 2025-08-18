@@ -1,5 +1,20 @@
 'use client';
 
+import { subDays } from 'date-fns';
+import { 
+  TrendingUp, 
+  TrendingDown, 
+  Minus, 
+  AlertTriangle,
+  Award,
+  Target,
+  RefreshCw,
+  Eye,
+  EyeOff,
+  BarChart3,
+  Activity,
+  Zap
+} from 'lucide-react';
 import React, { useState, useEffect, useMemo } from 'react';
 import { 
   LineChart, 
@@ -17,24 +32,8 @@ import {
   ResponsiveContainer,
   ReferenceLine
 } from 'recharts';
-import { 
-  TrendingUp, 
-  TrendingDown, 
-  Minus, 
-  AlertTriangle,
-  Award,
-  Target,
-  RefreshCw,
-  Eye,
-  EyeOff,
-  BarChart3,
-  Activity,
-  Zap
-} from 'lucide-react';
-import { format, subDays } from 'date-fns';
-
-import { Cabinet } from '@/lib/models/cabinet';
 import { CabinetAnalytics, DateRange, MetricType } from '@/lib/models/analytics';
+import { Cabinet } from '@/lib/models/cabinet';
 import { AnalyticsService } from '@/lib/services/analytics-service';
 
 interface ComparativeAnalyticsDashboardProps {
@@ -83,7 +82,7 @@ export default function ComparativeAnalyticsDashboard({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [dateRangePreset, setDateRangePreset] = useState<DateRangePreset>('30d');
-  const [customDateRange, setCustomDateRange] = useState<DateRange>({
+  const [customDateRange, _setCustomDateRange] = useState<DateRange>({
     start: subDays(new Date(), 30),
     end: new Date()
   });
@@ -386,7 +385,7 @@ export default function ComparativeAnalyticsDashboard({
         </div>
         
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-          {comparisons.map((comp, index) => (
+          {comparisons.map((comp, _index) => (
             <div
               key={comp.cabinet.id}
               className={`flex items-center space-x-2 p-2 rounded border cursor-pointer transition-colors ${
@@ -542,7 +541,21 @@ export default function ComparativeAnalyticsDashboard({
                     key={comp.cabinet.id}
                     type="monotone"
                     dataKey="value"
-                    data={comp.analytics.timeSeries[selectedMetric]}
+                    data={(() => {
+                      // Map MetricType to available timeSeries keys
+                      const metricMap: Record<string, keyof typeof comp.analytics.timeSeries> = {
+                        [MetricType.APPOINTMENTS]: 'appointments',
+                        [MetricType.REVENUE]: 'revenue',
+                        [MetricType.UTILIZATION]: 'utilization',
+                        [MetricType.SATISFACTION]: 'satisfaction',
+                        // Default fallback for metrics not in timeSeries
+                        [MetricType.WAIT_TIME]: 'appointments',
+                        [MetricType.CANCELLATION_RATE]: 'appointments',
+                        [MetricType.NO_SHOW_RATE]: 'appointments'
+                      };
+                      const timeSeriesKey = metricMap[selectedMetric] || 'appointments';
+                      return comp.analytics.timeSeries[timeSeriesKey];
+                    })()}
                     name={comp.cabinet.name}
                     stroke={comp.color}
                     strokeWidth={2}

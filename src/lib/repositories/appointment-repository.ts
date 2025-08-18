@@ -1,5 +1,5 @@
-import { v4 as uuidv4 } from 'uuid';
 import { Connection } from 'mysql2/promise';
+import { v4 as uuidv4 } from 'uuid';
 import DatabaseManager from '../database/connection';
 import { Appointment, AppointmentStatus, CreateAppointmentRequest } from '../models/appointment';
 

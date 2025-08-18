@@ -107,7 +107,7 @@ class InMemoryDatabase {
   }
   
   private async initializeTestData() {
-    console.log('🔄 Initializing in-memory database with test data...');
+    console.warn('🔄 Initializing in-memory database with test data...');
     
     // Create test cabinet
     const cabinetId = 'cabinet-1';
@@ -237,12 +237,12 @@ class InMemoryDatabase {
       updated_at: new Date()
     });
     
-    console.log('✅ In-memory database initialized with test data');
-    console.log(`   - ${this.users.size} users`);
-    console.log(`   - ${this.cabinets.size} cabinets`);
-    console.log(`   - ${this.patients.size} patients`);
-    console.log(`   - ${this.services.size} services`);
-    console.log(`   - ${this.appointments.size} appointments`);
+    console.warn('✅ In-memory database initialized with test data');
+    console.warn(`   - ${this.users.size} users`);
+    console.warn(`   - ${this.cabinets.size} cabinets`);
+    console.warn(`   - ${this.patients.size} patients`);
+    console.warn(`   - ${this.services.size} services`);
+    console.warn(`   - ${this.appointments.size} appointments`);
   }
   
   // User operations

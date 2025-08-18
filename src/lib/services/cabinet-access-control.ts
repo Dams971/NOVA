@@ -274,7 +274,7 @@ export class CabinetAccessControl {
     };
 
     // In a real implementation, this would write to an audit log
-    console.log('Access Log:', logEntry);
+    console.warn('Access Log:', logEntry);
   }
 }
 

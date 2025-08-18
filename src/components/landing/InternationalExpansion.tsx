@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import { motion } from 'framer-motion';
 import { 
   Globe, 
@@ -14,6 +13,7 @@ import {
   Heart,
   Star
 } from 'lucide-react';
+import React from 'react';
 
 interface ExpansionPlan {
   country: string;
@@ -115,7 +115,7 @@ export default function InternationalExpansion() {
           transition={{ duration: 0.8, delay: 0.2 }}
           viewport={{ once: true }}
         >
-          {globalStats.map((stat, index) => (
+          {globalStats.map((stat, _index) => (
             <div key={stat.label} className="text-center">
               <div className="w-16 h-16 bg-nova-blue rounded-full flex items-center justify-center mx-auto mb-4">
                 <stat.icon className="w-8 h-8 text-white" />

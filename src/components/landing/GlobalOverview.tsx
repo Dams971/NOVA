@@ -1,8 +1,8 @@
 'use client';
 
-import React from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, ArrowRight, Globe, Clock, Shield } from 'lucide-react';
+import React from 'react';
 
 const highlights = [
   {

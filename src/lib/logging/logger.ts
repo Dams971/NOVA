@@ -88,7 +88,7 @@ class Logger {
     // Console output in development
     if (this.isDevelopment) {
       const color = this.getConsoleColor(entry.level);
-      console.log(color + logLine.trim() + '\x1b[0m');
+      console.warn(color + logLine.trim() + '\x1b[0m');
     }
     
     // File output

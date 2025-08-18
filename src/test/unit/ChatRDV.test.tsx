@@ -5,10 +5,10 @@
  * testing real-time messaging, accessibility, and user interactions.
  */
 
-import { render, screen, fireEvent, waitFor } from '@/test/test-utils';
+import userEvent from '@testing-library/user-event';
 import { ChatRDV } from '@/components/rdv/ChatRDV';
 import { checkAccessibility } from '@/test/setup';
-import userEvent from '@testing-library/user-event';
+import { render, screen, fireEvent, waitFor } from '@/test/test-utils';
 
 // Mock the ButtonMedical component
 vi.mock('@/components/ui/nova/ButtonMedical', () => ({

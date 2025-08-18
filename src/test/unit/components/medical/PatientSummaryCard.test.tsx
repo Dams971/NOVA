@@ -12,10 +12,10 @@
  * - Mises à jour temps réel WebSocket
  */
 
-import React from 'react'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { axe } from 'jest-axe'
+import React from 'react'
 import { vi } from 'vitest'
 import { PatientSummaryCard, type PatientData, type AppointmentSummary } from '@/components/ui/medical/PatientSummaryCard'
 

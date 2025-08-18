@@ -1,6 +1,6 @@
+import bcrypt from 'bcryptjs';
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { AuthService, AuthenticationError, RegisterUserRequest, LoginRequest } from '@/lib/auth/auth-service';
-import bcrypt from 'bcryptjs';
 
 // Mock bcrypt
 vi.mock('bcryptjs', () => ({

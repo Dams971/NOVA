@@ -1,8 +1,8 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import AppointmentForm from '@/components/manager/AppointmentForm';
-import { AppointmentService } from '@/lib/services/appointment-service';
 import { AppointmentStatus, ServiceType } from '@/lib/models/appointment';
+import { AppointmentService } from '@/lib/services/appointment-service';
 
 // Mock the appointment service
 vi.mock('@/lib/services/appointment-service');

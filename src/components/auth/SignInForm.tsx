@@ -10,14 +10,14 @@
  */
 
 import React, { useState, useEffect, useRef } from 'react';
-import { FocusTrap } from '../ui/FocusTrap';
-import { LiveRegion } from '../ui/LiveRegion';
-import { LoadingSpinner } from '../ui/LoadingSpinner';
 import { ErrorMessage } from '../ui/ErrorMessage';
-import { SuccessMessage } from '../ui/SuccessMessage';
+import FocusTrap from '../ui/FocusTrap';
+import LiveRegion from '../ui/LiveRegion';
+import { LoadingSpinner } from '../ui/LoadingSpinner';
+import SuccessMessage from '../ui/SuccessMessage';
 
 export interface SignInFormProps {
-  onSignInSuccess: (patient: any, sessionId: string) => void;
+  onSignInSuccess: (patient: Record<string, unknown>, sessionId: string) => void;
   onSignUpRedirect: () => void;
   onCancel: () => void;
   initialEmail?: string;
@@ -311,10 +311,10 @@ export const SignInForm: React.FC<SignInFormProps> = ({
   return (
     <FocusTrap>
       <div className={`sign-in-form ${className}`}>
-        <LiveRegion>
-          {state.error && <ErrorMessage message={state.error} />}
-          {state.success && <SuccessMessage message={state.success} />}
-        </LiveRegion>
+        {state.error && <LiveRegion message={state.error} />}
+        {state.success && <LiveRegion message={state.success} />}
+        {state.error && <ErrorMessage message={state.error} />}
+        {state.success && <SuccessMessage message={state.success} />}
 
         <div className="sign-in-header">
           <h2 id="sign-in-title">
@@ -373,8 +373,8 @@ export const SignInForm: React.FC<SignInFormProps> = ({
               >
                 {state.isLoading ? (
                   <>
-                    <LoadingSpinner size="small" />
-                    <span>Vérification...</span>
+                    <LoadingSpinner size="sm" />
+                    <span>V&eacute;rification...</span>
                   </>
                 ) : (
                   'Se connecter'
@@ -456,8 +456,8 @@ export const SignInForm: React.FC<SignInFormProps> = ({
               >
                 {state.isLoading ? (
                   <>
-                    <LoadingSpinner size="small" />
-                    <span>Vérification...</span>
+                    <LoadingSpinner size="sm" />
+                    <span>V&eacute;rification...</span>
                   </>
                 ) : (
                   'Vérifier le code'

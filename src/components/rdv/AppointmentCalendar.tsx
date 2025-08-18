@@ -16,13 +16,13 @@ import { format, addDays, startOfMonth, endOfMonth, eachDayOfInterval,
   isSameMonth, isSameDay, isToday, isPast, getDay, addMonths, subMonths,
   parseISO } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import React, { useState, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Calendar, Clock, ChevronLeft, ChevronRight, AlertCircle, 
   CheckCircle, Loader2, CalendarDays, MapPin,
   Stethoscope, Zap, RefreshCw
 } from 'lucide-react';
+import React, { useState, useCallback, useMemo } from 'react';
 
 // =============================================
 // TYPES ET INTERFACES
@@ -461,7 +461,7 @@ function TimeSlotsList({
   slots, 
   selectedTime, 
   onSlotSelect, 
-  careType 
+  careType: _careType 
 }: {
   slots: TimeSlot[];
   selectedTime: string | null;

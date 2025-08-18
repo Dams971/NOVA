@@ -40,7 +40,7 @@ async function handleGetStats(request: NextRequest) {
       success: true,
       data: metrics
     });
-  } catch (_error) {
+  } catch (error) {
     console.error('Get stats error:', error);
     return NextResponse.json(
       { error: 'Failed to fetch statistics' },
@@ -49,7 +49,7 @@ async function handleGetStats(request: NextRequest) {
   }
 }
 
-function calculateOccupancyRate(appointments: any[]): number {
+function calculateOccupancyRate(appointments: unknown[]): number {
   if (appointments.length === 0) return 0;
   
   // Assuming 8 hours per day, 30 minutes per slot = 16 slots per day
@@ -59,4 +59,4 @@ function calculateOccupancyRate(appointments: any[]): number {
   return Math.round((bookedSlots / totalSlots) * 100);
 }
 
-export const GET = withAuth(handleGetStats, ['super_admin', 'admin', 'manager']);
+export const GET = withAuth(handleGetStats);

@@ -1,8 +1,8 @@
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
-import JWTManager, { JWTPayload } from './jwt';
-import { MFAService } from './mfa-service';
 import { db } from '@/lib/database/unified-connection';
+import JWTManager from './jwt';
+import { MFAService } from './mfa-service';
 
 export interface User {
   id: string;
@@ -133,7 +133,7 @@ export class AuthService {
       email: userData.email,
       firstName: userData.first_name,
       lastName: userData.last_name,
-      role: userData.role as any,
+      role: userData.role as ('super_admin' | 'admin' | 'manager' | 'staff'),
       isActive: userData.is_active,
       assignedCabinets: [],
       lastLoginAt: undefined,
@@ -159,7 +159,7 @@ export class AuthService {
       email: userData.email,
       firstName: userData.first_name,
       lastName: userData.last_name,
-      role: userData.role as any,
+      role: userData.role as ('super_admin' | 'admin' | 'manager' | 'staff'),
       isActive: userData.is_active,
       assignedCabinets: [],
       lastLoginAt: undefined,
@@ -200,7 +200,7 @@ export class AuthService {
       password_hash: passwordHash,
       first_name: request.firstName || '',
       last_name: request.lastName || '',
-      role: request.role as any,
+      role: request.role,
       is_active: true,
       email_verified: false
     });
@@ -214,7 +214,7 @@ export class AuthService {
       email: newUser.email,
       firstName: newUser.first_name,
       lastName: newUser.last_name,
-      role: newUser.role as any,
+      role: newUser.role as ('super_admin' | 'admin' | 'manager' | 'staff'),
       isActive: newUser.is_active,
       assignedCabinets: request.assignedCabinets || [],
       createdAt: newUser.created_at,
@@ -256,7 +256,7 @@ export class AuthService {
 
     if (requiresMFA) {
       // Generate temporary token for MFA verification
-      const tempToken = this.jwtManager.generateAccessToken({
+      const tempToken = await this.jwtManager.generateAccessToken({
         userId: user.id,
         email: user.email,
         role: user.role,
@@ -286,14 +286,14 @@ export class AuthService {
     // No MFA required, complete login
     await this.updateLastLogin(user.id);
 
-    const accessToken = this.jwtManager.generateAccessToken({
+    const accessToken = await this.jwtManager.generateAccessToken({
       userId: user.id,
       email: user.email,
       role: user.role,
       assignedCabinets: user.assignedCabinets
     });
 
-    const refreshToken = this.jwtManager.generateRefreshToken(user.id);
+    const refreshToken = await this.jwtManager.generateRefreshToken(user.id);
 
     return {
       user: {
@@ -318,7 +318,7 @@ export class AuthService {
    */
   public async loginWithMFA(request: MFALoginRequest): Promise<LoginResponse> {
     // Verify temporary token
-    const tempPayload = this.jwtManager.verifyAccessToken(request.tempToken);
+    const tempPayload = await this.jwtManager.verifyAccessToken(request.tempToken);
     if (!tempPayload) {
       throw new AuthenticationError('Invalid or expired temporary token', 'INVALID_TEMP_TOKEN');
     }
@@ -340,14 +340,14 @@ export class AuthService {
     await this.updateLastLogin(user.id);
 
     // Generate final tokens
-    const accessToken = this.jwtManager.generateAccessToken({
+    const accessToken = await this.jwtManager.generateAccessToken({
       userId: user.id,
       email: user.email,
       role: user.role,
       assignedCabinets: user.assignedCabinets
     });
 
-    const refreshToken = this.jwtManager.generateRefreshToken(user.id);
+    const refreshToken = await this.jwtManager.generateRefreshToken(user.id);
 
     return {
       user: {
@@ -371,7 +371,7 @@ export class AuthService {
    * Refresh access token using refresh token
    */
   public async refreshToken(request: RefreshTokenRequest): Promise<RefreshTokenResponse> {
-    const decoded = this.jwtManager.verifyRefreshToken(request.refreshToken);
+    const decoded = await this.jwtManager.verifyRefreshToken(request.refreshToken);
     if (!decoded) {
       throw new AuthenticationError('Invalid or expired refresh token', 'INVALID_REFRESH_TOKEN');
     }
@@ -382,14 +382,14 @@ export class AuthService {
     }
 
     // Generate new tokens
-    const accessToken = this.jwtManager.generateAccessToken({
+    const accessToken = await this.jwtManager.generateAccessToken({
       userId: user.id,
       email: user.email,
       role: user.role,
       assignedCabinets: user.assignedCabinets
     });
 
-    const refreshToken = this.jwtManager.generateRefreshToken(user.id);
+    const refreshToken = await this.jwtManager.generateRefreshToken(user.id);
 
     return {
       accessToken,
@@ -401,7 +401,7 @@ export class AuthService {
    * Validate access token and return user info
    */
   public async validateToken(token: string): Promise<User | null> {
-    const payload = this.jwtManager.verifyAccessToken(token);
+    const payload = await this.jwtManager.verifyAccessToken(token);
     if (!payload) {
       return null;
     }

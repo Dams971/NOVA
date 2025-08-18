@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { db } from '@/lib/database/unified-connection';
-import { withAuth } from '@/lib/middleware/auth';
+import { withAuth, AuthenticatedRequest } from '@/lib/middleware/auth';
 
-async function handleGetCabinets(_request: NextRequest) {
+async function handleGetCabinets(_request: AuthenticatedRequest) {
   try {
     const cabinets = await db.getAllCabinets();
     
@@ -36,4 +36,4 @@ async function handleGetCabinets(_request: NextRequest) {
   }
 }
 
-export const GET = withAuth(handleGetCabinets, ['super_admin', 'admin']);
+export const GET = withAuth(handleGetCabinets);

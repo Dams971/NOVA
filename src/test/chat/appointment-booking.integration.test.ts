@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, beforeAll, afterAll, vi } from 'vitest';
 import { db } from '@/lib/database/postgresql-connection';
-import { createChatOrchestrator, ChatContext } from '@/services/chat/orchestrator';
 import EmailQueue from '@/lib/email/email-queue';
+import { createChatOrchestrator, ChatContext } from '@/services/chat/orchestrator';
 
 /**
  * NOVA Appointment Booking Integration Tests
@@ -220,7 +220,7 @@ describe('Appointment Booking Integration', () => {
     });
 
     it('should handle emergency situations during booking', async () => {
-      let response = await orchestrator.handleMessage(
+      const response = await orchestrator.handleMessage(
         'J\'ai très mal aux dents, je dois voir un dentiste tout de suite !',
         mockContext
       );
@@ -232,7 +232,7 @@ describe('Appointment Booking Integration', () => {
 
     it('should handle requests outside business hours', async () => {
       // Mock Sunday request (closed day)
-      let response = await orchestrator.handleMessage(
+      const response = await orchestrator.handleMessage(
         'Rendez-vous dimanche matin pour urgence',
         mockContext
       );
@@ -244,7 +244,7 @@ describe('Appointment Booking Integration', () => {
 
   describe('French Language Variations', () => {
     it('should handle formal French expressions', async () => {
-      let response = await orchestrator.handleMessage(
+      const response = await orchestrator.handleMessage(
         'Bonsoir, j\'aimerais solliciter un rendez-vous pour une consultation dentaire',
         mockContext
       );
@@ -254,7 +254,7 @@ describe('Appointment Booking Integration', () => {
     });
 
     it('should handle informal French expressions', async () => {
-      let response = await orchestrator.handleMessage('Salut ! Un rdv dispo demain ?', mockContext);
+      const response = await orchestrator.handleMessage('Salut ! Un rdv dispo demain ?', mockContext);
 
       expect(response.requiresInput).toBe(true);
       expect(response.message).toMatch(/disponibilité|créneau|rendez-vous/i);
@@ -271,7 +271,7 @@ describe('Appointment Booking Integration', () => {
       ];
 
       for (const term of medicalTerms) {
-        let response = await orchestrator.handleMessage(
+        const response = await orchestrator.handleMessage(
           `Je veux un rendez-vous pour un ${term}`,
           mockContext
         );
@@ -292,7 +292,7 @@ describe('Appointment Booking Integration', () => {
       ];
 
       for (const dateFormat of dateFormats) {
-        let response = await orchestrator.handleMessage(
+        const response = await orchestrator.handleMessage(
           `Rendez-vous ${dateFormat}`,
           mockContext
         );
@@ -313,7 +313,7 @@ describe('Appointment Booking Integration', () => {
       ];
 
       for (const timeExpr of timeExpressions) {
-        let response = await orchestrator.handleMessage(
+        const response = await orchestrator.handleMessage(
           `Rendez-vous ${timeExpr}`,
           mockContext
         );
@@ -360,7 +360,7 @@ describe('Appointment Booking Integration', () => {
       };
 
       // User changes mind during confirmation
-      let response = await orchestrator.handleMessage('Non, je veux changer l\'heure', mockContext);
+      const response = await orchestrator.handleMessage('Non, je veux changer l\'heure', mockContext);
       
       // Should handle the change request
       expect(response.requiresInput).toBe(true);

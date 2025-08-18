@@ -3,10 +3,10 @@ import { CabinetProvisioningService } from '../../../../lib/services/cabinet-pro
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { deploymentId: string } }
+  { params }: { params: Promise<{ deploymentId: string }> }
 ) {
   try {
-    const { deploymentId } = params;
+    const { deploymentId } = await params;
 
     if (!deploymentId) {
       return NextResponse.json(
@@ -46,7 +46,7 @@ export async function GET(
       }
     });
 
-  } catch (_error) {
+  } catch (error) {
     console.error('Get deployment API error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
@@ -57,10 +57,10 @@ export async function GET(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { deploymentId: string } }
+  { params }: { params: Promise<{ deploymentId: string }> }
 ) {
   try {
-    const { deploymentId } = params;
+    const { deploymentId } = await params;
 
     if (!deploymentId) {
       return NextResponse.json(
@@ -84,7 +84,7 @@ export async function DELETE(
       message: 'Deployment rolled back successfully'
     });
 
-  } catch (_error) {
+  } catch (error) {
     console.error('Rollback deployment API error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },

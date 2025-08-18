@@ -1,11 +1,11 @@
 'use client';
 
-import { ButtonMedical } from '@/components/ui/nova/ButtonMedical';
-import { RDVLayout } from '@/components/rdv/RDVLayout';
-import { ChatRDV } from '@/components/rdv/ChatRDV';
-import { CalendarView } from '@/components/rdv/CalendarView';
-import { PatientContext } from '@/components/rdv/PatientContext';
 import { CheckCircle, Settings, Phone, Calendar } from 'lucide-react';
+import { CalendarView } from '@/components/rdv/CalendarView';
+import { ChatRDV } from '@/components/rdv/ChatRDV';
+import { PatientContext } from '@/components/rdv/PatientContext';
+import { RDVLayout } from '@/components/rdv/RDVLayout';
+import { ButtonMedical } from '@/components/ui/nova/ButtonMedical';
 
 export default function DemoNovaPage() {
   return (

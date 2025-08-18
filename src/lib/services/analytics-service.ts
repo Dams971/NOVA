@@ -1,3 +1,4 @@
+import { format, subDays, subWeeks, subMonths, startOfDay, endOfDay, eachDayOfInterval, eachWeekOfInterval, eachMonthOfInterval } from 'date-fns';
 import { 
   CabinetAnalytics, 
   PerformanceMetrics, 
@@ -10,7 +11,6 @@ import {
   ExportOptions,
   ReportTemplate
 } from '../models/analytics';
-import { format, subDays, subWeeks, subMonths, startOfDay, endOfDay, eachDayOfInterval, eachWeekOfInterval, eachMonthOfInterval } from 'date-fns';
 
 export interface AnalyticsServiceResult<T> {
   success: boolean;

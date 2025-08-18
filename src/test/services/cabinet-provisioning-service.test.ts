@@ -1,12 +1,12 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
-import { CabinetProvisioningService, DeploymentStatus, ProvisioningOptions } from '../../lib/services/cabinet-provisioning-service';
-import { CabinetService } from '../../lib/services/cabinet-service';
-import { CabinetRepository } from '../../lib/repositories/cabinet-repository';
 import { 
   Cabinet, 
   CreateCabinetRequest, 
   CabinetStatus 
 } from '../../lib/models/cabinet';
+import { CabinetRepository } from '../../lib/repositories/cabinet-repository';
+import { CabinetProvisioningService, DeploymentStatus, ProvisioningOptions } from '../../lib/services/cabinet-provisioning-service';
+import { CabinetService } from '../../lib/services/cabinet-service';
 
 // Mock DatabaseManager module
 vi.mock('../../lib/database/connection', () => {

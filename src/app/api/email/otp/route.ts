@@ -1,6 +1,6 @@
 export const runtime = 'nodejs';
 
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { getEmailService } from '@/server/email/ionos-email.service';
 
@@ -9,7 +9,7 @@ const otpEmailSchema = z.object({
   otp: z.string().length(6),
 });
 
-export async function POST() {
+export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const validated = otpEmailSchema.parse(body);
@@ -21,7 +21,7 @@ export async function POST() {
     );
     
     return NextResponse.json({ ok: success });
-  } catch (_error) {
+  } catch (error) {
     console.error('OTP email error:', error);
     
     if (error instanceof z.ZodError) {

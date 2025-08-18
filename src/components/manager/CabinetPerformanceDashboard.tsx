@@ -2,10 +2,10 @@
 
 import React from 'react';
 import { CabinetKPIs, ManagerDashboardLayout, DashboardWidget } from '@/lib/models/performance';
-import KPIWidget from './widgets/KPIWidget';
-import ChartWidget from './widgets/ChartWidget';
-import AlertWidget from './widgets/AlertWidget';
 import { cn } from '@/lib/utils';
+import AlertWidget from './widgets/AlertWidget';
+import ChartWidget from './widgets/ChartWidget';
+import KPIWidget from './widgets/KPIWidget';
 
 interface CabinetPerformanceDashboardProps {
   kpis: CabinetKPIs;
@@ -16,7 +16,7 @@ interface CabinetPerformanceDashboardProps {
 export default function CabinetPerformanceDashboard({
   kpis,
   layout,
-  onLayoutChange
+  onLayoutChange: _onLayoutChange
 }: CabinetPerformanceDashboardProps) {
   
   const renderWidget = (widget: DashboardWidget) => {
@@ -96,7 +96,7 @@ export default function CabinetPerformanceDashboard({
               <span className="text-medical-green-600 text-2xl">💰</span>
             </div>
             <div className="space-y-2">
-              <h4 className="text-sm font-medium text-medical-gray-600">Chiffre d'affaires</h4>
+              <h4 className="text-sm font-medium text-medical-gray-600">Chiffre d&apos;affaires</h4>
               <p className="text-3xl font-bold text-medical-gray-900">
                 {new Intl.NumberFormat('fr-DZ', { 
                   style: 'currency', 
@@ -151,7 +151,7 @@ export default function CabinetPerformanceDashboard({
               </span>
             </div>
             <div className="space-y-2">
-              <h4 className="text-sm font-medium text-medical-gray-600">Taux d'absentéisme</h4>
+              <h4 className="text-sm font-medium text-medical-gray-600">Taux d&apos;absentéisme</h4>
               <p className="text-3xl font-bold text-medical-gray-900">{kpis.noShowRate.toFixed(1)}%</p>
               {kpis.trends.noShowRate !== 0 && (
                 <div className={cn(
@@ -201,7 +201,7 @@ export default function CabinetPerformanceDashboard({
               {/* Utilization Rate */}
               <div>
                 <div className="flex justify-between items-center text-sm mb-2">
-                  <span className="text-medical-gray-600 font-medium">Taux d'occupation</span>
+                  <span className="text-medical-gray-600 font-medium">Taux d&apos;occupation</span>
                   <span className="font-bold text-medical-gray-900">{kpis.appointmentUtilization}%</span>
                 </div>
                 <div className="w-full bg-medical-gray-200 rounded-medical-small h-3">
@@ -223,7 +223,7 @@ export default function CabinetPerformanceDashboard({
               {/* Cancellation Rate */}
               <div>
                 <div className="flex justify-between items-center text-sm mb-2">
-                  <span className="text-medical-gray-600 font-medium">Taux d'annulation</span>
+                  <span className="text-medical-gray-600 font-medium">Taux d&apos;annulation</span>
                   <span className="font-bold text-medical-gray-900">{kpis.cancellationRate.toFixed(1)}%</span>
                 </div>
                 <div className="w-full bg-medical-gray-200 rounded-medical-small h-3">
@@ -251,7 +251,7 @@ export default function CabinetPerformanceDashboard({
                   <div className="w-8 h-8 bg-medical-blue-600 rounded-medical-small flex items-center justify-center">
                     <span className="text-white text-sm">⏱️</span>
                   </div>
-                  <span className="text-medical-gray-700 font-medium">Temps d'attente moyen</span>
+                  <span className="text-medical-gray-700 font-medium">Temps d&apos;attente moyen</span>
                 </div>
                 <span className="font-bold text-medical-blue-700">{kpis.averageWaitTime} min</span>
               </div>
@@ -322,7 +322,7 @@ export default function CabinetPerformanceDashboard({
               Personnalisez votre tableau de bord en ajoutant des widgets pour suivre vos métriques importantes.
             </p>
             <button
-              onClick={() => console.log('Open widget customizer')}
+              onClick={() => console.warn('Open widget customizer')}
               className="px-4 py-2 bg-medical-blue-600 text-white rounded-medical-medium hover:bg-medical-blue-700 focus:outline-none focus:ring-2 focus:ring-medical-blue-500 focus:ring-offset-2 transition-colors"
             >
               ⚙️ Ajouter des widgets

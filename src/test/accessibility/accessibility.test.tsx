@@ -5,14 +5,67 @@
  * Tests color contrast, keyboard navigation, screen reader support, and focus management.
  */
 
-import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@/test/test-utils';
-import { axe, toHaveNoViolations } from 'jest-axe';
-import { Button } from '@/components/ui/button';
-import { ChatRDV } from '@/components/rdv/ChatRDV';
-import { checkAccessibility } from '@/test/setup';
 import userEvent from '@testing-library/user-event';
+import { axe, toHaveNoViolations } from 'jest-axe';
+import React from 'react';
 import { vi } from 'vitest';
+import PatientForm from '@/components/manager/PatientForm';
+import PatientDetail from '@/components/manager/PatientDetail';
+import PatientManagement from '@/components/manager/PatientManagement';
+import { ChatRDV } from '@/components/rdv/ChatRDV';
+import { Button } from '@/components/ui/button';
+import { ErrorMessage } from '@/components/ui/ErrorMessage';
+import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { Patient, Gender } from '@/lib/models/patient';
+import { PatientService } from '@/lib/services/patient-service';
+import { checkAccessibility } from '@/test/setup';
+import { render, screen, fireEvent, waitFor } from '@/test/test-utils';
+
+// Mock the patient service
+vi.mock('@/lib/services/patient-service');
+
+// Mock patient data
+const mockPatient: Patient = {
+  id: 'patient-1',
+  cabinetId: 'cabinet-1',
+  firstName: 'Marie',
+  lastName: 'Dubois',
+  email: 'marie@example.com',
+  phone: '+33123456789',
+  dateOfBirth: new Date('1985-03-15'),
+  gender: 'female' as Gender,
+  address: {
+    street: '123 Rue de la Paix',
+    city: 'Paris',
+    postalCode: '75001',
+    country: 'France'
+  },
+  emergencyContact: {
+    name: 'Jean Dubois',
+    phone: '+33123456790',
+    relationship: 'Époux'
+  },
+  preferences: {
+    preferredLanguage: 'fr',
+    communicationMethod: 'email',
+    reminderEnabled: true,
+    reminderHours: [24, 2]
+  },
+  medicalHistory: {
+    allergies: [],
+    medications: [],
+    conditions: [],
+    notes: ''
+  },
+  isActive: true,
+  createdAt: new Date('2023-01-15'),
+  updatedAt: new Date('2023-01-15')
+};
+
+// Mock ScreenReaderProvider - since it doesn't exist, we'll create a simple wrapper
+const ScreenReaderProvider = ({ children }: { children: React.ReactNode }) => {
+  return <div role="region" aria-label="Patient management">{children}</div>;
+};
 
 // Extend Jest matchers
 expect.extend(toHaveNoViolations);
@@ -138,7 +191,7 @@ describe('NOVA Accessibility Compliance', () => {
       };
 
       vi.mocked(PatientService.getInstance)
-        .mockReturnValue(mockPatientService);
+        .mockReturnValue(mockPatientService as any);
     });
 
     it('PatientForm should not have accessibility violations', async () => {

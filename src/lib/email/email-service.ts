@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
-import { env } from '@/config/env';
 import { z } from 'zod';
+import { env } from '@/config/env';
 
 /**
  * NOVA Email Notification Service
@@ -101,7 +101,7 @@ export class EmailService {
         if (error) {
           console.error('❌ SMTP connection failed:', error);
         } else {
-          console.log('✅ SMTP server ready for messages');
+          console.warn('✅ SMTP server ready for messages');
         }
       });
 
@@ -133,7 +133,7 @@ export class EmailService {
 
       const result = await this.transporter.sendMail(mailOptions);
 
-      console.log('📧 Email sent successfully:', {
+      console.warn('📧 Email sent successfully:', {
         to: validated.to,
         subject: validated.subject,
         messageId: result.messageId

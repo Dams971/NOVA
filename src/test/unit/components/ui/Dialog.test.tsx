@@ -10,7 +10,6 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, userEvent, checkAccessibility, waitFor } from '@/test/test-utils';
 import {
   Dialog,
   DialogTrigger,
@@ -22,6 +21,7 @@ import {
   DialogFooter,
   DialogClose
 } from '@/components/ui/Dialog';
+import { render, screen, userEvent, checkAccessibility, waitFor } from '@/test/test-utils';
 
 // Mock focus trap component
 vi.mock('@/components/ui/FocusTrap', () => ({
@@ -547,7 +547,7 @@ describe('Dialog Component', () => {
         <Dialog open={true} onOpenChange={() => {}}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Confirmer l'action</DialogTitle>
+              <DialogTitle>Confirmer l&apos;action</DialogTitle>
               <DialogDescription>
                 Cette action ne peut pas être annulée.
               </DialogDescription>

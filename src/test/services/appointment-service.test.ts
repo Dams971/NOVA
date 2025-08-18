@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { AppointmentService } from '@/lib/services/appointment-service';
 import { AppointmentStatus, ServiceType } from '@/lib/models/appointment';
+import { AppointmentService } from '@/lib/services/appointment-service';
 
 describe('AppointmentService', () => {
   let appointmentService: AppointmentService;

@@ -1,6 +1,5 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { 
@@ -10,21 +9,17 @@ import {
   Mail, 
   Phone, 
   Calendar, 
-  MapPin, 
-  AlertTriangle,
-  FileText,
-  Plus,
+  MapPin,
   MessageCircle,
   Clock,
-  Stethoscope,
-  Pill,
-  Activity
+  Stethoscope
 } from 'lucide-react';
-import { Patient, MedicalRecord } from '@/lib/models/patient';
-import { PatientService } from '@/lib/services/patient-service';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Patient } from '@/lib/models/patient';
 import { PatientCommunicationService, CommunicationHistory } from '@/lib/services/patient-communication-service';
-import MedicalHistorySection from './MedicalHistorySection';
+import { PatientService } from '@/lib/services/patient-service';
 import CommunicationHistorySection from './CommunicationHistorySection';
+import MedicalHistorySection from './MedicalHistorySection';
 
 interface PatientDetailProps {
   patient: Patient;
@@ -39,7 +34,7 @@ export default function PatientDetail({ patient, onEdit, onClose }: PatientDetai
   const [communicationHistory, setCommunicationHistory] = useState<CommunicationHistory | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const patientService = PatientService.getInstance();
+  const _patientService = PatientService.getInstance();
   const communicationService = PatientCommunicationService.getInstance();
 
   useEffect(() => {
@@ -60,7 +55,7 @@ export default function PatientDetail({ patient, onEdit, onClose }: PatientDetai
     } finally {
       setLoading(false);
     }
-  }, [patient.id]);
+  }, [patient.id, communicationService]);
 
   const getAge = (dateOfBirth: Date) => {
     const today = new Date();
@@ -299,7 +294,7 @@ export default function PatientDetail({ patient, onEdit, onClose }: PatientDetai
             patient={patient}
             onMedicalRecordAdd={() => {
               // This would open a form to add medical records
-              console.log('Add medical record');
+              console.warn('Add medical record');
             }}
           />
         )}
@@ -311,7 +306,7 @@ export default function PatientDetail({ patient, onEdit, onClose }: PatientDetai
             loading={loading}
             onSendMessage={() => {
               // This would open a message composition modal
-              console.log('Send message');
+              console.warn('Send message');
             }}
           />
         )}

@@ -1,6 +1,22 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import { format, subDays, startOfDay, endOfDay } from 'date-fns';
+import { 
+  
+  Download, 
+  TrendingUp, 
+  TrendingDown, 
+  Minus, 
+  Users, 
+  DollarSign, 
+  
+  Activity,
+  ArrowLeft,
+  RefreshCw,
+  BarChart3,
+  PieChart as PieChartIcon
+} from 'lucide-react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { 
   LineChart, 
   Line, 
@@ -18,25 +34,8 @@ import {
   
   ResponsiveContainer 
 } from 'recharts';
-import { 
-  
-  Download, 
-  TrendingUp, 
-  TrendingDown, 
-  Minus, 
-  Users, 
-  DollarSign, 
-  
-  Activity,
-  ArrowLeft,
-  RefreshCw,
-  BarChart3,
-  PieChart as PieChartIcon
-} from 'lucide-react';
-import { format, subDays, startOfDay, endOfDay } from 'date-fns';
-
-import { Cabinet } from '@/lib/models/cabinet';
 import { CabinetAnalytics, DateRange, TimeGranularity, ExportOptions, MetricType } from '@/lib/models/analytics';
+import { Cabinet } from '@/lib/models/cabinet';
 import { AnalyticsService } from '@/lib/services/analytics-service';
 
 interface CabinetDetailViewProps {
@@ -89,7 +88,7 @@ export default function CabinetDetailView({ cabinet, onBack }: CabinetDetailView
     return { start: startOfDay(start), end: endOfDay(end) };
   }, [dateRangePreset, customDateRange]);
 
-  const fetchAnalytics = async () => {
+  const fetchAnalytics = useCallback(async () => {
     setLoading(true);
     setError(null);
 
@@ -102,21 +101,20 @@ export default function CabinetDetailView({ cabinet, onBack }: CabinetDetailView
     } finally {
       setLoading(false);
     }
-  };
+  }, [analyticsService, cabinet.id, dateRange]);
 
   useEffect(() => {
     fetchAnalytics();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cabinet.id, dateRange, granularity]);
+  }, [fetchAnalytics, granularity]);
 
-  const handleExport = async (format: 'pdf' | 'excel' | 'csv') => {
+  const handleExport = async (exportFormat: 'pdf' | 'excel' | 'csv') => {
     if (!analytics) return;
 
     setExportLoading(true);
     try {
       const options: ExportOptions = {
-        format,
-        includeCharts: format === 'pdf',
+        format: exportFormat,
+        includeCharts: exportFormat === 'pdf',
         sections: ['overview', 'trends', 'breakdown', 'comparison'],
         dateRange
       };
@@ -128,7 +126,7 @@ export default function CabinetDetailView({ cabinet, onBack }: CabinetDetailView
         const url = window.URL.createObjectURL(result.data);
         const link = document.createElement('a');
         link.href = url;
-        link.download = `${cabinet.name}-analytics-${format(new Date(), 'yyyy-MM-dd')}.${format}`;
+        link.download = `${cabinet.name}-analytics-${format(new Date(), 'yyyy-MM-dd')}.${exportFormat}`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -321,7 +319,7 @@ export default function CabinetDetailView({ cabinet, onBack }: CabinetDetailView
           ].map((tab) => (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
+              onClick={() => setActiveTab(tab.id as 'overview' | 'trends' | 'breakdown' | 'comparison')}
               className={`${
                 activeTab === tab.id
                   ? 'border-blue-500 text-blue-600'

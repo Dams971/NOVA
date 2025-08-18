@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback, useRef, useEffect } from 'react';
+import { Appointment } from '@/lib/models/appointment';
 
 /**
  * Custom hook for managing chat functionality
@@ -28,10 +29,10 @@ export interface ChatResponse {
   options?: Array<{ value: string; label: string }>;
   completed?: boolean;
   escalate?: boolean;
-  data?: any;
+  data?: Record<string, unknown>;
   context?: {
     currentIntent?: string;
-    collectedSlots?: Record<string, any>;
+    collectedSlots?: Record<string, unknown>;
     confirmationPending?: boolean;
     state?: 'active' | 'waiting_for_input' | 'completed' | 'escalated';
   };
@@ -54,11 +55,11 @@ export interface ChatContext {
       role: 'user' | 'assistant' | 'system';
       content: string;
       timestamp: Date;
-      metadata?: any;
+      metadata?: Record<string, unknown>;
     }>;
     state: 'active' | 'waiting_for_input' | 'completed' | 'escalated';
     currentIntent?: string;
-    collectedSlots: Record<string, any>;
+    collectedSlots: Record<string, unknown>;
     confirmationPending?: boolean;
   };
 }
@@ -74,7 +75,7 @@ export interface UseChatOptions {
   businessHours?: Record<string, { open: string; close: string }>;
   websocketUrl?: string;
   onEscalation?: (conversationId: string) => void;
-  onAppointmentBooked?: (appointmentData: any) => void;
+  onAppointmentBooked?: (appointmentData: Appointment) => void;
   onError?: (error: Error) => void;
 }
 
@@ -115,7 +116,7 @@ export function useChat({
       websocketRef.current = new WebSocket(url);
 
       websocketRef.current.onopen = () => {
-        console.log('🔗 Chat WebSocket connected');
+        console.warn('🔗 Chat WebSocket connected');
         setConnectionStatus('connected');
         reconnectAttemptsRef.current = 0;
 
@@ -136,7 +137,7 @@ export function useChat({
         try {
           const message = JSON.parse(event.data);
           handleWebSocketMessage(message);
-        } catch (_error) {
+        } catch (error) {
           console.error('Failed to parse WebSocket message:', error);
         }
       };
@@ -148,7 +149,7 @@ export function useChat({
       };
 
       websocketRef.current.onclose = (event) => {
-        console.log('🔌 Chat WebSocket disconnected:', event.code, event.reason);
+        console.warn('🔌 Chat WebSocket disconnected:', event.code, event.reason);
         setConnectionStatus('disconnected');
 
         // Attempt to reconnect with exponential backoff
@@ -162,11 +163,12 @@ export function useChat({
         }
       };
 
-    } catch (_error) {
+    } catch (error) {
       console.error('Failed to create WebSocket connection:', error);
       setConnectionStatus('error');
       onError?.(error instanceof Error ? error : new Error('Connection failed'));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [websocketUrl, sessionId, userId, tenantId, userRole, userEmail, onError]);
 
   // Disconnect from WebSocket
@@ -185,11 +187,11 @@ export function useChat({
   }, []);
 
   // Handle WebSocket messages
-  const handleWebSocketMessage = useCallback((message: any) => {
+  const handleWebSocketMessage = (message: { type: string; data?: any }) => {
     switch (message.type) {
       case 'status':
         if (message.data.status === 'authenticated') {
-          console.log('✅ Chat authenticated');
+          console.warn('✅ Chat authenticated');
           // Send initial greeting if no messages exist
           if (messages.length === 0) {
             sendMessage('Bonjour');
@@ -220,9 +222,9 @@ export function useChat({
         break;
 
       default:
-        console.log('Unknown WebSocket message type:', message.type);
+        console.warn('Unknown WebSocket message type:', message.type);
     }
-  }, [messages.length]);
+  };
 
   // Handle chat response
   const handleChatResponse = useCallback((responseData: ChatResponse) => {
@@ -249,16 +251,17 @@ export function useChat({
     }
 
     if (responseData.data?.appointmentId && onAppointmentBooked) {
-      onAppointmentBooked(responseData.data);
+      onAppointmentBooked(responseData.data as Appointment);
     }
   }, [sessionId, onEscalation, onAppointmentBooked]);
 
   // Handle escalation
-  const handleEscalation = useCallback((escalationData: any) => {
+  const handleEscalation = useCallback((escalationData: Record<string, unknown>) => {
     addSystemMessage(`🚨 Transfert vers un conseiller en cours... ID: ${escalationData.ticketId}`);
     if (onEscalation) {
       onEscalation(sessionId);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionId, onEscalation]);
 
   // Add system message
@@ -344,7 +347,7 @@ export function useChat({
           throw new Error('Failed to send message');
         }
       }
-    } catch (_error) {
+    } catch (error) {
       console.error('Error sending message:', error);
       addSystemMessage('Erreur lors de l\'envoi du message. Veuillez réessayer.');
       setIsLoading(false);

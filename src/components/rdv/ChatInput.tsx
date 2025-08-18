@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Send, Loader2 } from 'lucide-react';
+import { useState, useCallback } from 'react';
 
 interface ChatInputProps {
   onSendMessage: (message: string) => void;

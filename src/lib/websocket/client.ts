@@ -43,7 +43,7 @@ export class WebSocketClient extends EventEmitter {
         this.ws = new WebSocket(url);
 
         this.ws.onopen = () => {
-          console.log('WebSocket connected');
+          console.warn('WebSocket connected');
           this.isConnected = true;
           this.reconnectAttempts = 0;
           this.emit('connected');
@@ -73,7 +73,7 @@ export class WebSocketClient extends EventEmitter {
         };
 
         this.ws.onclose = () => {
-          console.log('WebSocket disconnected');
+          console.warn('WebSocket disconnected');
           this.isConnected = false;
           this.emit('disconnected');
           
@@ -89,7 +89,7 @@ export class WebSocketClient extends EventEmitter {
 
   private reconnect(): void {
     this.reconnectAttempts++;
-    console.log(`Reconnecting... (attempt ${this.reconnectAttempts}/${this.config.maxReconnectAttempts})`);
+    console.warn(`Reconnecting... (attempt ${this.reconnectAttempts}/${this.config.maxReconnectAttempts})`);
     
     setTimeout(() => {
       this.connect().catch(error => {

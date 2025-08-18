@@ -1,16 +1,17 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/database/unified-connection';
-import { withAuth } from '@/lib/middleware/auth';
+import { withAuth, AuthenticatedRequest } from '@/lib/middleware/auth';
 
 interface Params {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
-async function handleGetAppointment(request: NextRequest, { params }: Params) {
+async function handleGetAppointment(request: AuthenticatedRequest, { params }: Params) {
   try {
-    const appointment = await db.findAppointmentById(params.id);
+    const { id } = await params;
+    const appointment = await db.findAppointmentById(id);
     
     if (!appointment) {
       return NextResponse.json(
@@ -23,7 +24,7 @@ async function handleGetAppointment(request: NextRequest, { params }: Params) {
       success: true,
       data: appointment
     });
-  } catch (_error) {
+  } catch (error) {
     console.error('Get appointment error:', error);
     return NextResponse.json(
       { error: 'Failed to fetch appointment' },
@@ -32,8 +33,9 @@ async function handleGetAppointment(request: NextRequest, { params }: Params) {
   }
 }
 
-async function handleUpdateAppointment(request: NextRequest, { params }: Params) {
+async function handleUpdateAppointment(request: AuthenticatedRequest, { params }: Params) {
   try {
+    const { id } = await params;
     const body = await request.json();
     
     // Remove immutable fields
@@ -45,7 +47,7 @@ async function handleUpdateAppointment(request: NextRequest, { params }: Params)
       body.scheduled_at = new Date(body.scheduled_at);
     }
     
-    const updatedAppointment = await db.updateAppointment(params.id, body);
+    const updatedAppointment = await db.updateAppointment(id, body);
     
     if (!updatedAppointment) {
       return NextResponse.json(
@@ -58,7 +60,7 @@ async function handleUpdateAppointment(request: NextRequest, { params }: Params)
       success: true,
       data: updatedAppointment
     });
-  } catch (_error) {
+  } catch (error) {
     console.error('Update appointment error:', error);
     return NextResponse.json(
       { error: 'Failed to update appointment' },
@@ -67,9 +69,10 @@ async function handleUpdateAppointment(request: NextRequest, { params }: Params)
   }
 }
 
-async function handleCancelAppointment(request: NextRequest, { params }: Params) {
+async function handleCancelAppointment(request: AuthenticatedRequest, { params }: Params) {
   try {
-    const updatedAppointment = await db.updateAppointment(params.id, {
+    const { id } = await params;
+    const updatedAppointment = await db.updateAppointment(id, {
       status: 'cancelled',
       updated_at: new Date()
     });
@@ -86,7 +89,7 @@ async function handleCancelAppointment(request: NextRequest, { params }: Params)
       message: 'Appointment cancelled successfully',
       data: updatedAppointment
     });
-  } catch (_error) {
+  } catch (error) {
     console.error('Cancel appointment error:', error);
     return NextResponse.json(
       { error: 'Failed to cancel appointment' },
@@ -95,6 +98,38 @@ async function handleCancelAppointment(request: NextRequest, { params }: Params)
   }
 }
 
-export const GET = withAuth(handleGetAppointment);
-export const PUT = withAuth(handleUpdateAppointment);
-export const DELETE = withAuth(handleCancelAppointment);
+export const GET = withAuth(async (request: AuthenticatedRequest) => {
+  const url = new URL(request.url);
+  const id = url.pathname.split('/').pop();
+  if (!id) {
+    return NextResponse.json(
+      { error: 'Appointment ID is required' },
+      { status: 400 }
+    );
+  }
+  return handleGetAppointment(request, { params: Promise.resolve({ id }) });
+});
+
+export const PUT = withAuth(async (request: AuthenticatedRequest) => {
+  const url = new URL(request.url);
+  const id = url.pathname.split('/').pop();
+  if (!id) {
+    return NextResponse.json(
+      { error: 'Appointment ID is required' },
+      { status: 400 }
+    );
+  }
+  return handleUpdateAppointment(request, { params: Promise.resolve({ id }) });
+});
+
+export const DELETE = withAuth(async (request: AuthenticatedRequest) => {
+  const url = new URL(request.url);
+  const id = url.pathname.split('/').pop();
+  if (!id) {
+    return NextResponse.json(
+      { error: 'Appointment ID is required' },
+      { status: 400 }
+    );
+  }
+  return handleCancelAppointment(request, { params: Promise.resolve({ id }) });
+});

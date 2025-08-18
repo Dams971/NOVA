@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { NotificationService } from '@/lib/services/notification-service';
-import { AppointmentService } from '@/lib/services/appointment-service';
 import { AppointmentStatus } from '@/lib/models/appointment';
+import { AppointmentService } from '@/lib/services/appointment-service';
+import { NotificationService } from '@/lib/services/notification-service';
 
 // Mock the appointment service
 vi.mock('@/lib/services/appointment-service');

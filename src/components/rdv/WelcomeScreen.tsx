@@ -11,14 +11,14 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
 import { CalendarPlus, AlertTriangle, Calendar, Info, Phone, Mail, Clock } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
 
 interface WelcomeAction {
   type: 'button' | 'calendar' | 'text' | 'link' | 'info_card' | 'contact_card';
   label: string;
   action: string;
-  data?: any;
+  data?: Record<string, unknown>;
   style?: 'primary' | 'secondary' | 'urgent' | 'info' | 'warning';
   accessibility?: {
     aria_label?: string;
@@ -39,7 +39,7 @@ interface WelcomeScreenProps {
   /** Error state */
   error?: string;
   /** Callback when action is selected */
-  onAction?: (action: string, data?: any) => void;
+  onAction?: (action: string, data?: Record<string, unknown>) => void;
   /** Custom CSS classes */
   className?: string;
 }

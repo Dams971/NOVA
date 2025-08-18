@@ -1,13 +1,12 @@
 import { NextResponse } from 'next/server';
-import { withAuth } from '@/lib/middleware/auth';
+import { withAuth, AuthenticatedRequest } from '@/lib/middleware/auth';
 
-export const GET = withAuth(async (request: { user: unknown; permissions: unknown }) => {
+export const GET = withAuth(async (request: AuthenticatedRequest) => {
   try {
     // User is already authenticated and available in request.user
     return NextResponse.json({
       success: true,
-      user: request.user,
-      permissions: request.permissions
+      user: request.auth?.user
     });
   } catch (error) {
     console.error('Get current user API error:', error);

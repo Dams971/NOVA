@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { Cabinet } from '@/lib/models/cabinet';
-import CabinetOverviewGrid from './CabinetOverviewGrid';
 import CabinetDetailView from './CabinetDetailView';
+import CabinetOverviewGrid from './CabinetOverviewGrid';
 import ComparativeAnalyticsDashboard from './ComparativeAnalyticsDashboard';
 
 type DashboardView = 'overview' | 'detail' | 'comparative';
@@ -27,7 +27,7 @@ export default function AdminDashboard({ initialView = 'overview' }: AdminDashbo
           setCabinets(data.data || []);
         }
       } catch (_error) {
-        console.error('Failed to fetch cabinets:', error);
+        console.error('Failed to fetch cabinets:', _error);
       } finally {
         setLoading(false);
       }

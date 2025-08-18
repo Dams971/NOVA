@@ -5,13 +5,13 @@
  * Tests color contrast, keyboard navigation, screen reader support, and focus management.
  */
 
-import { render, screen, fireEvent, waitFor } from '@/test/test-utils';
-import { axe, toHaveNoViolations } from 'jest-axe';
-import { Button } from '@/components/ui/button';
-import { ChatRDV } from '@/components/rdv/ChatRDV';
-import { checkAccessibility } from '@/test/setup';
 import userEvent from '@testing-library/user-event';
+import { axe, toHaveNoViolations } from 'jest-axe';
 import { Heart, Calendar } from 'lucide-react';
+import { ChatRDV } from '@/components/rdv/ChatRDV';
+import { Button } from '@/components/ui/button';
+import { checkAccessibility } from '@/test/setup';
+import { render, screen, fireEvent, waitFor } from '@/test/test-utils';
 
 // Extend Jest matchers
 expect.extend(toHaveNoViolations);

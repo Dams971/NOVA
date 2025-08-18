@@ -1,27 +1,19 @@
 'use client';
 
-import React, { useState, useCallback, useEffect } from 'react';
-import { format } from 'date-fns';
-import { fr } from 'date-fns/locale';
 import { 
   Users, 
   Search, 
   Filter, 
   Plus, 
   Download, 
-  Mail, 
-  Phone, 
-  Calendar,
-  FileText,
-  Settings,
-  MoreVertical
 } from 'lucide-react';
-import { Patient, PatientFilters, PatientSearchResult } from '@/lib/models/patient';
+import React, { useState, useCallback, useEffect } from 'react';
+import { Patient, PatientFilters } from '@/lib/models/patient';
 // PatientService is used via API calls and hooks
-import PatientList from './PatientList';
-import PatientForm from './PatientForm';
 import PatientDetail from './PatientDetail';
 import PatientFiltersPanel from './PatientFiltersPanel';
+import PatientForm from './PatientForm';
+import PatientList from './PatientList';
 
 interface PatientManagementProps {
   cabinetId: string;
@@ -162,7 +154,7 @@ export default function PatientManagement({ cabinetId }: PatientManagementProps)
 
   const handleExportPatients = useCallback(() => {
     // This would implement CSV/Excel export functionality
-    console.log('Exporting patients...');
+    console.warn('Exporting patients...');
   }, []);
 
   const getPatientStats = () => {

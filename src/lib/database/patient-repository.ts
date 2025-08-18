@@ -1,7 +1,7 @@
-import { getPool } from './config';
-import { Patient, CreatePatientRequest, UpdatePatientRequest, PatientFilters, MedicalRecord } from '../models/patient';
-import { v4 as uuidv4 } from 'uuid';
 import { RowDataPacket, ResultSetHeader } from 'mysql2';
+import { v4 as uuidv4 } from 'uuid';
+import { Patient, CreatePatientRequest, UpdatePatientRequest, PatientFilters, MedicalRecord } from '../models/patient';
+import { getPool } from './config';
 
 export class PatientRepository {
   private pool = getPool();

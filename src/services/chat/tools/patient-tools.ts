@@ -219,7 +219,7 @@ export class PatientTools {
     try {
       // Build dynamic update query
       const updateFields: string[] = [];
-      const updateValues: any[] = [];
+      const updateValues: unknown[] = [];
 
       if (validated.firstName !== undefined) {
         updateFields.push('first_name = ?');

@@ -91,7 +91,7 @@ async function handleGetCabinets(request: AuthenticatedRequest): Promise<NextRes
       accessLevel: userRole === 'super_admin' || userRole === 'admin' ? 'all' : 'assigned',
     });
 
-  } catch (_error) {
+  } catch (error) {
     console.error('Get cabinets error:', error);
     return NextResponse.json(
       { error: 'Internal server error', code: 'INTERNAL_ERROR' },
@@ -148,7 +148,7 @@ async function handleCreateCabinet(request: AuthenticatedRequest): Promise<NextR
       cabinet: newCabinet,
     }, { status: 201 });
 
-  } catch (_error) {
+  } catch (error) {
     console.error('Create cabinet error:', error);
     return NextResponse.json(
       { error: 'Internal server error', code: 'INTERNAL_ERROR' },

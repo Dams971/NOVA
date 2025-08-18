@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server';
-import Bootstrap from '@/lib/core/bootstrap';
+import { NextRequest, NextResponse } from 'next/server';
 import APIGateway from '@/lib/api/gateway';
+import Bootstrap from '@/lib/core/bootstrap';
 import { getInitializationPromise } from '@/lib/core/init';
 
 const gateway = new APIGateway({
@@ -8,7 +8,7 @@ const gateway = new APIGateway({
   rateLimit: { maxRequests: 30, windowMs: 60000 }
 });
 
-async function statusHandler(req: NextRequest): Promise<NextResponse> {
+async function statusHandler(_req: NextRequest): Promise<NextResponse> {
   try {
     // Ensure system is initialized
     await getInitializationPromise();

@@ -1,7 +1,7 @@
 import '../globals.css';
 import '../../styles/nova-design-system.css';
-import Link from 'next/link';
 import type { Metadata } from 'next';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Services & Tarifs - NOVA Santé Dentaire',

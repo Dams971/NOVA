@@ -1,9 +1,9 @@
-import { WebSocketServer, WebSocket } from 'ws';
 import { IncomingMessage } from 'http';
 import { parse } from 'url';
-import { createChatOrchestrator, ChatContext, ChatResponse } from '@/services/chat/orchestrator';
-import { db } from '@/lib/database/postgresql-connection';
+import { WebSocketServer, WebSocket } from 'ws';
 import { z } from 'zod';
+import { db } from '@/lib/database/postgresql-connection';
+import { createChatOrchestrator, ChatContext, ChatResponse } from '@/services/chat/orchestrator';
 
 /**
  * NOVA WebSocket Chat Server
@@ -53,7 +53,7 @@ const ChatMessageSchema = z.object({
 export interface WebSocketMessage {
   type: 'chat_response' | 'error' | 'pong' | 'status' | 'typing' | 'escalation';
   sessionId: string;
-  data: any;
+  data: Record<string, unknown>;
   timestamp: number;
 }
 
@@ -89,7 +89,7 @@ export class ChatWebSocketServer {
       }
     });
 
-    console.log(`🚀 NOVA Chat WebSocket server started on port ${this.port}`);
+    console.warn(`🚀 NOVA Chat WebSocket server started on port ${this.port}`);
 
     this.wss.on('connection', (ws: WebSocket, request: IncomingMessage) => {
       this.handleNewConnection(ws, request);
@@ -118,7 +118,7 @@ export class ChatWebSocketServer {
 
     if (this.wss) {
       this.wss.close();
-      console.log('💤 NOVA Chat WebSocket server stopped');
+      console.warn('💤 NOVA Chat WebSocket server stopped');
     }
   }
 
@@ -129,7 +129,7 @@ export class ChatWebSocketServer {
     const url = parse(request.url || '', true);
     const sessionId = url.query.sessionId as string || this.generateSessionId();
     
-    console.log(`🔗 New WebSocket connection - SessionID: ${sessionId}`);
+    console.warn(`🔗 New WebSocket connection - SessionID: ${sessionId}`);
 
     // Initialize client
     const client: ConnectedClient = {
@@ -149,7 +149,7 @@ export class ChatWebSocketServer {
     });
 
     ws.on('close', (code: number, reason: Buffer) => {
-      console.log(`🔌 WebSocket disconnected - SessionID: ${sessionId}, Code: ${code}, Reason: ${reason.toString()}`);
+      console.warn(`🔌 WebSocket disconnected - SessionID: ${sessionId}, Code: ${code}, Reason: ${reason.toString()}`);
       this.clients.delete(sessionId);
     });
 
@@ -237,7 +237,7 @@ export class ChatWebSocketServer {
   /**
    * Handle authentication
    */
-  private async handleAuthentication(sessionId: string, authData: any): Promise<void> {
+  private async handleAuthentication(sessionId: string, authData: Record<string, unknown>): Promise<void> {
     const client = this.clients.get(sessionId);
     if (!client) return;
 
@@ -253,7 +253,7 @@ export class ChatWebSocketServer {
       client.tenantId = authData.tenantId;
       client.authenticated = true;
 
-      console.log(`✅ Client authenticated - SessionID: ${sessionId}, UserID: ${authData.userId}, TenantID: ${authData.tenantId}`);
+      console.warn(`✅ Client authenticated - SessionID: ${sessionId}, UserID: ${authData.userId}, TenantID: ${authData.tenantId}`);
 
       this.sendMessage(sessionId, {
         type: 'status',
@@ -274,7 +274,7 @@ export class ChatWebSocketServer {
   /**
    * Handle chat messages
    */
-  private async handleChatMessage(sessionId: string, chatData: any): Promise<void> {
+  private async handleChatMessage(sessionId: string, chatData: Record<string, unknown>): Promise<void> {
     const client = this.clients.get(sessionId);
     if (!client || !client.authenticated) return;
 
@@ -367,7 +367,7 @@ export class ChatWebSocketServer {
    * Handle escalation to human agents
    */
   private handleEscalation(sessionId: string, context: ChatContext, response: ChatResponse): void {
-    console.log(`🚨 Chat escalation - SessionID: ${sessionId}, UserID: ${context.user.userId}, TenantID: ${context.tenant.id}`);
+    console.warn(`🚨 Chat escalation - SessionID: ${sessionId}, UserID: ${context.user.userId}, TenantID: ${context.tenant.id}`);
 
     // TODO: Implement escalation logic:
     // 1. Notify available human agents
@@ -446,7 +446,7 @@ export class ChatWebSocketServer {
 
       this.clients.forEach((client, sessionId) => {
         if (now - client.lastActivity > timeout) {
-          console.log(`🧹 Cleaning up inactive connection: ${sessionId}`);
+          console.warn(`🧹 Cleaning up inactive connection: ${sessionId}`);
           try {
             client.ws.close(1000, 'Connection timeout');
           } catch (_error) {

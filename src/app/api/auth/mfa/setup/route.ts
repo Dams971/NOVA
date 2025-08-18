@@ -33,7 +33,7 @@ async function handleSetupMFA(request: AuthenticatedRequest): Promise<NextRespon
       instructions: 'Scan the QR code with your authenticator app and verify with a token to enable MFA'
     });
 
-  } catch (_error) {
+  } catch (error) {
     console.error('MFA setup error:', error);
 
     if (error instanceof MFAError) {

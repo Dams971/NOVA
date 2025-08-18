@@ -51,7 +51,7 @@ export default function CabinetHealthDashboard({
       
       const data = await response.json();
       setAlerts(data.data);
-    } catch (_err) {
+    } catch (err) {
       console.error('Failed to fetch alerts:', err);
     }
   };
@@ -67,7 +67,7 @@ export default function CabinetHealthDashboard({
       if (response.ok) {
         await fetchAlerts();
       }
-    } catch (_err) {
+    } catch (err) {
       console.error('Failed to acknowledge alert:', err);
     }
   };
@@ -83,7 +83,7 @@ export default function CabinetHealthDashboard({
       if (response.ok) {
         await fetchAlerts();
       }
-    } catch (_err) {
+    } catch (err) {
       console.error('Failed to resolve alert:', err);
     }
   };
@@ -97,7 +97,7 @@ export default function CabinetHealthDashboard({
       if (response.ok) {
         await fetchHealthData();
       }
-    } catch (_err) {
+    } catch (err) {
       console.error('Failed to refresh cabinet health:', err);
     }
   };

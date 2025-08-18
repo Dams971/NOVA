@@ -1,6 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { CabinetService } from '../../lib/services/cabinet-service';
-import { CabinetRepository } from '../../lib/repositories/cabinet-repository';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { 
   Cabinet, 
   CreateCabinetRequest, 
@@ -8,6 +6,8 @@ import {
   CabinetStatus,
   CabinetFilters 
 } from '../../lib/models/cabinet';
+import { CabinetRepository } from '../../lib/repositories/cabinet-repository';
+import { CabinetService } from '../../lib/services/cabinet-service';
 
 // Mock repository
 class MockCabinetRepository implements CabinetRepository {

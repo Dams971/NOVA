@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import AppointmentCalendar from '@/components/manager/AppointmentCalendar';
 import { AppointmentService } from '@/lib/services/appointment-service';
 

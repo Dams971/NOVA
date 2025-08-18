@@ -115,7 +115,7 @@ export function KeyboardNavigationProvider({ children }: { children: ReactNode }
     
     if (shortcutList) {
       // This would use the announcer context if available
-      console.log('Raccourcis disponibles:', shortcutList);
+      console.warn('Raccourcis disponibles:', shortcutList);
     }
   }, []);
 
@@ -147,7 +147,8 @@ export function useKeyboardShortcut(
   useEffect(() => {
     const unregister = registerShortcut(key, callback, description);
     return unregister;
-  }, [key, description, registerShortcut, ...dependencies]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [key, callback, description, registerShortcut]);
 }
 
 /**
@@ -279,7 +280,7 @@ export function useRovingTabIndex(
 
     container.addEventListener('keydown', handleKeyDown);
     return () => container.removeEventListener('keydown', handleKeyDown);
-  }, [orientation, moveNext, movePrevious, moveFirst, moveLast]);
+  }, [containerRef, orientation, moveNext, movePrevious, moveFirst, moveLast]);
 
   // Update tabindex when activeIndex changes
   useEffect(() => {

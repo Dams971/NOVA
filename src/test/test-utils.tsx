@@ -5,8 +5,8 @@
  * with proper context setup and French language support.
  */
 
-import React from 'react';
 import { render as rtlRender, RenderOptions } from '@testing-library/react';
+import React from 'react';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { createTestUser } from './setup';
 
@@ -185,16 +185,19 @@ export const createMockFormData = (data: Record<string, string>) => {
 export const waitForLoadingToFinish = () => 
   new Promise(resolve => setTimeout(resolve, 0));
 
+// Type for WebSocket event callback
+type WebSocketCallback = (data?: any) => void;
+
 // Mock WebSocket helper
 export const createMockWebSocket = () => {
-  const listeners: Record<string, Function[]> = {};
+  const listeners: Record<string, WebSocketCallback[]> = {};
   
   return {
-    addEventListener: vi.fn((event: string, callback: Function) => {
+    addEventListener: vi.fn((event: string, callback: WebSocketCallback) => {
       if (!listeners[event]) listeners[event] = [];
       listeners[event].push(callback);
     }),
-    removeEventListener: vi.fn((event: string, callback: Function) => {
+    removeEventListener: vi.fn((event: string, callback: WebSocketCallback) => {
       if (listeners[event]) {
         listeners[event] = listeners[event].filter(cb => cb !== callback);
       }

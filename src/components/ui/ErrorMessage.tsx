@@ -1,7 +1,7 @@
 'use client';
 
-import React from 'react';
 import { AlertCircle } from 'lucide-react';
+import React from 'react';
 
 interface ErrorMessageProps {
   id?: string;
@@ -45,7 +45,6 @@ export function ErrorMessage({
   );
 }
 
-export default ErrorMessage;
 
 // Component for field-specific errors
 interface FieldErrorProps {

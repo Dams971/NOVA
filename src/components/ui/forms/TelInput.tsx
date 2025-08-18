@@ -1,5 +1,5 @@
-import React, { forwardRef, useState } from 'react';
 import { parsePhoneNumber, isValidPhoneNumber } from 'libphonenumber-js';
+import React, { forwardRef, useState } from 'react';
 import TextInput from './TextInput';
 
 interface TelInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {

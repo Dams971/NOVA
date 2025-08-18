@@ -6,18 +6,25 @@
  */
 
 import { describe, beforeEach, afterEach, it, expect, vi, Mock } from 'vitest';
+import { DialogManagerV3, getSharedDialogManagerV3 } from '../lib/chat/dialogManager-v3';
 import { AuthService, OTPService, getAuthService } from '../services/auth.service';
 import { EmailService, getEmailService } from '../services/email.service';
-import { DialogManagerV3, getSharedDialogManagerV3 } from '../lib/chat/dialogManager-v3';
 
 // Mock external dependencies
 vi.mock('crypto', () => ({
   randomBytes: vi.fn(() => Buffer.from([0x12, 0x34, 0x56, 0x78]))
 }));
 
-vi.mock('jsonwebtoken', () => ({
-  sign: vi.fn(() => 'mock-jwt-token'),
-  verify: vi.fn(() => ({ patient_id: 'test-patient-id', issued_at: Date.now() }))
+vi.mock('jose', () => ({
+  SignJWT: vi.fn().mockImplementation(() => ({
+    setProtectedHeader: vi.fn().mockReturnThis(),
+    setExpirationTime: vi.fn().mockReturnThis(),
+    setIssuedAt: vi.fn().mockReturnThis(),
+    sign: vi.fn().mockResolvedValue('mock-jwt-token'),
+  })),
+  jwtVerify: vi.fn().mockResolvedValue({ 
+    payload: { patient_id: 'test-patient-id', issued_at: Date.now() } 
+  })
 }));
 
 vi.mock('libphonenumber-js', () => ({

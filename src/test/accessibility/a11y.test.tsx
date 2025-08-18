@@ -1,15 +1,14 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe, toHaveNoViolations } from 'jest-axe';
+import React from 'react';
 import { vi } from 'vitest';
-
 // Components to test
 import Header from '@/components/layout/Header';
-import TextInput from '@/components/ui/forms/TextInput';
-import TelInput from '@/components/ui/forms/TelInput';
-import Button from '@/components/ui/forms/Button';
 import DatePicker from '@/components/ui/calendar/DatePicker';
+import Button from '@/components/ui/forms/Button';
+import TelInput from '@/components/ui/forms/TelInput';
+import TextInput from '@/components/ui/forms/TextInput';
 
 // Extend Jest matchers
 expect.extend(toHaveNoViolations);

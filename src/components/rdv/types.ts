@@ -9,15 +9,15 @@ export interface Message {
   timestamp: Date;
   suggestions?: string[];
   quickActions?: QuickAction[];
-  aiResponse?: any;
-  appointmentData?: any;
+  aiResponse?: Record<string, unknown>;
+  appointmentData?: Record<string, unknown>;
 }
 
 export interface QuickAction {
   id: string;
   label: string;
   type: 'location' | 'distance' | 'care_type' | 'urgency' | 'confirmation' | 'slot_selection';
-  value: any;
+  value: string | number | boolean;
   icon?: React.ReactNode;
   careType?: string;
 }

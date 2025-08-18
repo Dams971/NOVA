@@ -1,5 +1,6 @@
 'use client';
 
+import { ChevronDown, Check, AlertCircle, CheckCircle, Info } from 'lucide-react';
 import React, { 
   createContext, 
   useContext, 
@@ -10,7 +11,6 @@ import React, {
   forwardRef,
   ReactNode
 } from 'react';
-import { ChevronDown, Check, AlertCircle, CheckCircle, Info } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface SelectContextValue {
@@ -114,10 +114,7 @@ const SelectGroup = forwardRef<HTMLDivElement, SelectGroupProps>(({
   fullWidth = false,
   className
 }, ref) => {
-  const { id, variant: contextVariant } = useSelectContext();
-  
-  // Determine actual variant based on messages
-  const actualVariant = error ? 'error' : success ? 'success' : warning ? 'warning' : contextVariant;
+  const { id } = useSelectContext();
   
   // Generate IDs for associated elements
   const helperTextId = `${id}-helper`;
@@ -359,7 +356,7 @@ interface SelectContentProps extends React.HTMLAttributes<HTMLDivElement> {
 const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(({
   className,
   children,
-  position = 'auto',
+  position: _position = 'auto',
   sideOffset = 4,
   ...props
 }, ref) => {
@@ -533,7 +530,7 @@ SelectItem.displayName = 'SelectItem';
 
 // ==================== SELECT SEPARATOR ====================
 
-interface SelectSeparatorProps extends React.HTMLAttributes<HTMLDivElement> {}
+type SelectSeparatorProps = React.HTMLAttributes<HTMLDivElement>;
 
 /**
  * Select Separator Component

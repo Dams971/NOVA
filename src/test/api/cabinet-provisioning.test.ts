@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { POST } from '../../app/api/cabinets/provision/route';
-import { GET as getTemplates, POST as createTemplate } from '../../app/api/templates/route';
-import { GET as getTemplate, DELETE as deleteTemplate } from '../../app/api/templates/[templateId]/route';
 import { GET as getDeployment, DELETE as rollbackDeployment } from '../../app/api/deployments/[deploymentId]/route';
+import { GET as getTemplate, DELETE as deleteTemplate } from '../../app/api/templates/[templateId]/route';
+import { GET as getTemplates, POST as createTemplate } from '../../app/api/templates/route';
 import { CreateCabinetRequest } from '../../lib/models/cabinet';
 import { ProvisioningOptions, CabinetTemplate } from '../../lib/services/cabinet-provisioning-service';
 

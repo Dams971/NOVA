@@ -1,8 +1,8 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { vi } from 'vitest';
 import PatientForm from '@/components/manager/PatientForm';
-import { PatientService } from '@/lib/services/patient-service';
 import { Patient, Gender } from '@/lib/models/patient';
+import { PatientService } from '@/lib/services/patient-service';
 
 // Mock the patient service
 vi.mock('@/lib/services/patient-service');

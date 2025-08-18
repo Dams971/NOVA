@@ -1,7 +1,7 @@
 'use client';
 
-import React, { Component, ReactNode } from 'react';
 import { AlertTriangle } from 'lucide-react';
+import React, { Component, ReactNode } from 'react';
 
 interface Props {
   children: ReactNode;

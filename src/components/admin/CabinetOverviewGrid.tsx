@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
-import { Cabinet, CabinetStatus } from '@/lib/models/cabinet';
 import { Search, Filter, SortAsc, SortDesc, RefreshCw, Eye, Settings, AlertTriangle } from 'lucide-react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { Cabinet, CabinetStatus } from '@/lib/models/cabinet';
 
 interface CabinetMetrics {
   cabinetId: string;
@@ -33,7 +33,6 @@ interface FilterOptions {
 
 export default function CabinetOverviewGrid({
   refreshInterval = 30000,
-  onCabinetSelect,
   onCabinetSettings,
   onCabinetDetail
 }: CabinetOverviewGridProps) {
@@ -56,7 +55,7 @@ export default function CabinetOverviewGrid({
   // WebSocket connection for real-time updates
   const [ws, setWs] = useState<WebSocket | null>(null);
 
-  const fetchCabinets = async () => {
+  const fetchCabinets = useCallback(async () => {
     try {
       const response = await fetch('/api/admin/cabinets');
       if (!response.ok) {
@@ -69,9 +68,9 @@ export default function CabinetOverviewGrid({
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error');
     }
-  };
+  }, []);
 
-  const fetchMetrics = async () => {
+  const fetchMetrics = useCallback(async () => {
     try {
       const response = await fetch('/api/admin/cabinets/metrics');
       if (!response.ok) {
@@ -82,11 +81,11 @@ export default function CabinetOverviewGrid({
       setMetrics(data.data);
       setLastUpdated(new Date());
     } catch (_err) {
-      console.error('Failed to fetch metrics:', err);
+      console.error('Failed to fetch metrics:', _err);
     }
-  };
+  }, []);
 
-  const setupWebSocket = () => {
+  const setupWebSocket = useCallback(() => {
     if (typeof window === 'undefined') return;
     
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
@@ -95,7 +94,7 @@ export default function CabinetOverviewGrid({
     const websocket = new WebSocket(wsUrl);
     
     websocket.onopen = () => {
-      console.log('WebSocket connected');
+      console.warn('WebSocket connected');
     };
     
     websocket.onmessage = (event) => {
@@ -114,7 +113,7 @@ export default function CabinetOverviewGrid({
     };
     
     websocket.onclose = () => {
-      console.log('WebSocket disconnected');
+      console.warn('WebSocket disconnected');
       // Attempt to reconnect after 5 seconds
       setTimeout(setupWebSocket, 5000);
     };
@@ -124,7 +123,7 @@ export default function CabinetOverviewGrid({
     };
     
     setWs(websocket);
-  };
+  }, []);
 
   useEffect(() => {
     const loadData = async () => {
@@ -147,8 +146,7 @@ export default function CabinetOverviewGrid({
         ws.close();
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refreshInterval]);
+  }, [fetchCabinets, fetchMetrics, setupWebSocket, refreshInterval, ws]);
 
   // Combine cabinets with their metrics
   const cabinetData = useMemo(() => {
@@ -194,7 +192,7 @@ export default function CabinetOverviewGrid({
 
     // Apply sorting
     filtered.sort((a, b) => {
-      let aValue: any, bValue: any;
+      let aValue: string | number | Date, bValue: string | number | Date;
       
       switch (sortField) {
         case 'name':
@@ -226,14 +224,18 @@ export default function CabinetOverviewGrid({
           bValue = b.name;
       }
 
-      if (typeof aValue === 'string') {
+      if (typeof aValue === 'string' && typeof bValue === 'string') {
         const comparison = aValue.localeCompare(bValue);
         return sortDirection === 'asc' ? comparison : -comparison;
-      } else if (aValue instanceof Date) {
+      } else if (aValue instanceof Date && bValue instanceof Date) {
         const comparison = aValue.getTime() - bValue.getTime();
         return sortDirection === 'asc' ? comparison : -comparison;
-      } else {
+      } else if (typeof aValue === 'number' && typeof bValue === 'number') {
         const comparison = aValue - bValue;
+        return sortDirection === 'asc' ? comparison : -comparison;
+      } else {
+        // Fallback for mixed types - convert to string
+        const comparison = String(aValue).localeCompare(String(bValue));
         return sortDirection === 'asc' ? comparison : -comparison;
       }
     });
@@ -369,7 +371,7 @@ export default function CabinetOverviewGrid({
                 </label>
                 <select
                   value={filters.status}
-                  onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value as any }))}
+                  onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value as CabinetStatus | 'all' }))}
                   className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="all">All Statuses</option>
@@ -386,7 +388,7 @@ export default function CabinetOverviewGrid({
                 </label>
                 <select
                   value={filters.healthStatus}
-                  onChange={(e) => setFilters(prev => ({ ...prev, healthStatus: e.target.value as any }))}
+                  onChange={(e) => setFilters(prev => ({ ...prev, healthStatus: e.target.value as 'healthy' | 'degraded' | 'unhealthy' | 'all' }))}
                   className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="all">All Health Statuses</option>

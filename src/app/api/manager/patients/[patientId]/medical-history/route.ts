@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PatientService, CreateMedicalRecordRequest } from '@/lib/services/patient-service';
 import { UserContext } from '@/lib/services/cabinet-access-control';
+import { PatientService, CreateMedicalRecordRequest } from '@/lib/services/patient-service';
 
 // Mock user context - in real implementation, this would come from JWT token
-const getMockUserContext = (): UserContext => ({
+const _getMockUserContext = (): UserContext => ({
   userId: 'manager-user-1',
   role: 'manager',
   assignedCabinets: ['cabinet-1', 'cabinet-2'],
@@ -12,11 +12,12 @@ const getMockUserContext = (): UserContext => ({
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { patientId: string } }
+  { params }: { params: Promise<{ patientId: string }> }
 ) {
   try {
+    const { patientId } = await params;
     const patientService = PatientService.getInstance();
-    const result = await patientService.getMedicalHistory(params.patientId);
+    const result = await patientService.getMedicalHistory(patientId);
 
     if (result.success) {
       return NextResponse.json({
@@ -29,7 +30,7 @@ export async function GET(
         error: result.error
       }, { status: 404 });
     }
-  } catch (_error) {
+  } catch (error) {
     console.error('Error fetching medical history:', error);
     return NextResponse.json({
       success: false,
@@ -40,9 +41,10 @@ export async function GET(
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { patientId: string } }
+  { params }: { params: Promise<{ patientId: string }> }
 ) {
   try {
+    const { patientId } = await params;
     const patientService = PatientService.getInstance();
     const body = await request.json();
 
@@ -67,7 +69,7 @@ export async function POST(
     }
 
     const createRequest: CreateMedicalRecordRequest = {
-      patientId: params.patientId,
+      patientId,
       type: body.type,
       title: body.title,
       description: body.description,
@@ -88,7 +90,7 @@ export async function POST(
         error: result.error
       }, { status: 400 });
     }
-  } catch (_error) {
+  } catch (error) {
     console.error('Error creating medical record:', error);
     return NextResponse.json({
       success: false,

@@ -1,5 +1,5 @@
-import { CabinetKPIs, PerformanceAlert, RealtimeUpdate } from '../models/performance';
 import { AppointmentStatus } from '../models/appointment';
+import { CabinetKPIs, PerformanceAlert, RealtimeUpdate } from '../models/performance';
 
 export interface PerformanceServiceResult<T> {
   success: boolean;
@@ -203,7 +203,7 @@ export class PerformanceService {
   async acknowledgeAlert(alertId: string, userId: string): Promise<PerformanceServiceResult<boolean>> {
     try {
       // In real implementation, this would update the alert in the database
-      console.log(`Alert ${alertId} acknowledged by user ${userId}`);
+      console.warn(`Alert ${alertId} acknowledged by user ${userId}`);
       
       return {
         success: true,

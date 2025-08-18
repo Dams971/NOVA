@@ -44,7 +44,7 @@ export class MigrationRunner {
       // Execute pending migrations
       for (const migration of migrations) {
         if (!executedVersions.has(migration.version)) {
-          console.log(`Running migration ${migration.version}: ${migration.filename}`);
+          console.warn(`Running migration ${migration.version}: ${migration.filename}`);
           
           try {
             // Execute migration SQL
@@ -61,7 +61,7 @@ export class MigrationRunner {
               [migration.version, migration.filename]
             );
 
-            console.log(`✓ Migration ${migration.version} completed successfully`);
+            console.warn(`✓ Migration ${migration.version} completed successfully`);
           } catch (_error) {
             console.error(`✗ Migration ${migration.version} failed:`, error);
             throw error;
@@ -69,7 +69,7 @@ export class MigrationRunner {
         }
       }
 
-      console.log('All migrations completed successfully');
+      console.warn('All migrations completed successfully');
     } catch (_error) {
       console.error('Migration runner failed:', error);
       throw error;
@@ -108,8 +108,8 @@ export class MigrationRunner {
         [version]
       );
 
-      console.log(`Migration ${version} rolled back (record removed)`);
-      console.log('Note: This only removes the migration record. Manual rollback of schema changes may be required.');
+      console.warn(`Migration ${version} rolled back (record removed)`);
+      console.warn('Note: This only removes the migration record. Manual rollback of schema changes may be required.');
     } catch (_error) {
       console.error(`Error rolling back migration ${version}:`, error);
       throw error;

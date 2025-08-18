@@ -1,9 +1,9 @@
 'use client';
 
+import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
 import '../globals.css';
 import '../../styles/nova-design-system.css';
-import Link from 'next/link';
 
 interface Message {
   id: string;
@@ -13,7 +13,7 @@ interface Message {
   actions?: {
     type: string;
     label: string;
-    value: any;
+    value: unknown;
   }[];
 }
 
@@ -321,7 +321,7 @@ export default function RDVPage() {
                           action.type === 'quick_reply' ? (
                             <button
                               key={idx}
-                              onClick={() => handleQuickReply(action.value)}
+                              onClick={() => handleQuickReply(action.value as string)}
                               className="px-3 py-1.5 rounded-full text-sm border transition-all hover:bg-[var(--nova-primary-light)]"
                               style={{ borderColor: 'var(--nova-primary)', color: 'var(--nova-primary)' }}
                             >
@@ -330,7 +330,7 @@ export default function RDVPage() {
                           ) : action.type === 'link' ? (
                             <Link
                               key={idx}
-                              href={action.value}
+                              href={action.value as string}
                               className="px-3 py-1.5 rounded-full text-sm border transition-all hover:bg-[var(--nova-primary-light)]"
                               style={{ borderColor: 'var(--nova-primary)', color: 'var(--nova-primary)' }}
                             >

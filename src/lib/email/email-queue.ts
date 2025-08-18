@@ -1,7 +1,7 @@
+import { PoolClient } from 'pg';
+import { z } from 'zod';
 import { db } from '@/lib/database/postgresql-connection';
 import EmailService, { AppointmentEmailParams, ReminderEmailParams } from './email-service';
-import { z } from 'zod';
-import { PoolClient } from 'pg';
 
 /**
  * NOVA Email Queue System
@@ -64,9 +64,9 @@ export class EmailQueue {
       );
       
       if (tableExists?.exists) {
-        console.log('✅ Email queue table already exists');
+        console.warn('✅ Email queue table already exists');
       } else {
-        console.log('⚠️ Email queue table not found - run setup-postgresql.sql first');
+        console.warn('⚠️ Email queue table not found - run setup-postgresql.sql first');
       }
     } catch (_error) {
       console.error('❌ Failed to check email queue table:', error);
@@ -98,7 +98,7 @@ export class EmailQueue {
 
     await this.addJobToDatabase(job);
     
-    console.log(`📧 Queued appointment confirmation for ${params.patientEmail}`);
+    console.warn(`📧 Queued appointment confirmation for ${params.patientEmail}`);
     return jobId;
   }
 
@@ -127,7 +127,7 @@ export class EmailQueue {
 
     await this.addJobToDatabase(job);
     
-    console.log(`⏰ Queued appointment reminder for ${params.patientEmail} at ${scheduleFor.toISOString()}`);
+    console.warn(`⏰ Queued appointment reminder for ${params.patientEmail} at ${scheduleFor.toISOString()}`);
     return jobId;
   }
 
@@ -155,7 +155,7 @@ export class EmailQueue {
 
     await this.addJobToDatabase(job);
     
-    console.log(`❌ Queued appointment cancellation for ${params.patientEmail}`);
+    console.warn(`❌ Queued appointment cancellation for ${params.patientEmail}`);
     return jobId;
   }
 
@@ -184,7 +184,7 @@ export class EmailQueue {
 
     await this.addJobToDatabase(job);
     
-    console.log(`🔄 Queued appointment reschedule for ${newParams.patientEmail}`);
+    console.warn(`🔄 Queued appointment reschedule for ${newParams.patientEmail}`);
     return jobId;
   }
 
@@ -201,7 +201,7 @@ export class EmailQueue {
       const success = result.rowCount > 0;
       
       if (success) {
-        console.log(`🚫 Cancelled email job ${jobId}`);
+        console.warn(`🚫 Cancelled email job ${jobId}`);
       }
       
       return success;
@@ -299,7 +299,7 @@ export class EmailQueue {
       const success = (result as any).affectedRows > 0;
       
       if (success) {
-        console.log(`🔄 Retrying email job ${jobId}`);
+        console.warn(`🔄 Retrying email job ${jobId}`);
       }
       
       return success;
@@ -323,7 +323,7 @@ export class EmailQueue {
       }
     }, 10000); // Process every 10 seconds
 
-    console.log('📧 Email queue processing started');
+    console.warn('📧 Email queue processing started');
   }
 
   /**
@@ -333,7 +333,7 @@ export class EmailQueue {
     if (this.processingInterval) {
       clearInterval(this.processingInterval);
       this.processingInterval = null;
-      console.log('📧 Email queue processing stopped');
+      console.warn('📧 Email queue processing stopped');
     }
   }
 
@@ -360,7 +360,7 @@ export class EmailQueue {
         return;
       }
 
-      console.log(`📧 Processing ${jobs.length} email jobs`);
+      console.warn(`📧 Processing ${jobs.length} email jobs`);
 
       for (const jobRow of jobs) {
         await this.processJob(jobRow, connection);
@@ -440,7 +440,7 @@ export class EmailQueue {
           'UPDATE email_queue SET status = ?, processed_at = NOW(), last_error = NULL WHERE id = ?',
           ['completed', jobId]
         );
-        console.log(`✅ Email job ${jobId} completed successfully`);
+        console.warn(`✅ Email job ${jobId} completed successfully`);
       } else {
         throw new Error('Email sending failed');
       }
@@ -522,7 +522,7 @@ export class EmailQueue {
       const deletedCount = (result as any).affectedRows;
       
       if (deletedCount > 0) {
-        console.log(`🧹 Cleaned up ${deletedCount} old email jobs`);
+        console.warn(`🧹 Cleaned up ${deletedCount} old email jobs`);
       }
       
       return deletedCount;

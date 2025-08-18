@@ -1,7 +1,7 @@
-import { NextResponse } from 'next/server';
-import { PatientService } from '@/lib/services/patient-service';
+import { NextRequest, NextResponse } from 'next/server';
 import { CreatePatientRequest, PatientFilters } from '@/lib/models/patient';
 import { UserContext } from '@/lib/services/cabinet-access-control';
+import { PatientService } from '@/lib/services/patient-service';
 
 // Mock user context - in real implementation, this would come from JWT token
 const getMockUserContext = (): UserContext => ({
@@ -11,7 +11,7 @@ const getMockUserContext = (): UserContext => ({
   permissions: ['read', 'create', 'update', 'delete']
 });
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const patientService = PatientService.getInstance();
@@ -45,7 +45,7 @@ export async function GET() {
       }, { status: 400 });
     }
   } catch (_error) {
-    console.error('Error fetching patients:', error);
+    console.error('Error fetching patients:', _error);
     return NextResponse.json({
       success: false,
       error: 'Internal server error'
@@ -53,7 +53,7 @@ export async function GET() {
   }
 }
 
-export async function POST() {
+export async function POST(request: NextRequest) {
   try {
     const patientService = PatientService.getInstance();
     const userContext = getMockUserContext();
@@ -91,7 +91,7 @@ export async function POST() {
       }, { status: 400 });
     }
   } catch (_error) {
-    console.error('Error creating patient:', error);
+    console.error('Error creating patient:', _error);
     return NextResponse.json({
       success: false,
       error: 'Internal server error'

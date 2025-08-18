@@ -1,7 +1,7 @@
 import './globals.css';
 import '../styles/nova-design-system.css';
-import Link from 'next/link';
 import type { Metadata } from 'next';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'NOVA - Plateforme de santé dentaire en Algérie',
@@ -224,7 +224,7 @@ export default function HomePage() {
               {
                 step: '2',
                 title: 'Choisissez',
-                description: 'Sélectionnez un créneau qui vous convient dans l\'agenda'
+                description: 'Sélectionnez un créneau qui vous convient dans l&apos;agenda'
               },
               {
                 step: '3',
@@ -267,13 +267,13 @@ export default function HomePage() {
               {
                 name: 'Amira B.',
                 location: 'Alger',
-                comment: 'Service excellent, j\'ai trouvé un dentiste en urgence un dimanche. L\'interface est très simple à utiliser.',
+                comment: 'Service excellent, j&apos;ai trouvé un dentiste en urgence un dimanche. L&apos;interface est très simple à utiliser.',
                 rating: 5
               },
               {
                 name: 'Karim M.',
                 location: 'Oran',
-                comment: 'Plus besoin d\'appeler pour prendre RDV ! Je réserve en 2 minutes et je reçois un SMS de rappel.',
+                comment: 'Plus besoin d&apos;appeler pour prendre RDV ! Je réserve en 2 minutes et je reçois un SMS de rappel.',
                 rating: 5
               },
               {
@@ -308,7 +308,7 @@ export default function HomePage() {
                 </div>
                 
                 <p className="text-sm" style={{ color: 'var(--nova-text-secondary)', lineHeight: '1.6' }}>
-                  "{testimonial.comment}"
+                  &ldquo;{testimonial.comment}&rdquo;
                 </p>
               </div>
             ))}
@@ -325,12 +325,12 @@ export default function HomePage() {
               Urgence dentaire ?
             </h3>
             <p className="mb-8 max-w-2xl mx-auto" style={{ color: 'var(--nova-text-secondary)' }}>
-              Notre service d'urgence est disponible 24h/24 et 7j/7. 
+              Notre service d&apos;urgence est disponible 24h/24 et 7j/7. 
               Un praticien de garde vous prendra en charge rapidement.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/urgences" className="btn-nova-urgent">
-                📞 Appeler le service d'urgence
+                📞 Appeler le service d&apos;urgence
               </Link>
               <Link href="/urgences" className="btn-nova-secondary">
                 💬 Chat avec un dentiste
@@ -357,7 +357,7 @@ export default function HomePage() {
               <ul className="space-y-2">
                 <li><Link href="/rdv" className="text-sm">Prendre RDV</Link></li>
                 <li><Link href="/urgences" className="text-sm">Urgences</Link></li>
-                <li><Link href="/aide" className="text-sm">Centre d'aide</Link></li>
+                <li><Link href="/aide" className="text-sm">Centre d&apos;aide</Link></li>
               </ul>
             </div>
             <div>

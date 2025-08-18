@@ -1,9 +1,8 @@
 'use client';
 
+import { Bot, MessageCircle, Settings, Users, Calendar } from 'lucide-react';
 import React, { useState, useCallback } from 'react';
 import ChatWidget from '@/components/chat/chat-widget';
-import { Bot, MessageCircle, Settings, Users, Calendar } from 'lucide-react';
-import type { Metadata } from 'next';
 
 /**
  * NOVA Chat Demo Page
@@ -24,7 +23,7 @@ export default function ChatPage() {
     userEmail: 'demo@example.com',
     cabinetName: 'Cabinet Dentaire Central',
     primaryColor: '#3b82f6',
-    position: 'bottom-right' as const
+    position: 'bottom-right' as 'bottom-right' | 'bottom-left'
   });
 
   const businessHours = {
@@ -38,20 +37,18 @@ export default function ChatPage() {
   };
 
   const handleEscalation = useCallback((conversationId: string) => {
-    console.log('Escalation triggered:', conversationId);
-    // Better UX: Use a toast notification instead of alert
+    // TODO: Implement proper toast notification system
     alert(`Conversation ${conversationId} escalée vers un conseiller humain`);
   }, []);
 
-  const handleAppointmentBooked = useCallback((appointmentData: any) => {
-    console.log('Appointment booked:', appointmentData);
-    // Better UX: Use a toast notification instead of alert
+  const handleAppointmentBooked = useCallback((appointmentData: Record<string, unknown>) => {
+    // TODO: Implement proper toast notification system
     alert(`Rendez-vous confirmé ! ID: ${appointmentData.appointmentId}`);
   }, []);
 
-  const handleSampleConversationClick = useCallback((example: string) => {
+  const handleSampleConversationClick = useCallback((_example: string) => {
+    // TODO: Implement chat widget pre-fill functionality
     // This could trigger the chat widget to pre-fill the message
-    console.log('Sample conversation selected:', example);
   }, []);
 
   const sampleConversations = [
@@ -220,7 +217,7 @@ export default function ChatPage() {
                     <option value="staff">Personnel</option>
                     <option value="manager">Manager</option>
                   </select>
-                  <p id="role-help" className="sr-only">Rôle de l'utilisateur qui utilise le chatbot</p>
+                  <p id="role-help" className="sr-only">Rôle de l&apos;utilisateur qui utilise le chatbot</p>
                 </div>
 
                 <div>
@@ -252,7 +249,7 @@ export default function ChatPage() {
                     <option value="bottom-right">Bas droite</option>
                     <option value="bottom-left">Bas gauche</option>
                   </select>
-                  <p id="position-help" className="sr-only">Position du widget de chat sur l'écran</p>
+                  <p id="position-help" className="sr-only">Position du widget de chat sur l&apos;écran</p>
                 </div>
 
                 <div className="pt-4 border-t border-gray-200">

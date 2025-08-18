@@ -46,7 +46,7 @@ export interface AppointmentEmailData {
 }
 
 export class IONOSEmailService {
-  private transporter: any;
+  private transporter: unknown;
 
   constructor() {
     if (typeof window === 'undefined') {
@@ -111,6 +111,96 @@ export class IONOSEmailService {
   }
 
   /**
+   * Send appointment summary email (alias for sendAppointmentConfirmation)
+   */
+  async sendAppointmentSummary(
+    email: string,
+    appointmentData: any,
+    userId: string
+  ): Promise<boolean> {
+    const emailData: AppointmentEmailData = {
+      patient_name: appointmentData.patient_name,
+      patient_email: email,
+      patient_phone_e164: appointmentData.patient_phone_e164,
+      start_at: appointmentData.start_at,
+      end_at: appointmentData.end_at,
+      care_type: appointmentData.reason || 'consultation',
+      reason: appointmentData.reason,
+      appointment_id: appointmentData.id
+    };
+    
+    return this.sendAppointmentConfirmation(emailData, userId);
+  }
+
+  /**
+   * Send OTP verification notification email
+   */
+  async sendOTPVerification(email: string): Promise<boolean> {
+    try {
+      const html = `
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { font-family: Arial, sans-serif; background: #f5f5f5; margin: 0; padding: 20px; }
+    .container { max-width: 500px; margin: 0 auto; background: white; border-radius: 8px; padding: 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .header { text-align: center; margin-bottom: 30px; }
+    .logo { font-size: 40px; margin-bottom: 10px; }
+    .footer { text-align: center; color: #666; font-size: 14px; margin-top: 30px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">🦷</div>
+      <h1 style="color: #0066FF; margin: 0;">Cabinet NOVA</h1>
+    </div>
+    
+    <h2>Code de vérification envoyé</h2>
+    <p>Nous avons envoyé un code de vérification à votre adresse email.</p>
+    <p>Veuillez vérifier votre boîte de réception et saisir le code reçu pour vous connecter.</p>
+    <p><strong>Le code expire dans 5 minutes.</strong></p>
+    
+    <div class="footer">
+      <p>Cabinet Dentaire NOVA<br>
+      Cité 109, Daboussy El Achour, Alger</p>
+    </div>
+  </div>
+</body>
+</html>
+      `;
+
+      const text = `
+Cabinet NOVA - Code de vérification envoyé
+
+Nous avons envoyé un code de vérification à votre adresse email.
+Veuillez vérifier votre boîte de réception et saisir le code reçu pour vous connecter.
+
+Le code expire dans 5 minutes.
+
+Cabinet Dentaire NOVA
+Cité 109, Daboussy El Achour, Alger
+      `;
+
+      const mailOptions = {
+        from: `Cabinet NOVA <${emailConfig.from}>`,
+        to: email,
+        subject: 'Code de vérification envoyé - Cabinet NOVA',
+        html,
+        text,
+        priority: 'high'
+      };
+
+      await this.transporter.sendMail(mailOptions);
+      return true;
+    } catch (error) {
+      console.error('OTP verification notification error:', error);
+      return false;
+    }
+  }
+
+  /**
    * Send OTP verification email
    */
   async sendOtpEmail(
@@ -132,7 +222,7 @@ export class IONOSEmailService {
 
       await this.transporter.sendMail(mailOptions);
       return true;
-    } catch (_error) {
+    } catch (error) {
       console.error('OTP email error:', error);
       return false;
     }
@@ -465,7 +555,7 @@ Cité 109, Daboussy El Achour, Alger
             timestamp: new Date().toISOString()
           }
         });
-    } catch (_error) {
+    } catch (error) {
       console.error('Email logging error:', error);
     }
   }

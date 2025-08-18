@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { CabinetProvisioningService, CabinetTemplate } from '../../../lib/services/cabinet-provisioning-service';
 
 export async function GET() {
@@ -11,7 +11,7 @@ export async function GET() {
       data: templates
     });
 
-  } catch (_error) {
+  } catch (error) {
     console.error('Get templates API error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
@@ -20,7 +20,7 @@ export async function GET() {
   }
 }
 
-export async function POST() {
+export async function POST(request: NextRequest) {
   try {
     const template: CabinetTemplate = await request.json();
 
@@ -49,7 +49,7 @@ export async function POST() {
       data: template
     });
 
-  } catch (_error) {
+  } catch (error) {
     console.error('Create template API error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },

@@ -27,7 +27,7 @@ async function handleMFAStatus(request: AuthenticatedRequest): Promise<NextRespo
       }
     });
 
-  } catch (_error) {
+  } catch (error) {
     console.error('MFA status error:', error);
 
     return NextResponse.json(

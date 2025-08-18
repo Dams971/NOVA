@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
 import { X, Mail, Lock, User, Phone, Eye, EyeOff, Loader2, Check } from 'lucide-react';
+import React, { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface SignupModalProps {
@@ -98,7 +98,7 @@ export function SignupModal({ isOpen, onClose, onSwitchToLogin }: SignupModalPro
           <X className="h-6 w-6" />
         </button>
 
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Créer un compte</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">Cr&eacute;er un compte</h2>
 
         {error && (
           <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm">

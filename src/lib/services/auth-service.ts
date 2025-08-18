@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import { SignJWT, jwtVerify } from 'jose';
+import { RowDataPacket, ResultSetHeader } from 'mysql2';
 import { v4 as uuidv4 } from 'uuid';
 import { getPool } from '../database/config';
 import { 
@@ -12,12 +13,11 @@ import {
   UserPermissions,
   ROLE_PERMISSIONS
 } from '../models/auth';
-import { RowDataPacket, ResultSetHeader } from 'mysql2';
 
 export class AuthService {
   private static instance: AuthService;
   private pool = getPool();
-  private jwtSecret = process.env.JWT_SECRET || 'fallback-secret-key';
+  private jwtSecret = new TextEncoder().encode(process.env.JWT_SECRET || 'fallback-secret-key');
   private jwtExpiresIn = process.env.JWT_EXPIRES_IN || '7d';
 
   static getInstance(): AuthService {
@@ -55,7 +55,7 @@ export class AuthService {
 
       // Create session and token
       const session = await this.createSession(user.id);
-      const token = this.generateJWT(user, session.id);
+      const token = await this.generateJWT(user, session.id);
 
       return {
         success: true,
@@ -98,7 +98,7 @@ export class AuthService {
 
       // Create session and token
       const session = await this.createSession(user.id, data.rememberMe);
-      const token = this.generateJWT(user, session.id);
+      const token = await this.generateJWT(user, session.id);
 
       return {
         success: true,
@@ -115,7 +115,7 @@ export class AuthService {
   // Logout user
   async logout(token: string): Promise<boolean> {
     try {
-      const payload = this.verifyJWT(token);
+      const payload = await this.verifyJWT(token);
       if (!payload) return false;
 
       // Delete session
@@ -132,9 +132,10 @@ export class AuthService {
   }
 
   // Verify JWT token
-  verifyJWT(token: string): JWTPayload | null {
+  async verifyJWT(token: string): Promise<JWTPayload | null> {
     try {
-      return jwt.verify(token, this.jwtSecret) as JWTPayload;
+      const { payload } = await jwtVerify(token, this.jwtSecret);
+      return payload as JWTPayload;
     } catch (error) {
       return null;
     }
@@ -143,7 +144,7 @@ export class AuthService {
   // Get user by token
   async getUserByToken(token: string): Promise<User | null> {
     try {
-      const payload = this.verifyJWT(token);
+      const payload = await this.verifyJWT(token);
       if (!payload) return null;
 
       // Check if session is still valid
@@ -275,7 +276,7 @@ export class AuthService {
   }
 
   // Generate JWT
-  private generateJWT(user: User, sessionId: string): string {
+  private async generateJWT(user: User, sessionId: string): Promise<string> {
     const payload: Omit<JWTPayload, 'iat' | 'exp'> = {
       userId: user.id,
       email: user.email,
@@ -283,7 +284,11 @@ export class AuthService {
       sessionId
     };
 
-    return jwt.sign(payload, this.jwtSecret, { expiresIn: this.jwtExpiresIn });
+    return await new SignJWT(payload)
+      .setProtectedHeader({ alg: 'HS256' })
+      .setExpirationTime(this.jwtExpiresIn)
+      .setIssuedAt()
+      .sign(this.jwtSecret);
   }
 
   // Clean expired sessions

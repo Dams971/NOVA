@@ -1,16 +1,16 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/database/unified-connection';
-// import { withAuth } from '@/lib/middleware/auth'; // Temporarily disabled
 
 interface Params {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
-async function handleGetPatient(request: NextRequest, { params }: Params) {
+export async function GET(request: NextRequest, { params }: Params) {
   try {
-    const patient = await db.findPatientById(params.id);
+    const { id } = await params;
+    const patient = await db.findPatientById(id);
     
     if (!patient) {
       return NextResponse.json(
@@ -23,7 +23,7 @@ async function handleGetPatient(request: NextRequest, { params }: Params) {
       success: true,
       data: patient
     });
-  } catch (_error) {
+  } catch (error) {
     console.error('Get patient error:', error);
     return NextResponse.json(
       { error: 'Failed to fetch patient' },
@@ -32,15 +32,16 @@ async function handleGetPatient(request: NextRequest, { params }: Params) {
   }
 }
 
-async function handleUpdatePatient(request: NextRequest, { params }: Params) {
+export async function PUT(request: NextRequest, { params }: Params) {
   try {
+    const { id } = await params;
     const body = await request.json();
     
     // Remove immutable fields
     delete body.id;
     delete body.created_at;
     
-    const updatedPatient = await db.updatePatient(params.id, body);
+    const updatedPatient = await db.updatePatient(id, body);
     
     if (!updatedPatient) {
       return NextResponse.json(
@@ -53,7 +54,7 @@ async function handleUpdatePatient(request: NextRequest, { params }: Params) {
       success: true,
       data: updatedPatient
     });
-  } catch (_error) {
+  } catch (error) {
     console.error('Update patient error:', error);
     return NextResponse.json(
       { error: 'Failed to update patient' },
@@ -62,9 +63,10 @@ async function handleUpdatePatient(request: NextRequest, { params }: Params) {
   }
 }
 
-async function handleDeletePatient(request: NextRequest, { params }: Params) {
+export async function DELETE(request: NextRequest, { params }: Params) {
   try {
-    const deleted = await db.deletePatient(params.id);
+    const { id } = await params;
+    const deleted = await db.deletePatient(id);
     
     if (!deleted) {
       return NextResponse.json(
@@ -77,7 +79,7 @@ async function handleDeletePatient(request: NextRequest, { params }: Params) {
       success: true,
       message: 'Patient deleted successfully'
     });
-  } catch (_error) {
+  } catch (error) {
     console.error('Delete patient error:', error);
     return NextResponse.json(
       { error: 'Failed to delete patient' },
@@ -86,6 +88,3 @@ async function handleDeletePatient(request: NextRequest, { params }: Params) {
   }
 }
 
-export const GET = withAuth(handleGetPatient);
-export const PUT = withAuth(handleUpdatePatient);
-export const DELETE = withAuth(handleDeletePatient);

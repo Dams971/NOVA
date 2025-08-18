@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import { motion } from 'framer-motion';
 import { 
   Phone, 
@@ -12,6 +11,7 @@ import {
   Zap,
   CheckCircle
 } from 'lucide-react';
+import React from 'react';
 
 const emergencyTypes = [
   {
@@ -77,7 +77,7 @@ export default function EmergencySection() {
   };
 
   const handleEmergencyBooking = () => {
-    console.log('Réservation urgence');
+    console.warn('Réservation urgence');
     // Logique de redirection vers le formulaire d'urgence
   };
 

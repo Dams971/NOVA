@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import { SignJWT, jwtVerify } from 'jose';
 import { NextRequest } from 'next/server';
 
 export interface JWTPayload {
@@ -19,14 +19,17 @@ export interface AuthContext {
 
 class JWTManager {
   private static instance: JWTManager;
-  private readonly secretKey: string;
-  private readonly refreshSecretKey: string;
+  private readonly secretKey: Uint8Array;
+  private readonly refreshSecretKey: Uint8Array;
   private readonly accessTokenExpiry: string;
   private readonly refreshTokenExpiry: string;
 
   private constructor() {
-    this.secretKey = process.env.JWT_SECRET || 'nova-secret-key-change-in-production';
-    this.refreshSecretKey = process.env.JWT_REFRESH_SECRET || 'nova-refresh-secret-key-change-in-production';
+    const secretString = process.env.JWT_SECRET || 'nova-secret-key-change-in-production';
+    const refreshSecretString = process.env.JWT_REFRESH_SECRET || 'nova-refresh-secret-key-change-in-production';
+    
+    this.secretKey = new TextEncoder().encode(secretString);
+    this.refreshSecretKey = new TextEncoder().encode(refreshSecretString);
     this.accessTokenExpiry = process.env.JWT_ACCESS_EXPIRY || '15m';
     this.refreshTokenExpiry = process.env.JWT_REFRESH_EXPIRY || '7d';
   }
@@ -41,31 +44,35 @@ class JWTManager {
   /**
    * Generate access token
    */
-  public generateAccessToken(payload: Omit<JWTPayload, 'iat' | 'exp'>): string {
-    return jwt.sign(payload, this.secretKey, {
-      expiresIn: this.accessTokenExpiry,
-      issuer: 'nova-platform'
-    });
+  public async generateAccessToken(payload: Omit<JWTPayload, 'iat' | 'exp'>): Promise<string> {
+    return await new SignJWT(payload)
+      .setProtectedHeader({ alg: 'HS256' })
+      .setExpirationTime(this.accessTokenExpiry)
+      .setIssuedAt()
+      .setIssuer('nova-platform')
+      .sign(this.secretKey);
   }
 
   /**
    * Generate refresh token
    */
-  public generateRefreshToken(userId: string): string {
-    return jwt.sign({ userId }, this.refreshSecretKey, {
-      expiresIn: this.refreshTokenExpiry,
-      issuer: 'nova-platform'
-    });
+  public async generateRefreshToken(userId: string): Promise<string> {
+    return await new SignJWT({ userId })
+      .setProtectedHeader({ alg: 'HS256' })
+      .setExpirationTime(this.refreshTokenExpiry)
+      .setIssuedAt()
+      .setIssuer('nova-platform')
+      .sign(this.refreshSecretKey);
   }
 
   /**
    * Verify access token
    */
-  public verifyAccessToken(token: string): JWTPayload | null {
+  public async verifyAccessToken(token: string): Promise<JWTPayload | null> {
     try {
-      const decoded = jwt.verify(token, this.secretKey) as JWTPayload;
-      return decoded;
-    } catch (_error) {
+      const { payload } = await jwtVerify(token, this.secretKey);
+      return payload as JWTPayload;
+    } catch (error) {
       console.error('JWT verification failed:', error);
       return null;
     }
@@ -74,11 +81,11 @@ class JWTManager {
   /**
    * Verify refresh token
    */
-  public verifyRefreshToken(token: string): { userId: string } | null {
+  public async verifyRefreshToken(token: string): Promise<{ userId: string } | null> {
     try {
-      const decoded = jwt.verify(token, this.refreshSecretKey) as { userId: string };
-      return decoded;
-    } catch (_error) {
+      const { payload } = await jwtVerify(token, this.refreshSecretKey);
+      return payload as { userId: string };
+    } catch (error) {
       console.error('Refresh token verification failed:', error);
       return null;
     }
@@ -98,8 +105,8 @@ class JWTManager {
   /**
    * Create auth context from token
    */
-  public createAuthContext(token: string): AuthContext | null {
-    const payload = this.verifyAccessToken(token);
+  public async createAuthContext(token: string): Promise<AuthContext | null> {
+    const payload = await this.verifyAccessToken(token);
     if (!payload) {
       return null;
     }

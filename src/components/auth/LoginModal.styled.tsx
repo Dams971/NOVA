@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
 import { X, Mail, Lock, Eye, EyeOff, LogIn, Sparkles, Shield, CheckCircle } from 'lucide-react';
+import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { colors, shadows, borderRadius, spacing, typography, transitions, gradients, glass } from '@/styles/design-system';
+import { colors, shadows, borderRadius, typography, gradients } from '@/styles/design-system';
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -31,8 +31,8 @@ export default function LoginModal({ isOpen, onClose, onSwitchToSignup }: LoginM
     try {
       await login(email, password);
       onClose();
-    } catch (err: any) {
-      setError(err.message || 'Échec de la connexion');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Échec de la connexion');
     } finally {
       setLoading(false);
     }

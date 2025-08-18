@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server';
-import { CabinetHealthService } from '@/lib/services/cabinet-health-service';
+import { NextRequest, NextResponse } from 'next/server';
 import APIGateway from '@/lib/api/gateway';
+import { CabinetHealthService } from '@/lib/services/cabinet-health-service';
 
 const _gateway = new APIGateway({
   auth: { required: true, roles: ['super_admin', 'admin', 'manager'] },
@@ -9,10 +9,10 @@ const _gateway = new APIGateway({
 
 async function getCabinetHealthHandler(
   req: NextRequest,
-  { params }: { params: { cabinetId: string } }
+  { params }: { params: Promise<{ cabinetId: string }> }
 ): Promise<NextResponse> {
   try {
-    const { cabinetId } = params;
+    const { cabinetId } = await params;
     const healthService = new CabinetHealthService();
     
     // Check if user has access to this cabinet (for managers)
@@ -36,10 +36,10 @@ async function getCabinetHealthHandler(
 
 async function refreshCabinetHealthHandler(
   req: NextRequest,
-  { params }: { params: { cabinetId: string } }
+  { params }: { params: Promise<{ cabinetId: string }> }
 ): Promise<NextResponse> {
   try {
-    const { cabinetId } = params;
+    const { cabinetId } = await params;
     const healthService = new CabinetHealthService();
     
     // Force a fresh health check
@@ -56,5 +56,5 @@ async function refreshCabinetHealthHandler(
   }
 }
 
-export const GET = gateway.createHandler(getCabinetHealthHandler);
-export const POST = gateway.createHandler(refreshCabinetHealthHandler);
+export const GET = getCabinetHealthHandler;
+export const POST = refreshCabinetHealthHandler;

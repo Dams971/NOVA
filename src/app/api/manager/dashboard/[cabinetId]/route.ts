@@ -3,12 +3,12 @@ import { PerformanceService } from '@/lib/services/performance-service';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { cabinetId: string } }
+  { params }: { params: Promise<{ cabinetId: string }> }
 ) {
   try {
     const { searchParams } = new URL(request.url);
     const timeRange = searchParams.get('timeRange') || 'week';
-    const cabinetId = params.cabinetId;
+    const { cabinetId } = await params;
 
     // Calculate date range
     const endDate = new Date();
@@ -59,7 +59,7 @@ export async function GET(
       }
     });
 
-  } catch (_error) {
+  } catch (error) {
     console.error('Error in manager dashboard API:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
@@ -70,12 +70,12 @@ export async function GET(
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { cabinetId: string } }
+  { params }: { params: Promise<{ cabinetId: string }> }
 ) {
   try {
     const body = await request.json();
     const { action, alertId, userId } = body;
-    const cabinetId = params.cabinetId;
+    const { cabinetId: _cabinetId } = await params;
 
     const performanceService = PerformanceService.getInstance();
 
@@ -100,7 +100,7 @@ export async function POST(
       { status: 400 }
     );
 
-  } catch (_error) {
+  } catch (error) {
     console.error('Error in manager dashboard POST API:', error);
     return NextResponse.json(
       { error: 'Internal server error' },

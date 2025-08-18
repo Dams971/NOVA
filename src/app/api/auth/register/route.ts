@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { AuthService, RegisterUserRequest, AuthenticationError } from '@/lib/auth/auth-service';
 import { withCORS } from '@/lib/middleware/auth';
 
@@ -36,7 +36,7 @@ async function handleRegister(request: NextRequest): Promise<NextResponse> {
     }
 
     const authService = AuthService.getInstance();
-    const user = await authService.registerUser(body);
+    await authService.registerUser(body);
 
     // Auto-login after registration
     const loginResponse = await authService.login({
@@ -47,11 +47,10 @@ async function handleRegister(request: NextRequest): Promise<NextResponse> {
     return NextResponse.json({
       success: true,
       message: 'Registration successful',
-      user,
       ...loginResponse
     }, { status: 201 });
 
-  } catch (_error) {
+  } catch (error) {
     console.error('Registration error:', error);
 
     if (error instanceof AuthenticationError) {

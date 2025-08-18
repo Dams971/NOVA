@@ -22,15 +22,15 @@ export async function GET() {
   const { socket, response } = Deno.upgradeWebSocket(request);
   
   socket.onopen = () => {
-    console.log('WebSocket connection opened');
+    console.warn('WebSocket connection opened');
   };
   
   socket.onmessage = (event) => {
-    console.log('WebSocket message received:', event.data);
+    console.warn('WebSocket message received:', event.data);
   };
   
   socket.onclose = () => {
-    console.log('WebSocket connection closed');
+    console.warn('WebSocket connection closed');
   };
   
   // Set up periodic updates

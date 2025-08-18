@@ -25,7 +25,7 @@ export function withAuth(handler: (req: AuthenticatedRequest) => Promise<NextRes
       }
 
       // Create auth context
-      const authContext = jwtManager.createAuthContext(token);
+      const authContext = await jwtManager.createAuthContext(token);
       
       if (!authContext) {
         return NextResponse.json(
@@ -40,7 +40,7 @@ export function withAuth(handler: (req: AuthenticatedRequest) => Promise<NextRes
       // Call the actual handler
       return await handler(req);
 
-    } catch (_error) {
+    } catch (error) {
       console.error('Authentication middleware error:', error);
       return NextResponse.json(
         { error: 'Authentication failed', code: 'AUTH_ERROR' },

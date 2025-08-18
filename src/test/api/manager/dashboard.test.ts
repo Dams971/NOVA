@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { NextRequest } from 'next/server';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { GET, POST } from '@/app/api/manager/dashboard/[cabinetId]/route';
 import { PerformanceService } from '@/lib/services/performance-service';
 

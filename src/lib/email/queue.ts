@@ -138,7 +138,7 @@ export class EmailQueue extends EventEmitter {
 
       // In development, just log the email
       if (env.NODE_ENV === 'development') {
-        console.log('📧 Email queued:', {
+        console.warn('📧 Email queued:', {
           to: job.to,
           subject: job.subject,
           from: job.from
@@ -156,7 +156,7 @@ export class EmailQueue extends EventEmitter {
       });
 
       this.emit('job:completed', { job, info });
-      console.log('Email sent:', info.messageId);
+      console.warn('Email sent:', info.messageId);
     } catch (_error) {
       job.attempts = (job.attempts || 0) + 1;
       

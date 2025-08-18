@@ -2,8 +2,8 @@ import { z } from 'zod';
 import { env } from '@/config/env';
 import NLPService from '@/lib/ai/nlp-service';
 import AppointmentTools from './tools/appointment-tools';
-import PatientTools from './tools/patient-tools';
 import CabinetTools from './tools/cabinet-tools';
+import PatientTools from './tools/patient-tools';
 
 /**
  * NOVA AI Chatbot Orchestrator

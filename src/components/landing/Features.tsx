@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef, useState, useEffect } from 'react';
 import { 
   PhoneOff, 
   Clock, 
@@ -15,6 +14,7 @@ import {
   ArrowRight,
   Zap
 } from 'lucide-react';
+import { useRef, useState, useEffect } from 'react';
 
 // Hook pour animer les compteurs
 function useCountUp(end: number, duration: number = 2000, start: number = 0) {

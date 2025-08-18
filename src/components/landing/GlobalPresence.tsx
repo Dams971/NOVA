@@ -1,8 +1,8 @@
 'use client';
 
-import React from 'react';
 import { motion } from 'framer-motion';
-import { MapPin, Globe, Users, Award, Calendar, Clock } from 'lucide-react';
+import { MapPin, Globe, Users, Clock } from 'lucide-react';
+import React from 'react';
 
 interface Country {
   id: string;
@@ -125,7 +125,7 @@ const countries: Country[] = [
   }
 ];
 
-const statusConfig = {
+const _statusConfig = {
   active: {
     label: 'Actif',
     color: 'bg-green-100 text-green-800 border-green-200',

@@ -1,5 +1,5 @@
+import { subDays, eachDayOfInterval } from 'date-fns';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { AnalyticsService } from '@/lib/services/analytics-service';
 import { 
   PerformanceMetrics, 
   MetricType, 
@@ -7,7 +7,7 @@ import {
   DateRange,
   ExportOptions 
 } from '@/lib/models/analytics';
-import { subDays, eachDayOfInterval } from 'date-fns';
+import { AnalyticsService } from '@/lib/services/analytics-service';
 
 // Mock fetch globally
 global.fetch = vi.fn();

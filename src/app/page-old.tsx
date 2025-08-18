@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
-import Navigation from '@/components/landing/Navigation';
-import Hero from '@/components/landing/Hero';
-import Testimonials from '@/components/landing/Testimonials';
 import CallToAction from '@/components/landing/CallToAction';
 import Footer from '@/components/landing/Footer';
+import Hero from '@/components/landing/Hero';
+import Navigation from '@/components/landing/Navigation';
+import Testimonials from '@/components/landing/Testimonials';
 import { MedicalKeyboardShortcutsProvider } from '@/components/ui/accessibility';
 
 export const metadata: Metadata = {

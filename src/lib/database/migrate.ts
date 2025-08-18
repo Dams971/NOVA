@@ -76,7 +76,7 @@ const executeMigration = async (migration: Migration) => {
     );
     
     await connection.commit();
-    console.log(`✅ Migration ${migration.id} executed successfully`);
+    console.warn(`✅ Migration ${migration.id} executed successfully`);
   } catch (_error) {
     await connection.rollback();
     console.error(`❌ Migration ${migration.id} failed:`, error);
@@ -89,7 +89,7 @@ const executeMigration = async (migration: Migration) => {
 // Run all pending migrations
 export const runMigrations = async () => {
   try {
-    console.log('🚀 Starting database migrations...');
+    console.warn('🚀 Starting database migrations...');
 
     // Test database connection first
     const isConnected = await testConnection();
@@ -102,11 +102,11 @@ export const runMigrations = async () => {
     
     // Load all migrations
     const migrations = loadMigrations();
-    console.log(`📁 Found ${migrations.length} migration files`);
+    console.warn(`📁 Found ${migrations.length} migration files`);
     
     // Get executed migrations
     const executedMigrations = await getExecutedMigrations();
-    console.log(`✅ ${executedMigrations.length} migrations already executed`);
+    console.warn(`✅ ${executedMigrations.length} migrations already executed`);
     
     // Find pending migrations
     const pendingMigrations = migrations.filter(
@@ -114,18 +114,18 @@ export const runMigrations = async () => {
     );
     
     if (pendingMigrations.length === 0) {
-      console.log('✨ No pending migrations');
+      console.warn('✨ No pending migrations');
       return;
     }
     
-    console.log(`⏳ Executing ${pendingMigrations.length} pending migrations...`);
+    console.warn(`⏳ Executing ${pendingMigrations.length} pending migrations...`);
     
     // Execute pending migrations
     for (const migration of pendingMigrations) {
       await executeMigration(migration);
     }
     
-    console.log('🎉 All migrations completed successfully!');
+    console.warn('🎉 All migrations completed successfully!');
   } catch (_error) {
     console.error('💥 Migration failed:', error);
     throw error;
@@ -140,17 +140,17 @@ export const rollbackLastMigration = async () => {
   );
   
   if ((rows as any[]).length === 0) {
-    console.log('No migrations to rollback');
+    console.warn('No migrations to rollback');
     return;
   }
   
   const lastMigration = (rows as any[])[0];
-  console.log(`⚠️  Rolling back migration: ${lastMigration.id}`);
+  console.warn(`⚠️  Rolling back migration: ${lastMigration.id}`);
   
   // Note: This is a simple implementation
   // In a real app, you'd want to have rollback scripts
   await pool.execute('DELETE FROM migrations WHERE id = ?', [lastMigration.id]);
-  console.log('✅ Migration rollback completed');
+  console.warn('✅ Migration rollback completed');
 };
 
 // CLI interface
@@ -169,7 +169,7 @@ if (require.main === module) {
         .catch(() => process.exit(1));
       break;
     default:
-      console.log('Usage: npm run migrate [up|rollback]');
+      console.warn('Usage: npm run migrate [up|rollback]');
       process.exit(1);
   }
 }

@@ -1,9 +1,9 @@
 // Cabinet health monitoring service
-import { CabinetService } from './cabinet-service';
-import HealthMonitor, { HealthCheckResult } from '../monitoring/health';
-import MetricsCollector from '../monitoring/metrics';
 import DatabaseManager from '../database/connection';
 import Logger from '../logging/logger';
+import HealthMonitor, { HealthCheckResult } from '../monitoring/health';
+import MetricsCollector from '../monitoring/metrics';
+import { CabinetService } from './cabinet-service';
 
 export interface CabinetHealthStatus {
   cabinetId: string;

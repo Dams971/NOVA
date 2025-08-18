@@ -15,7 +15,7 @@ export default function WidgetCustomizer({ layout, onSave, onClose }: WidgetCust
     widgets: [...layout.widgets]
   });
 
-  const availableWidgetTypes = [
+  const _availableWidgetTypes = [
     { type: 'kpi', label: 'Indicateur KPI', icon: '📊' },
     { type: 'chart', label: 'Graphique', icon: '📈' },
     { type: 'alert', label: 'Alertes', icon: '🚨' },
@@ -189,7 +189,7 @@ export default function WidgetCustomizer({ layout, onSave, onClose }: WidgetCust
                           </label>
                           <select
                             value={widget.config.metric || ''}
-                            onChange={(e) => updateWidgetConfig(widget.id, { metric: e.target.value as any })}
+                            onChange={(e) => updateWidgetConfig(widget.id, { metric: e.target.value })}
                             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                           >
                             {availableKPIMetrics.map((metric) => (
@@ -221,7 +221,7 @@ export default function WidgetCustomizer({ layout, onSave, onClose }: WidgetCust
                           </label>
                           <select
                             value={widget.config.chartType || 'line'}
-                            onChange={(e) => updateWidgetConfig(widget.id, { chartType: e.target.value as any })}
+                            onChange={(e) => updateWidgetConfig(widget.id, { chartType: e.target.value })}
                             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                           >
                             {chartTypes.map((type) => (
@@ -237,7 +237,7 @@ export default function WidgetCustomizer({ layout, onSave, onClose }: WidgetCust
                           </label>
                           <select
                             value={widget.config.timeRange || 'week'}
-                            onChange={(e) => updateWidgetConfig(widget.id, { timeRange: e.target.value as any })}
+                            onChange={(e) => updateWidgetConfig(widget.id, { timeRange: e.target.value })}
                             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                           >
                             {timeRanges.map((range) => (

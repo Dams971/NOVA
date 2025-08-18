@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-import { Calendar, Clock, MapPin, User, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Calendar, Clock, MapPin, User, ChevronRight } from 'lucide-react';
+import { useState } from 'react';
 
 interface Cabinet {
   id: string;
@@ -79,15 +79,15 @@ export default function BookingPage() {
   };
 
   const handleSubmit = async () => {
-    console.log('Réservation:', {
-      cabinet: selectedCabinet,
-      service: selectedService,
-      date: selectedDate,
-      time: selectedTime,
-      patient: patientInfo
-    });
-    
     // TODO: Appel API pour créer le rendez-vous
+    // const reservationData = {
+    //   cabinet: selectedCabinet,
+    //   service: selectedService,
+    //   date: selectedDate,
+    //   time: selectedTime,
+    //   patient: patientInfo
+    // };
+    
     alert('Rendez-vous confirmé ! Vous recevrez un email de confirmation.');
   };
 

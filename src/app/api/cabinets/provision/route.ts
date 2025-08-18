@@ -1,8 +1,8 @@
-import { NextResponse } from 'next/server';
-import { CabinetProvisioningService, ProvisioningOptions } from '../../../../lib/services/cabinet-provisioning-service';
+import { NextRequest, NextResponse } from 'next/server';
 import { CreateCabinetRequest } from '../../../../lib/models/cabinet';
+import { CabinetProvisioningService, ProvisioningOptions } from '../../../../lib/services/cabinet-provisioning-service';
 
-export async function POST() {
+export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { cabinetData, options }: { 
@@ -49,7 +49,7 @@ export async function POST() {
       }
     });
 
-  } catch (_error) {
+  } catch (error) {
     console.error('Cabinet provisioning API error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },

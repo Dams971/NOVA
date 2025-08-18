@@ -5,8 +5,8 @@
  * for WCAG 2.2 AA compliance across the NOVA platform.
  */
 
-import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { test, expect } from '@playwright/test';
 
 test.describe('Accessibility E2E Tests', () => {
   

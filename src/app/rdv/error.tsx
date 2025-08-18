@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect } from 'react';
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
+import { useEffect } from 'react';
 import Button from '@/components/ui/forms/Button';
 
 interface ErrorProps {
@@ -26,7 +26,7 @@ export default function Error({ error, reset }: ErrorProps) {
         {/* Error content */}
         <div className="space-y-3">
           <h1 className="text-2xl font-bold text-gray-900">
-            Une erreur s'est produite
+            Une erreur s&apos;est produite
           </h1>
           <p className="text-gray-600 leading-relaxed">
             Nous rencontrons un problème technique lors du chargement de la page de prise de rendez-vous. 
@@ -59,7 +59,7 @@ export default function Error({ error, reset }: ErrorProps) {
           </Button>
           
           <Button
-            variant="outline"
+            variant="secondary"
             onClick={() => window.location.href = '/'}
             className="inline-flex items-center"
           >
@@ -83,7 +83,7 @@ export default function Error({ error, reset }: ErrorProps) {
         
         {/* Screen reader announcement */}
         <div className="sr-only" role="alert" aria-live="assertive">
-          Une erreur s'est produite lors du chargement de la page. Des options de récupération sont disponibles.
+          Une erreur s&apos;est produite lors du chargement de la page. Des options de récupération sont disponibles.
         </div>
       </div>
     </div>

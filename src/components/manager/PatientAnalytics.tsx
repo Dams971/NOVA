@@ -1,17 +1,15 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
 import { 
   Users, 
   TrendingUp, 
   Calendar, 
-  Activity, 
-  PieChart, 
-  BarChart3,
+  Activity,
   Download,
   RefreshCw,
   AlertCircle
 } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { PatientSearchService, PatientAnalytics as PatientAnalyticsData } from '@/lib/services/patient-search-service';
 
 interface PatientAnalyticsProps {
@@ -131,7 +129,7 @@ export default function PatientAnalytics({ cabinetId }: PatientAnalyticsProps) {
 
   const searchService = PatientSearchService.getInstance();
 
-  const loadAnalytics = async () => {
+  const loadAnalytics = useCallback(async () => {
     setLoading(true);
     setError(null);
 
@@ -147,11 +145,11 @@ export default function PatientAnalytics({ cabinetId }: PatientAnalyticsProps) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [cabinetId, searchService]);
 
   useEffect(() => {
     loadAnalytics();
-  }, [cabinetId]);
+  }, [cabinetId, loadAnalytics]);
 
   if (loading) {
     return (

@@ -1,5 +1,6 @@
 'use client';
 
+import { X } from 'lucide-react';
 import React, { 
   createContext, 
   useContext, 
@@ -10,7 +11,6 @@ import React, {
   ReactNode
 } from 'react';
 import { createPortal } from 'react-dom';
-import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import FocusTrap from './FocusTrap';
 
@@ -205,7 +205,7 @@ const DialogContent = forwardRef<HTMLDivElement, DialogContentProps>(
     children, 
     showCloseButton = true,
     closeOnEscape = true,
-    closeOnOutsideClick = true,
+    closeOnOutsideClick: _closeOnOutsideClick = true,
     size = 'md',
     onKeyDown,
     ...props 
@@ -370,7 +370,7 @@ const DialogTitle = forwardRef<HTMLHeadingElement, DialogTitleProps>(
 
     return (
       <HeadingTag
-        ref={ref as any}
+        ref={ref as React.Ref<HTMLHeadingElement>}
         id={`${id}-title`}
         className={cn(
           'text-xl font-semibold text-foreground',

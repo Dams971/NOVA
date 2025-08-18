@@ -1,5 +1,5 @@
-import speakeasy from 'speakeasy';
 import QRCode from 'qrcode';
+import speakeasy from 'speakeasy';
 import { v4 as uuidv4 } from 'uuid';
 import { db } from '@/lib/database/postgresql-connection';
 

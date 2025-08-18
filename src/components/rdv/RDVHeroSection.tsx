@@ -8,7 +8,7 @@ interface RDVHeroSectionProps {
   userFirstName?: string;
 }
 
-export default function RDVHeroSection({ isAuthenticated: _isAuthenticated, userFirstName }: RDVHeroSectionProps) {
+export default function RDVHeroSection({ isAuthenticated: _isAuthenticated, userFirstName: _userFirstName }: RDVHeroSectionProps) {
   return (
     <section 
       className="relative overflow-hidden"

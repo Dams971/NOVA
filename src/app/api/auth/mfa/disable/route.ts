@@ -32,7 +32,7 @@ async function handleDisableMFA(request: AuthenticatedRequest): Promise<NextResp
       message: 'MFA has been successfully disabled for your account'
     });
 
-  } catch (_error) {
+  } catch (error) {
     console.error('MFA disable error:', error);
 
     if (error instanceof MFAError) {

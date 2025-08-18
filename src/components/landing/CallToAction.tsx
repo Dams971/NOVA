@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef } from 'react';
 import { 
   Calendar, 
   Phone, 
@@ -11,21 +10,21 @@ import {
   Zap, 
   Shield, 
   Clock,
-  Users,
   Star
 } from 'lucide-react';
+import { useRef } from 'react';
 
 export default function CallToAction() {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
 
   const handleBookAppointmentClick = () => {
-    console.log('Prendre rendez-vous cliqué');
+    console.warn('Prendre rendez-vous cliqué');
     // Logique pour rediriger vers la prise de RDV
   };
 
   const handleCallClick = () => {
-    console.log('Appeler maintenant cliqué');
+    console.warn('Appeler maintenant cliqué');
     // Logique pour appeler le cabinet
     window.location.href = 'tel:+33123456789';
   };

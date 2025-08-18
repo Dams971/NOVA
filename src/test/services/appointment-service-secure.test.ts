@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { AppointmentStatus, ServiceType } from '@/lib/models/appointment';
 import { AppointmentService } from '@/lib/services/appointment-service';
 import { CabinetAccessControl, UserContext } from '@/lib/services/cabinet-access-control';
-import { AppointmentStatus, ServiceType } from '@/lib/models/appointment';
 
 // Mock the access control service
 vi.mock('@/lib/services/cabinet-access-control');

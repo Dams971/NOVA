@@ -9,9 +9,9 @@
  * - GDPR-compliant email tracking
  */
 
-import { v4 as uuidv4 } from 'uuid';
 import { promises as fs } from 'fs';
 import path from 'path';
+import { v4 as uuidv4 } from 'uuid';
 
 // Email Provider Interfaces
 export interface EmailProvider {
@@ -38,7 +38,7 @@ export interface EmailMessage {
   headers?: Record<string, string>;
   tags?: string[];
   template_id?: string;
-  template_data?: Record<string, any>;
+  template_data?: Record<string, unknown>;
 }
 
 export interface EmailAttachment {
@@ -671,7 +671,7 @@ export class EmailService {
     options: {
       from?: { email: string; name: string };
       template_id?: string;
-      template_data?: Record<string, any>;
+      template_data?: Record<string, unknown>;
       tags?: string[];
       priority?: 'high' | 'normal' | 'low';
     } = {}

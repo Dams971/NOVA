@@ -10,16 +10,16 @@
  * - Password-less registration (email verification)
  */
 
-import React, { useState, useEffect, useRef } from 'react';
 import { parsePhoneNumber } from 'libphonenumber-js';
-import { FocusTrap } from '../ui/FocusTrap';
-import { LiveRegion } from '../ui/LiveRegion';
-import { LoadingSpinner } from '../ui/LoadingSpinner';
+import React, { useState, useEffect, useRef } from 'react';
 import { ErrorMessage } from '../ui/ErrorMessage';
-import { SuccessMessage } from '../ui/SuccessMessage';
+import FocusTrap from '../ui/FocusTrap';
+import LiveRegion from '../ui/LiveRegion';
+import { LoadingSpinner } from '../ui/LoadingSpinner';
+import SuccessMessage from '../ui/SuccessMessage';
 
 export interface SignUpFormProps {
-  onSignUpSuccess: (patient: any) => void;
+  onSignUpSuccess: (patient: Record<string, unknown>) => void;
   onSignInRedirect: () => void;
   onCancel: () => void;
   initialEmail?: string;
@@ -167,7 +167,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
       }
 
       return null;
-    } catch (error) {
+    } catch (_error) {
       return 'Format de téléphone invalide. Utilisez +213XXXXXXXXX';
     }
   };
@@ -340,13 +340,13 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
   return (
     <FocusTrap>
       <div className={`sign-up-form ${className}`}>
-        <LiveRegion>
-          {state.error && <ErrorMessage message={state.error} />}
-          {state.success && <SuccessMessage message={state.success} />}
-        </LiveRegion>
+        {state.error && <LiveRegion message={state.error} />}
+        {state.success && <LiveRegion message={state.success} />}
+        {state.error && <ErrorMessage message={state.error} />}
+        {state.success && <SuccessMessage message={state.success} />}
 
         <div className="sign-up-header">
-          <h2 id="sign-up-title">Créer un compte</h2>
+          <h2 id="sign-up-title">Cr&eacute;er un compte</h2>
           <p className="sign-up-description">
             Rejoignez NOVA RDV pour gérer vos rendez-vous facilement
           </p>
@@ -538,7 +538,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
             >
               {state.isLoading ? (
                 <>
-                  <LoadingSpinner size="small" />
+                  <LoadingSpinner size="sm" />
                   <span>Création du compte...</span>
                 </>
               ) : (

@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach, afterEach, vi, Mock } from 'vitest';
-import { CabinetHealthService, CabinetHealthStatus } from '../../lib/services/cabinet-health-service';
-import { CabinetService } from '../../lib/services/cabinet-service';
-import { Cabinet, CabinetStatus } from '../../lib/models/cabinet';
 import DatabaseManager from '../../lib/database/connection';
+import { Cabinet, CabinetStatus } from '../../lib/models/cabinet';
+import { CabinetHealthService } from '../../lib/services/cabinet-health-service';
+import { CabinetService } from '../../lib/services/cabinet-service';
 
 // Mock dependencies
 vi.mock('../../lib/services/cabinet-service');

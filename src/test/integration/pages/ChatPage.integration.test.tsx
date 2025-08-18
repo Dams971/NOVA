@@ -11,8 +11,8 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, userEvent, waitFor, setupMockFetch } from '@/test/test-utils';
 import { createTestUser, createTestAppointment } from '@/test/setup';
+import { render, screen, userEvent, waitFor, setupMockFetch } from '@/test/test-utils';
 
 // Mock WebSocket with more advanced features
 class MockWebSocket {
@@ -82,7 +82,7 @@ const ChatPage = () => {
         </div>
         
         <div data-testid="typing-indicator" style={{ display: 'none' }}>
-          <span>L'assistant tape...</span>
+          <span>L&apos;assistant tape...</span>
         </div>
         
         <div data-testid="suggested-responses" style={{ display: 'none' }}>
@@ -162,6 +162,8 @@ describe('Chat Page Integration Tests', () => {
     global.WebSocket = class extends MockWebSocket {
       constructor(url: string) {
         super(url);
+        // Store instance for testing purposes
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
         mockWebSocket = this;
       }
     } as any;

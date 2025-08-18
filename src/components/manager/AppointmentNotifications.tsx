@@ -1,9 +1,9 @@
 'use client';
 
-import React from 'react';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { X, CheckCircle, XCircle, AlertCircle, Info, Calendar, Clock, User, Bell } from 'lucide-react';
+import { X, CheckCircle, XCircle, AlertCircle, Info, Calendar, Clock, Bell } from 'lucide-react';
+import React from 'react';
 
 export interface NotificationMessage {
   id: string;

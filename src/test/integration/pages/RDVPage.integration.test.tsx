@@ -12,10 +12,10 @@
  * - Skip links et navigation clavier
  */
 
-import React from 'react'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { axe } from 'jest-axe'
+import React from 'react'
 import { vi } from 'vitest'
 import RDVPage from '@/app/rdv/page'
 import { renderMobile, renderDesktop, renderTablet } from '@/test/test-utils'

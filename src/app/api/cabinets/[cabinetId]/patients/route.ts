@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { RBACService } from '@/lib/auth/rbac';
 import { withCabinetPermission, withCORS, AuthenticatedRequest } from '@/lib/middleware/auth';
 
 async function handleGetPatients(request: AuthenticatedRequest): Promise<NextResponse> {
@@ -78,7 +77,7 @@ async function handleGetPatients(request: AuthenticatedRequest): Promise<NextRes
       },
     });
 
-  } catch (_error) {
+  } catch (error) {
     console.error('Get patients error:', error);
     return NextResponse.json(
       { error: 'Internal server error', code: 'INTERNAL_ERROR' },
@@ -144,7 +143,7 @@ async function handleCreatePatient(request: AuthenticatedRequest): Promise<NextR
       patient: newPatient,
     }, { status: 201 });
 
-  } catch (_error) {
+  } catch (error) {
     console.error('Create patient error:', error);
     return NextResponse.json(
       { error: 'Internal server error', code: 'INTERNAL_ERROR' },

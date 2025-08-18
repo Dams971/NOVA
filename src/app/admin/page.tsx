@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import CabinetOverviewGrid from '@/components/admin/CabinetOverviewGrid';
 import CabinetDetailView from '@/components/admin/CabinetDetailView';
+import CabinetOverviewGrid from '@/components/admin/CabinetOverviewGrid';
 import { Cabinet } from '@/lib/models/cabinet';
 
 export default function AdminPage() {
@@ -19,9 +19,9 @@ export default function AdminPage() {
     setView('overview');
   };
 
-  const handleCabinetSettings = (cabinet: Cabinet) => {
+  const handleCabinetSettings = (_cabinet: Cabinet) => {
     // TODO: Implement cabinet settings modal/page
-    console.log('Open settings for cabinet:', cabinet.name);
+    // Settings functionality will be implemented here
   };
 
   return (

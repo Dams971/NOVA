@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import nodemailer from 'nodemailer';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 // Mock nodemailer
 vi.mock('nodemailer', () => ({

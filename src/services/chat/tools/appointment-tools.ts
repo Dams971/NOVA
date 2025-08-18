@@ -1,8 +1,8 @@
 import { z } from 'zod';
 import { env } from '@/config/env';
 import { db } from '@/lib/database/postgresql-connection';
-import { Problems } from '@/lib/http/problem';
 import EmailQueue from '@/lib/email/email-queue';
+import { Problems } from '@/lib/http/problem';
 
 /**
  * NOVA AI Chatbot - Appointment Management Tools

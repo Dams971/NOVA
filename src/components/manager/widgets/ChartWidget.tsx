@@ -8,7 +8,7 @@ interface ChartWidgetProps {
   kpis: CabinetKPIs;
 }
 
-export default function ChartWidget({ widget, kpis }: ChartWidgetProps) {
+export default function ChartWidget({ widget, kpis: _kpis }: ChartWidgetProps) {
   // Generate mock chart data based on the time range
   const generateChartData = () => {
     const timeRange = widget.config.timeRange || 'week';

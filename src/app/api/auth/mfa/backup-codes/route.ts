@@ -34,7 +34,7 @@ async function handleRegenerateBackupCodes(request: AuthenticatedRequest): Promi
       warning: 'Please save these backup codes in a secure location. They will not be shown again.'
     });
 
-  } catch (_error) {
+  } catch (error) {
     console.error('Backup codes regeneration error:', error);
 
     if (error instanceof MFAError) {

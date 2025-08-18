@@ -1,6 +1,5 @@
 'use client';
 
-import React, { useState } from 'react';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { 
@@ -8,7 +7,6 @@ import {
   Mail, 
   Phone, 
   Send, 
-  Plus,
   Clock,
   Check,
   CheckCheck,
@@ -16,6 +14,7 @@ import {
   User,
   Bot
 } from 'lucide-react';
+import React, { useState } from 'react';
 import { Patient } from '@/lib/models/patient';
 import { CommunicationHistory, CommunicationMessage } from '@/lib/services/patient-communication-service';
 
@@ -231,7 +230,7 @@ export default function CommunicationHistorySection({
               return (
                 <button
                   key={option.value}
-                  onClick={() => setFilterType(option.value as any)}
+                  onClick={() => setFilterType(option.value as 'all' | 'email' | 'sms' | 'phone')}
                   className={`inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
                     filterType === option.value
                       ? 'bg-blue-100 text-blue-700'

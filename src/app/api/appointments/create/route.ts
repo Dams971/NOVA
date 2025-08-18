@@ -1,6 +1,5 @@
-import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { supabase } from '@/lib/supabase/client'
 import { IONOSEmailService } from '@/services/ionos-email.service'
 
 export interface CreateAppointmentRequest {
@@ -44,17 +43,6 @@ export interface CreateAppointmentResponse {
 
 export async function POST(request: Request): Promise<NextResponse<CreateAppointmentResponse>> {
   try {
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          get(name: string) {
-            return cookies().get(name)?.value
-          },
-        },
-      }
-    )
     
     // Check authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser()

@@ -1,15 +1,14 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Calendar, Clock, TrendingDown, ArrowRight, Play, Shield, Award, Users, Star } from 'lucide-react';
+import { Calendar, Clock, ArrowRight, Play, Shield, Award, Users, Star } from 'lucide-react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { MedicalSkipLinks } from '@/components/ui/accessibility';
 
 export default function Hero() {
   const handleVideoClick = () => {
     // Could open a modal or redirect to video page
-    console.log('Voir la vidéo cliqué');
+    console.warn('Voir la vidéo cliqué');
   };
 
   // Statistiques essentielles avec crédibilité médicale

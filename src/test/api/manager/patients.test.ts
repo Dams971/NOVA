@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
-import { GET, POST } from '@/app/api/manager/patients/route';
 import { GET as GetPatient, PUT, DELETE } from '@/app/api/manager/patients/[patientId]/route';
+import { GET, POST } from '@/app/api/manager/patients/route';
 import { PatientService } from '@/lib/services/patient-service';
 
 // Mock the PatientService

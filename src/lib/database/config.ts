@@ -53,7 +53,7 @@ export const testConnection = async (): Promise<boolean> => {
     const connection = await getPool().getConnection();
     await connection.ping();
     connection.release();
-    console.log('✅ Database connection successful');
+    console.warn('✅ Database connection successful');
     return true;
   } catch (_error) {
     console.error('❌ Database connection failed:', error);

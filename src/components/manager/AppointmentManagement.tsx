@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { Calendar, List, Filter, Search, Bell, CheckCircle, XCircle } from 'lucide-react';
+import { Calendar, List, Bell } from 'lucide-react';
+import React, { useState, useCallback } from 'react';
 import { Appointment, AppointmentStatus } from '@/lib/models/appointment';
 import { AppointmentService, CalendarEvent } from '@/lib/services/appointment-service';
 import { NotificationService } from '@/lib/services/notification-service';
@@ -30,7 +30,7 @@ export default function AppointmentManagement({ cabinetId }: AppointmentManageme
   const [showNotifications, setShowNotifications] = useState(false);
 
   const appointmentService = AppointmentService.getInstance();
-  const notificationService = NotificationService.getInstance();
+  const _notificationService = NotificationService.getInstance();
 
   const addNotification = useCallback((notification: Omit<NotificationMessage, 'id' | 'timestamp' | 'isRead'>) => {
     const newNotification: NotificationMessage = {
@@ -135,7 +135,7 @@ export default function AppointmentManagement({ cabinetId }: AppointmentManageme
     }
   };
 
-  const handleAppointmentSave = (appointment: Appointment) => {
+  const handleAppointmentSave = (_appointment: Appointment) => {
     setShowForm(false);
     setSelectedAppointment(null);
     setFormInitialDate(undefined);

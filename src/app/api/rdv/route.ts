@@ -8,22 +8,21 @@
  * - Comprehensive validation and error handling
  */
 
-import { NextResponse } from 'next/server';
-import { getSharedDialogManager } from '../../../lib/chat/dialogManager';
-import { getSharedAppointmentAssistant } from '../../../lib/llm/appointments-v2';
+import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
+import { getSharedDialogManager } from '../../../lib/chat/dialogManager';
 
 // Enhanced logger for comprehensive tracking
 const logger = {
   info: (message: string, data?: unknown) => {
-    console.log(`[RDV-API] ${message}`, data ? JSON.stringify(data, null, 2) : '');
+    console.warn(`[RDV-API] ${message}`, data ? JSON.stringify(data, null, 2) : '');
   },
   error: (message: string, error?: unknown) => {
     console.error(`[RDV-API ERROR] ${message}`, error);
   },
   debug: (message: string, data?: unknown) => {
     if (process.env.NODE_ENV === 'development') {
-      console.log(`[RDV-DEBUG] ${message}`, data || '');
+      console.warn(`[RDV-DEBUG] ${message}`, data || '');
     }
   }
 };
@@ -71,7 +70,7 @@ function generateTimeBasedSlots(date?: string): Array<{start_iso: string, end_is
 /**
  * POST /api/rdv - Enhanced RDV processing with intelligent slot-filling
  */
-export async function POST() {
+export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { action, message, sessionId: clientSessionId, ...data } = body;
@@ -302,7 +301,7 @@ export async function POST() {
             }, { status: 400 });
           }
 
-          const appointment = sessionStore.get(`appointment_${appointmentId}`);
+          const appointment = sessionStore.get(`appointment_${appointmentId}`) as any;
           if (!appointment) {
             return NextResponse.json({
               success: false,
@@ -344,7 +343,7 @@ export async function POST() {
             }, { status: 400 });
           }
 
-          const appointment = sessionStore.get(`appointment_${appointmentId}`);
+          const appointment = sessionStore.get(`appointment_${appointmentId}`) as any;
           if (!appointment) {
             return NextResponse.json({
               success: false,
@@ -424,7 +423,7 @@ export async function POST() {
 /**
  * GET /api/rdv - Enhanced appointment consultation with session awareness
  */
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const appointmentId = searchParams.get('id');
@@ -471,12 +470,12 @@ export async function GET() {
     
     // Filter by status if specified
     if (status) {
-      filteredAppointments = allAppointments.filter(apt => apt.status === status);
+      filteredAppointments = allAppointments.filter(apt => (apt as any).status === status);
     }
 
     // Sort by creation date
     filteredAppointments.sort((a, b) => 
-      new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
+      new Date((b as any).createdAt || 0).getTime() - new Date((a as any).createdAt || 0).getTime()
     );
 
     logger.debug('Appointments retrieved', { 
@@ -516,7 +515,7 @@ export async function GET() {
 }
 
 // Cleanup function to periodically clean old sessions (call from cron job)
-export async function _cleanup() {
+async function _cleanup() {
   try {
     const dialogManager = getSharedDialogManager();
     const cleanedSessions = dialogManager.cleanupSessions();
@@ -527,8 +526,8 @@ export async function _cleanup() {
     
     for (const [key, appointment] of sessionStore.entries()) {
       if (key.startsWith('appointment_')) {
-        const createdAt = new Date(appointment.createdAt || 0);
-        if (createdAt < cutoff && appointment.status === 'cancelled') {
+        const createdAt = new Date((appointment as any).createdAt || 0);
+        if (createdAt < cutoff && (appointment as any).status === 'cancelled') {
           sessionStore.delete(key);
           cleanedAppointments++;
         }

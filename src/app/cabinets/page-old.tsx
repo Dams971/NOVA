@@ -1,7 +1,7 @@
 // src/app/cabinets/page.tsx - Page dédiée aux cabinets Nova
-import Navigation from '@/components/landing/Navigation'
 import CabinetsDetails from '@/components/landing/CabinetsDetails'
 import Footer from '@/components/landing/Footer'
+import Navigation from '@/components/landing/Navigation'
 
 export default function CabinetsPage() {
   return (

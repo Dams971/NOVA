@@ -1,22 +1,19 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import '@/styles/chat-animations.css';
 import { 
   MessageCircle, 
   Send, 
   X, 
   Minimize2, 
-  Maximize2,
-  Phone,
-  Clock,
   Settings,
   Volume2,
   VolumeX,
   Bot
 } from 'lucide-react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { ConnectionIndicator } from '@/components/ui/loading-spinner';
 import { AnimatedMessage, TypingIndicatorMessage, SuggestedRepliesAnimated } from './animated-message';
-import { LoadingSpinner, ConnectionIndicator } from '@/components/ui/loading-spinner';
+import '@/styles/chat-animations.css';
 
 /**
  * NOVA AI Chatbot Widget
@@ -44,10 +41,10 @@ export interface ChatResponse {
   options?: Array<{ value: string; label: string }>;
   completed?: boolean;
   escalate?: boolean;
-  data?: any;
+  data?: Record<string, unknown>;
   context?: {
     currentIntent?: string;
-    collectedSlots?: Record<string, any>;
+    collectedSlots?: Record<string, unknown>;
     confirmationPending?: boolean;
     state?: 'active' | 'waiting_for_input' | 'completed' | 'escalated';
   };
@@ -76,9 +73,9 @@ export interface ChatWidgetProps {
   
   // Callbacks
   onEscalation?: (conversationId: string) => void;
-  onAppointmentBooked?: (appointmentData: any) => void;
+  onAppointmentBooked?: (appointmentData: Record<string, unknown>) => void;
   onClose?: () => void;
-  onSettingsChange?: (settings: any) => void;
+  onSettingsChange?: (settings: Record<string, unknown>) => void;
 }
 
 export default function ChatWidget({
@@ -91,11 +88,11 @@ export default function ChatWidget({
   primaryColor = '#3b82f6',
   position = 'bottom-right',
   minimized: initialMinimized = true,
-  theme = 'light',
+  theme: _theme = 'light',
   enableSounds = true,
   enableTypingIndicator = true,
   enableAnimations = true,
-  maxMessages = 100,
+  maxMessages: _maxMessages = 100,
   onEscalation,
   onAppointmentBooked,
   onClose,
@@ -138,7 +135,7 @@ export default function ChatWidget({
 
     try {
       // Create audio context for web audio API
-      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const audioContext = new (window.AudioContext || (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext)();
       const oscillator = audioContext.createOscillator();
       const gainNode = audioContext.createGain();
 
@@ -167,7 +164,7 @@ export default function ChatWidget({
       oscillator.start(audioContext.currentTime);
       oscillator.stop(audioContext.currentTime + 0.3);
     } catch (_error) {
-      console.warn('Could not play notification sound:', error);
+      console.warn('Could not play notification sound:', _error);
     }
   }, [soundsEnabled]);
 
@@ -192,8 +189,7 @@ export default function ChatWidget({
         websocketRef.current.close();
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [minimized]);
+  }, [minimized]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Connect to WebSocket server
   const connectWebSocket = useCallback(() => {
@@ -202,7 +198,7 @@ export default function ChatWidget({
       websocketRef.current = new WebSocket(wsUrl);
 
       websocketRef.current.onopen = () => {
-        console.log('🔗 WebSocket connected');
+        console.warn('🔗 WebSocket connected');
         setConnectionStatus('connected');
         
         // Authenticate
@@ -229,7 +225,7 @@ export default function ChatWidget({
       };
 
       websocketRef.current.onclose = () => {
-        console.log('🔌 WebSocket disconnected');
+        console.warn('🔌 WebSocket disconnected');
         setConnectionStatus('disconnected');
         
         // Attempt to reconnect after 3 seconds
@@ -241,43 +237,44 @@ export default function ChatWidget({
       };
 
     } catch (_error) {
-      console.error('Failed to connect WebSocket:', error);
+      console.error('Failed to connect WebSocket:', _error);
       setConnectionStatus('error');
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sessionId, userId, tenantId, userRole, userEmail, minimized]);
+  }, [sessionId, userId, tenantId, userRole, userEmail, minimized]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Handle WebSocket messages
-  const handleWebSocketMessage = useCallback((message: unknown) => {
+  const handleWebSocketMessage = useCallback((message: Record<string, unknown>) => {
+    const data = message.data as Record<string, unknown>;
+    
     switch (message.type) {
       case 'status':
-        if (message.data.status === 'authenticated') {
+        if ((data as { status?: string }).status === 'authenticated') {
           // Send initial greeting
           sendMessage("Bonjour");
         }
         break;
 
       case 'chat_response':
-        handleChatResponse(message.data);
+        handleChatResponse(data as unknown as ChatResponse);
         break;
 
       case 'typing':
-        setIsTyping(message.data.typing);
+        setIsTyping((data as { typing?: boolean }).typing || false);
         break;
 
       case 'escalation':
-        handleEscalation(message.data);
+        handleEscalation(data);
         break;
 
       case 'error':
-        console.error('Chat error:', message.data.error);
-        addSystemMessage(`Erreur: ${message.data.error}`);
+        console.error('Chat error:', (data as { error?: string }).error);
+        addSystemMessage(`Erreur: ${(data as { error?: string }).error || 'Erreur inconnue'}`);
         break;
 
       default:
-        console.log('Unknown message type:', message.type);
+        console.warn('Unknown message type:', message.type);
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Handle chat response from server
   const handleChatResponse = useCallback((responseData: ChatResponse) => {
@@ -318,14 +315,6 @@ export default function ChatWidget({
     }
   }, [sessionId, onEscalation, onAppointmentBooked, playNotificationSound]);
 
-  // Handle escalation
-  const handleEscalation = useCallback((escalationData: any) => {
-    addSystemMessage(`🚨 Transfert vers un conseiller en cours... ID: ${escalationData.ticketId}`);
-    if (onEscalation) {
-      onEscalation(sessionId);
-    }
-  }, [sessionId, onEscalation]);
-
   // Add system message
   const addSystemMessage = useCallback((content: string) => {
     const systemMessage: ChatMessage = {
@@ -336,6 +325,14 @@ export default function ChatWidget({
     };
     setMessages(prev => [...prev, systemMessage]);
   }, []);
+
+  // Handle escalation
+  const handleEscalation = useCallback((escalationData: Record<string, unknown>) => {
+    addSystemMessage(`🚨 Transfert vers un conseiller en cours... ID: ${escalationData.ticketId}`);
+    if (onEscalation) {
+      onEscalation(sessionId);
+    }
+  }, [sessionId, onEscalation, addSystemMessage]);
 
   // Send message
   const sendMessage = useCallback(async (message: string) => {
@@ -411,13 +408,13 @@ export default function ChatWidget({
         }
       }
     } catch (_error) {
-      console.error('Error sending message:', error);
+      console.error('Error sending message:', _error);
       addSystemMessage('Erreur lors de l\'envoi du message. Veuillez réessayer.');
       setIsLoading(false);
     }
   }, [
     isLoading, messages, sessionId, userId, userRole, userEmail, 
-    tenantId, cabinetName, businessHours, currentResponse
+    tenantId, cabinetName, businessHours, currentResponse, addSystemMessage, handleChatResponse
   ]);
 
   // Handle suggested reply click
@@ -461,7 +458,7 @@ export default function ChatWidget({
   }, []);
 
   // Format timestamp
-  const formatTime = useCallback((timestamp: Date) => {
+  const _formatTime = useCallback((timestamp: Date) => {
     return timestamp.toLocaleTimeString('fr-FR', { 
       hour: '2-digit', 
       minute: '2-digit' 
@@ -474,9 +471,9 @@ export default function ChatWidget({
   }, []);
 
   // Handle settings changes
-  const handleSettingsChange = useCallback((key: string, value: any) => {
+  const handleSettingsChange = useCallback((key: string, value: unknown) => {
     if (key === 'sounds') {
-      setSoundsEnabled(value);
+      setSoundsEnabled(value as boolean);
     }
     
     onSettingsChange?.({ [key]: value });
@@ -613,7 +610,7 @@ export default function ChatWidget({
       {showSettings && (
         <div className="px-4 pb-4">
           <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
-            <h4 className="font-medium text-gray-800 mb-3 text-sm">Paramètres</h4>
+            <h4 className="font-medium text-gray-800 mb-3 text-sm">Param&egrave;tres</h4>
             
             {/* Sound Settings */}
             <div className="flex items-center justify-between mb-2">

@@ -1,9 +1,9 @@
-import { describe, it, expect, beforeEach, vi, Mock } from 'vitest';
 import { NextRequest } from 'next/server';
+import { describe, it, expect, beforeEach, vi, Mock } from 'vitest';
 import { GET as getCabinetHealth, POST as refreshCabinetHealth } from '../../app/api/cabinets/[cabinetId]/health/route';
-import { GET as getAllCabinetHealth } from '../../app/api/cabinets/health/route';
-import { GET as getAlerts, PATCH as manageAlert } from '../../app/api/cabinets/alerts/route';
 import { PATCH as manageSpecificAlert } from '../../app/api/cabinets/alerts/[alertId]/route';
+import { GET as getAlerts, PATCH as manageAlert } from '../../app/api/cabinets/alerts/route';
+import { GET as getAllCabinetHealth } from '../../app/api/cabinets/health/route';
 import { CabinetHealthService } from '../../lib/services/cabinet-health-service';
 
 // Mock the CabinetHealthService

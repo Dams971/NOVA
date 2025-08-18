@@ -1,14 +1,12 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import jwt from 'jsonwebtoken';
-import JWTManager, { JWTPayload } from '@/lib/auth/jwt';
+import { SignJWT, jwtVerify } from 'jose';
 import { NextRequest } from 'next/server';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import JWTManager, { JWTPayload } from '@/lib/auth/jwt';
 
-// Mock jsonwebtoken
-vi.mock('jsonwebtoken', () => ({
-  default: {
-    sign: vi.fn(),
-    verify: vi.fn(),
-  },
+// Mock jose
+vi.mock('jose', () => ({
+  SignJWT: vi.fn(),
+  jwtVerify: vi.fn(),
 }));
 
 describe('JWTManager', () => {
@@ -20,7 +18,7 @@ describe('JWTManager', () => {
   });
 
   describe('generateAccessToken', () => {
-    it('should generate access token with correct payload', () => {
+    it('should generate access token with correct payload', async () => {
       const payload: Omit<JWTPayload, 'iat' | 'exp'> = {
         userId: 'user-123',
         email: 'test@example.com',
@@ -28,42 +26,54 @@ describe('JWTManager', () => {
         assignedCabinets: ['cabinet-1', 'cabinet-2'],
       };
 
-      (jwt.sign as any).mockReturnValue('access-token');
+      const mockSignJWT = {
+        setProtectedHeader: vi.fn().mockReturnThis(),
+        setExpirationTime: vi.fn().mockReturnThis(),
+        setIssuedAt: vi.fn().mockReturnThis(),
+        setIssuer: vi.fn().mockReturnThis(),
+        sign: vi.fn().mockResolvedValue('access-token'),
+      };
 
-      const token = jwtManager.generateAccessToken(payload);
+      (SignJWT as any).mockReturnValue(mockSignJWT);
+
+      const token = await jwtManager.generateAccessToken(payload);
 
       expect(token).toBe('access-token');
-      expect(jwt.sign).toHaveBeenCalledWith(
-        payload,
-        'test-jwt-secret-key',
-        {
-          expiresIn: '15m',
-          issuer: 'nova-platform',
-        }
-      );
+      expect(SignJWT).toHaveBeenCalledWith(payload);
+      expect(mockSignJWT.setProtectedHeader).toHaveBeenCalledWith({ alg: 'HS256' });
+      expect(mockSignJWT.setExpirationTime).toHaveBeenCalledWith('15m');
+      expect(mockSignJWT.setIssuedAt).toHaveBeenCalled();
+      expect(mockSignJWT.setIssuer).toHaveBeenCalledWith('nova-platform');
+      expect(mockSignJWT.sign).toHaveBeenCalled();
     });
   });
 
   describe('generateRefreshToken', () => {
-    it('should generate refresh token with user ID', () => {
-      (jwt.sign as any).mockReturnValue('refresh-token');
+    it('should generate refresh token with user ID', async () => {
+      const mockSignJWT = {
+        setProtectedHeader: vi.fn().mockReturnThis(),
+        setExpirationTime: vi.fn().mockReturnThis(),
+        setIssuedAt: vi.fn().mockReturnThis(),
+        setIssuer: vi.fn().mockReturnThis(),
+        sign: vi.fn().mockResolvedValue('refresh-token'),
+      };
 
-      const token = jwtManager.generateRefreshToken('user-123');
+      (SignJWT as any).mockReturnValue(mockSignJWT);
+
+      const token = await jwtManager.generateRefreshToken('user-123');
 
       expect(token).toBe('refresh-token');
-      expect(jwt.sign).toHaveBeenCalledWith(
-        { userId: 'user-123' },
-        'test-refresh-secret-key',
-        {
-          expiresIn: '7d',
-          issuer: 'nova-platform',
-        }
-      );
+      expect(SignJWT).toHaveBeenCalledWith({ userId: 'user-123' });
+      expect(mockSignJWT.setProtectedHeader).toHaveBeenCalledWith({ alg: 'HS256' });
+      expect(mockSignJWT.setExpirationTime).toHaveBeenCalledWith('7d');
+      expect(mockSignJWT.setIssuedAt).toHaveBeenCalled();
+      expect(mockSignJWT.setIssuer).toHaveBeenCalledWith('nova-platform');
+      expect(mockSignJWT.sign).toHaveBeenCalled();
     });
   });
 
   describe('verifyAccessToken', () => {
-    it('should verify valid access token', () => {
+    it('should verify valid access token', async () => {
       const mockPayload: JWTPayload = {
         userId: 'user-123',
         email: 'test@example.com',
@@ -73,45 +83,43 @@ describe('JWTManager', () => {
         exp: 1234567890,
       };
 
-      (jwt.verify as any).mockReturnValue(mockPayload);
+      (jwtVerify as any).mockResolvedValue({ payload: mockPayload });
 
-      const result = jwtManager.verifyAccessToken('valid-token');
+      const result = await jwtManager.verifyAccessToken('valid-token');
 
       expect(result).toEqual(mockPayload);
-      expect(jwt.verify).toHaveBeenCalledWith('valid-token', 'test-jwt-secret-key');
+      expect(jwtVerify).toHaveBeenCalledWith('valid-token', expect.anything());
     });
 
-    it('should return null for invalid token', () => {
-      (jwt.verify as any).mockImplementation(() => {
-        throw new Error('Invalid token');
-      });
+    it('should return null for invalid token', async () => {
+      (jwtVerify as any).mockRejectedValue(new Error('Invalid token'));
 
-      const result = jwtManager.verifyAccessToken('invalid-token');
+      const result = await jwtManager.verifyAccessToken('invalid-token');
 
       expect(result).toBeNull();
+      expect(jwtVerify).toHaveBeenCalledWith('invalid-token', expect.anything());
     });
   });
 
   describe('verifyRefreshToken', () => {
-    it('should verify valid refresh token', () => {
+    it('should verify valid refresh token', async () => {
       const mockPayload = { userId: 'user-123' };
 
-      (jwt.verify as any).mockReturnValue(mockPayload);
+      (jwtVerify as any).mockResolvedValue({ payload: mockPayload });
 
-      const result = jwtManager.verifyRefreshToken('valid-refresh-token');
+      const result = await jwtManager.verifyRefreshToken('valid-refresh-token');
 
       expect(result).toEqual(mockPayload);
-      expect(jwt.verify).toHaveBeenCalledWith('valid-refresh-token', 'test-refresh-secret-key');
+      expect(jwtVerify).toHaveBeenCalledWith('valid-refresh-token', expect.anything());
     });
 
-    it('should return null for invalid refresh token', () => {
-      (jwt.verify as any).mockImplementation(() => {
-        throw new Error('Invalid token');
-      });
+    it('should return null for invalid refresh token', async () => {
+      (jwtVerify as any).mockRejectedValue(new Error('Invalid token'));
 
-      const result = jwtManager.verifyRefreshToken('invalid-token');
+      const result = await jwtManager.verifyRefreshToken('invalid-refresh-token');
 
       expect(result).toBeNull();
+      expect(jwtVerify).toHaveBeenCalledWith('invalid-refresh-token', expect.anything());
     });
   });
 
@@ -119,13 +127,13 @@ describe('JWTManager', () => {
     it('should extract token from Authorization header', () => {
       const mockRequest = {
         headers: {
-          get: vi.fn().mockReturnValue('Bearer valid-token'),
+          get: vi.fn().mockReturnValue('Bearer test-token-123'),
         },
       } as unknown as NextRequest;
 
       const token = jwtManager.extractTokenFromRequest(mockRequest);
 
-      expect(token).toBe('valid-token');
+      expect(token).toBe('test-token-123');
       expect(mockRequest.headers.get).toHaveBeenCalledWith('authorization');
     });
 
@@ -139,94 +147,78 @@ describe('JWTManager', () => {
       const token = jwtManager.extractTokenFromRequest(mockRequest);
 
       expect(token).toBeNull();
+      expect(mockRequest.headers.get).toHaveBeenCalledWith('authorization');
     });
 
     it('should return null if Authorization header does not start with Bearer', () => {
       const mockRequest = {
         headers: {
-          get: vi.fn().mockReturnValue('Basic some-token'),
+          get: vi.fn().mockReturnValue('Basic test-token-123'),
         },
       } as unknown as NextRequest;
 
       const token = jwtManager.extractTokenFromRequest(mockRequest);
 
       expect(token).toBeNull();
+      expect(mockRequest.headers.get).toHaveBeenCalledWith('authorization');
     });
   });
 
   describe('createAuthContext', () => {
-    it('should create auth context for valid token', () => {
+    it('should create auth context from valid token', async () => {
       const mockPayload: JWTPayload = {
         userId: 'user-123',
         email: 'test@example.com',
         role: 'manager',
         assignedCabinets: ['cabinet-1', 'cabinet-2'],
+        iat: 1234567890,
+        exp: 1234567890,
       };
 
-      (jwt.verify as any).mockReturnValue(mockPayload);
+      (jwtVerify as any).mockResolvedValue({ payload: mockPayload });
 
-      const authContext = jwtManager.createAuthContext('valid-token');
+      const authContext = await jwtManager.createAuthContext('valid-token');
 
-      expect(authContext).toMatchObject({
-        user: mockPayload,
-        isAuthenticated: true,
-      });
-
-      // Test hasRole method
-      expect(authContext?.hasRole('manager')).toBe(true);
-      expect(authContext?.hasRole('admin')).toBe(false);
-      expect(authContext?.hasRole('super_admin')).toBe(false);
-
-      // Test hasCabinetAccess method
-      expect(authContext?.hasCabinetAccess('cabinet-1')).toBe(true);
-      expect(authContext?.hasCabinetAccess('cabinet-3')).toBe(false);
+      expect(authContext).toBeDefined();
+      expect(authContext!.user).toEqual(mockPayload);
+      expect(authContext!.isAuthenticated).toBe(true);
+      expect(authContext!.hasRole('manager')).toBe(true);
+      expect(authContext!.hasRole('super_admin')).toBe(false);
+      expect(authContext!.hasCabinetAccess('cabinet-1')).toBe(true);
+      expect(authContext!.hasCabinetAccess('cabinet-3')).toBe(false);
     });
 
-    it('should allow super_admin to access any role', () => {
+    it('should handle super_admin role correctly', async () => {
       const mockPayload: JWTPayload = {
-        userId: 'user-123',
+        userId: 'admin-123',
         email: 'admin@example.com',
         role: 'super_admin',
         assignedCabinets: [],
+        iat: 1234567890,
+        exp: 1234567890,
       };
 
-      (jwt.verify as any).mockReturnValue(mockPayload);
+      (jwtVerify as any).mockResolvedValue({ payload: mockPayload });
 
-      const authContext = jwtManager.createAuthContext('valid-token');
+      const authContext = await jwtManager.createAuthContext('admin-token');
 
-      expect(authContext?.hasRole('manager')).toBe(true);
-      expect(authContext?.hasRole('admin')).toBe(true);
-      expect(authContext?.hasRole('staff')).toBe(true);
-      expect(authContext?.hasRole('super_admin')).toBe(true);
+      expect(authContext).toBeDefined();
+      expect(authContext!.hasRole('admin')).toBe(true);
+      expect(authContext!.hasRole('manager')).toBe(true);
+      expect(authContext!.hasRole('staff')).toBe(true);
+      expect(authContext!.hasCabinetAccess('any-cabinet')).toBe(true);
     });
 
-    it('should allow super_admin to access any cabinet', () => {
-      const mockPayload: JWTPayload = {
-        userId: 'user-123',
-        email: 'admin@example.com',
-        role: 'super_admin',
-        assignedCabinets: [],
-      };
+    it('should return null for invalid token', async () => {
+      (jwtVerify as any).mockRejectedValue(new Error('Invalid token'));
 
-      (jwt.verify as any).mockReturnValue(mockPayload);
-
-      const authContext = jwtManager.createAuthContext('valid-token');
-
-      expect(authContext?.hasCabinetAccess('any-cabinet-id')).toBe(true);
-    });
-
-    it('should return null for invalid token', () => {
-      (jwt.verify as any).mockImplementation(() => {
-        throw new Error('Invalid token');
-      });
-
-      const authContext = jwtManager.createAuthContext('invalid-token');
+      const authContext = await jwtManager.createAuthContext('invalid-token');
 
       expect(authContext).toBeNull();
     });
   });
 
-  describe('singleton pattern', () => {
+  describe('Singleton pattern', () => {
     it('should return the same instance', () => {
       const instance1 = JWTManager.getInstance();
       const instance2 = JWTManager.getInstance();

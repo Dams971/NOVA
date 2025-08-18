@@ -44,11 +44,7 @@ export const OTPInput: React.FC<OTPInputProps> = ({
   // Initialize refs array
   useEffect(() => {
     inputRefs.current = inputRefs.current.slice(0, length);
-    for (let i = 0; i < length; i++) {
-      if (!inputRefs.current[i]) {
-        inputRefs.current[i] = null as any;
-      }
-    }
+    // No need to initialize with null - the array will be populated when refs are attached
   }, [length]);
 
   // Update internal state when value prop changes
@@ -241,7 +237,9 @@ export const OTPInput: React.FC<OTPInputProps> = ({
       {digits.map((digit, index) => (
         <input
           key={index}
-          ref={(el) => (inputRefs.current[index] = el!)}
+          ref={(el) => {
+            if (el) inputRefs.current[index] = el;
+          }}
           type="text"
           inputMode="numeric"
           pattern="[0-9]*"

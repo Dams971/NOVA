@@ -1,7 +1,7 @@
-import DatabaseManager from '../database/connection';
-import MetricsCollector from './metrics';
-import Logger from '../logging/logger';
 import EnvironmentManager from '../config/environment';
+import DatabaseManager from '../database/connection';
+import Logger from '../logging/logger';
+import MetricsCollector from './metrics';
 
 export interface HealthCheckResult {
   name: string;

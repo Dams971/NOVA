@@ -1,13 +1,13 @@
-import { NextResponse } from 'next/server';
-import HealthMonitor from '@/lib/monitoring/health';
+import { NextRequest, NextResponse } from 'next/server';
 import APIGateway from '@/lib/api/gateway';
+import HealthMonitor from '@/lib/monitoring/health';
 
 const gateway = new APIGateway({
   auth: { required: false }, // Health check should be public
   rateLimit: { maxRequests: 60, windowMs: 60000 }
 });
 
-async function healthHandler(req: NextRequest): Promise<NextResponse> {
+async function healthHandler(_req: NextRequest): Promise<NextResponse> {
   try {
     const healthMonitor = HealthMonitor.getInstance();
     const systemHealth = await healthMonitor.getSystemHealth();

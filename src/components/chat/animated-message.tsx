@@ -1,7 +1,7 @@
 'use client';
 
+import { User, Bot, AlertTriangle, CheckCircle, Phone } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
-import { User, Bot, AlertTriangle, CheckCircle, Clock, Phone } from 'lucide-react';
 
 /**
  * NOVA Animated Message Components
@@ -26,7 +26,6 @@ export interface AnimatedMessageProps {
 }
 
 export function AnimatedMessage({
-  id,
   role,
   content,
   timestamp,
@@ -197,7 +196,7 @@ export function AnimatedMessage({
 }
 
 export function TypingIndicatorMessage({ 
-  primaryColor = '#3b82f6',
+  primaryColor: _primaryColor = '#3b82f6',
   userName = 'Nova' 
 }: { 
   primaryColor?: string;
@@ -231,7 +230,7 @@ export function SuggestedRepliesAnimated({
   replies,
   onReplyClick,
   isVisible = true,
-  primaryColor = '#3b82f6'
+  primaryColor: _primaryColor = '#3b82f6'
 }: {
   replies: string[];
   onReplyClick: (reply: string) => void;

@@ -1,7 +1,7 @@
 'use client';
 
-import React, { forwardRef, useId } from 'react';
 import { AlertCircle, CheckCircle, Info } from 'lucide-react';
+import React, { forwardRef, useId } from 'react';
 import { cn } from '@/lib/utils';
 
 export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {

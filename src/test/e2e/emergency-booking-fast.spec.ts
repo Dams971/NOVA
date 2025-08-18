@@ -158,7 +158,7 @@ test.describe('Urgence Dentaire - Parcours < 2 minutes', () => {
     })
     
     const totalTime = (Date.now() - startTime) / 1000
-    console.log(`Urgence traitée en ${totalTime} secondes`)
+    console.warn(`Urgence traitée en ${totalTime} secondes`)
     
     // ASSERTION PRINCIPALE: < 2 minutes
     expect(totalTime).toBeLessThan(120) // 2 minutes max

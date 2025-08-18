@@ -7,7 +7,7 @@
 import { chromium, FullConfig } from '@playwright/test';
 
 async function globalSetup(config: FullConfig) {
-  console.log('🚀 Setting up NOVA RDV test environment...');
+  console.warn('🚀 Setting up NOVA RDV test environment...');
 
   // Launch browser for setup tasks
   const browser = await chromium.launch();
@@ -15,7 +15,7 @@ async function globalSetup(config: FullConfig) {
 
   try {
     // Wait for the application to be ready
-    console.log('⏳ Waiting for application to be ready...');
+    console.warn('⏳ Waiting for application to be ready...');
     await page.goto(config.projects[0].use.baseURL || 'http://localhost:3000');
     
     // Wait for the main app to load
@@ -23,15 +23,15 @@ async function globalSetup(config: FullConfig) {
     
     // Check if the application is responding
     const title = await page.title();
-    console.log(`✅ Application ready: ${title}`);
+    console.warn(`✅ Application ready: ${title}`);
 
     // Set up test data if needed
-    console.log('📝 Setting up test data...');
+    console.warn('📝 Setting up test data...');
     
     // You can add API calls here to set up test data
     // For example, creating test users, appointments, etc.
     
-    console.log('✅ Global setup completed successfully');
+    console.warn('✅ Global setup completed successfully');
     
   } catch (error) {
     console.error('❌ Global setup failed:', error);

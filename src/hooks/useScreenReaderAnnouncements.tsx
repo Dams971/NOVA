@@ -25,7 +25,7 @@ export function useScreenReaderAnnouncements() {
   const [currentAnnouncement, setCurrentAnnouncement] = useState<Announcement | null>(null);
   const [queue, setQueue] = useState<Announcement[]>([]);
   const timeoutRef = useRef<NodeJS.Timeout>();
-  const lastAnnouncementRef = useRef<string>('');
+  const _lastAnnouncementRef = useRef<string>('');
   const announcementCountRef = useRef<Map<string, number>>(new Map());
 
   // Process the next announcement in the queue

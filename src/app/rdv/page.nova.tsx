@@ -1,18 +1,18 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useAuth } from '@/contexts/AuthContext';
+import { 
+  Calendar, MapPin, Bot,
+  ChevronRight, Shield, Zap, Heart, Activity,
+  AlertCircle, Send, Mic, Paperclip, Smile,
+  Globe, Users
+} from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
 import LoginModal from '@/components/auth/LoginModal.styled';
 import SignupModal from '@/components/auth/SignupModal.styled';
 import Navigation from '@/components/landing/Navigation';
+import { useAuth } from '@/contexts/AuthContext';
 import { useWebSocket } from '@/hooks/useWebSocket';
-import { 
-  Calendar, Clock, MapPin, User, Phone, Mail, MessageCircle, Bot, Sparkles,
-  ChevronRight, Star, Shield, Zap, Heart, Navigation as NavigationIcon, Target, Activity,
-  AlertCircle, CheckCircle2, ArrowRight, Send, Mic, Paperclip, Smile,
-  TrendingDown, Globe, Award, Users, ChevronDown, Play
-} from 'lucide-react';
 
 interface Message {
   id: string;
@@ -27,7 +27,7 @@ interface QuickAction {
   id: string;
   label: string;
   type: 'location' | 'distance' | 'care_type' | 'urgency' | 'confirmation';
-  value: any;
+  value: unknown;
   icon?: React.ReactNode;
 }
 
@@ -48,15 +48,15 @@ export default function RDVPageNova() {
   const [isTyping, setIsTyping] = useState(false);
   const [messageIdCounter, setMessageIdCounter] = useState(0);
 
-  const generateUniqueId = (type: string) => {
+  const generateUniqueId = useCallback((type: string) => {
     const timestamp = Date.now();
     const random = Math.random().toString(36).substr(2, 9);
     const counter = messageIdCounter;
     setMessageIdCounter(prev => prev + 1);
     return `${type}_${timestamp}_${counter}_${random}`;
-  };
+  }, [messageIdCounter]);
 
-  const addBotMessage = (content: string, suggestions?: string[], quickActions?: QuickAction[]) => {
+  const addBotMessage = useCallback((content: string, suggestions?: string[], quickActions?: QuickAction[]) => {
     const newMessage: Message = {
       id: generateUniqueId('bot'),
       type: 'bot',
@@ -66,7 +66,7 @@ export default function RDVPageNova() {
       quickActions
     };
     setMessages(prev => [...prev, newMessage]);
-  };
+  }, [generateUniqueId]);
 
   const addUserMessage = (content: string) => {
     const newMessage: Message = {
@@ -115,7 +115,7 @@ export default function RDVPageNova() {
       const token = localStorage.getItem('accessToken');
       if (token) wsConnect();
     }
-  }, [isAuthenticated, user, wsConnected]);
+  }, [isAuthenticated, user, wsConnected, wsConnect, addBotMessage]);
 
   const handleQuickAction = (action: QuickAction) => {
     addUserMessage(action.label);
@@ -490,7 +490,7 @@ export default function RDVPageNova() {
                 <div className="flex items-start space-x-3">
                   <AlertCircle className="w-5 h-5 text-yellow-600 mt-0.5" />
                   <div>
-                    <h4 className="font-semibold text-gray-900 mb-1">Besoin d'aide ?</h4>
+                    <h4 className="font-semibold text-gray-900 mb-1">Besoin d&apos;aide ?</h4>
                     <p className="text-sm text-gray-600 mb-3">
                       Notre équipe est disponible pour vous assister
                     </p>

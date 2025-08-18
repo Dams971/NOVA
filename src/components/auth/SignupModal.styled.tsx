@@ -1,9 +1,9 @@
 'use client';
 
+import { X, Mail, Lock, User, Phone, Eye, EyeOff, UserPlus, AlertCircle, Shield } from 'lucide-react';
 import { useState } from 'react';
-import { X, Mail, Lock, User, Phone, Eye, EyeOff, UserPlus, CheckCircle, AlertCircle, Shield } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { colors, shadows, borderRadius, spacing, typography, transitions, gradients, glass } from '@/styles/design-system';
+import { colors, shadows, borderRadius, typography, gradients } from '@/styles/design-system';
 
 interface SignupModalProps {
   isOpen: boolean;
@@ -12,7 +12,7 @@ interface SignupModalProps {
 }
 
 export default function SignupModal({ isOpen, onClose, onSwitchToLogin }: SignupModalProps) {
-  const { register } = useAuth();
+  const { signup } = useAuth();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -74,16 +74,16 @@ export default function SignupModal({ isOpen, onClose, onSwitchToLogin }: Signup
     setError('');
     
     try {
-      await register(
-        formData.email,
-        formData.password,
-        formData.firstName,
-        formData.lastName,
-        formData.phone
-      );
+      await signup({
+        email: formData.email,
+        password: formData.password,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        phone: formData.phone
+      });
       onClose();
-    } catch (err: any) {
-      setError(err.message || 'Échec de l\'inscription');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Échec de l\'inscription');
     } finally {
       setLoading(false);
     }
@@ -456,12 +456,12 @@ export default function SignupModal({ isOpen, onClose, onSwitchToLogin }: Signup
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                   </svg>
-                  <span>Création...</span>
+                  <span>Cr&eacute;ation...</span>
                 </span>
               ) : (
                 <span className="flex items-center justify-center space-x-2">
                   <Shield className="w-5 h-5" />
-                  <span>Créer mon compte</span>
+                  <span>Cr&eacute;er mon compte</span>
                 </span>
               )}
             </button>

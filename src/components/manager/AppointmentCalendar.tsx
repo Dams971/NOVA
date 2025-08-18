@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { format, startOfWeek, endOfWeek, eachDayOfInterval, isSameDay, addWeeks, subWeeks, startOfDay, addMinutes } from 'date-fns';
+import { format, startOfWeek, endOfWeek, eachDayOfInterval, isSameDay, addWeeks, subWeeks, startOfDay } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { ChevronLeft, ChevronRight, Plus, Calendar as CalendarIcon, AlertTriangle } from 'lucide-react';
-import { AppointmentService, CalendarEvent } from '@/lib/services/appointment-service';
+import React, { useState, useEffect, useCallback } from 'react';
 import { AppointmentStatus } from '@/lib/models/appointment';
+import { AppointmentService, CalendarEvent } from '@/lib/services/appointment-service';
 
 interface AppointmentCalendarProps {
   cabinetId: string;
@@ -23,16 +23,18 @@ interface TimeSlot {
 // Helper function to get CSS classes for event colors based on status
 const getEventColorClass = (status: AppointmentStatus): string => {
   switch (status) {
-    case 'scheduled':
+    case AppointmentStatus.SCHEDULED:
       return 'bg-blue-100 border-l-blue-500 text-blue-900';
-    case 'confirmed':
+    case AppointmentStatus.CONFIRMED:
       return 'bg-green-100 border-l-green-500 text-green-900';
-    case 'completed':
+    case AppointmentStatus.COMPLETED:
       return 'bg-gray-100 border-l-gray-500 text-gray-900';
-    case 'cancelled':
+    case AppointmentStatus.CANCELLED:
       return 'bg-red-100 border-l-red-500 text-red-900';
-    case 'no-show':
+    case AppointmentStatus.NO_SHOW:
       return 'bg-orange-100 border-l-orange-500 text-orange-900';
+    case AppointmentStatus.IN_PROGRESS:
+      return 'bg-yellow-100 border-l-yellow-500 text-yellow-900';
     default:
       return 'bg-blue-100 border-l-blue-500 text-blue-900';
   }
@@ -50,7 +52,7 @@ export default function AppointmentCalendar({
   const [draggedEvent, setDraggedEvent] = useState<CalendarEvent | null>(null);
   const [dragOverSlot, setDragOverSlot] = useState<{ date: Date; time: string } | null>(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [dragPreview, setDragPreview] = useState<{ x: number; y: number } | null>(null);
+  const [_dragPreview, _setDragPreview] = useState<{ x: number; y: number } | null>(null);
   const [conflictSlots, setConflictSlots] = useState<Set<string>>(new Set());
 
   const appointmentService = AppointmentService.getInstance();
@@ -78,7 +80,7 @@ export default function AppointmentCalendar({
         setEvents(result.data);
       }
     } catch (_error) {
-      console.error('Error loading calendar events:', error);
+      console.error('Error loading calendar events:', _error);
     } finally {
       setLoading(false);
     }
@@ -203,7 +205,7 @@ export default function AppointmentCalendar({
       await onEventDrop(draggedEvent.id, newDateTime);
       await loadEvents(); // Refresh events
     } catch (_error) {
-      console.error('Error dropping event:', error);
+      console.error('Error dropping event:', _error);
     }
 
     setDraggedEvent(null);
@@ -414,11 +416,11 @@ export default function AppointmentCalendar({
         <div className="flex flex-wrap gap-4 text-xs">
           <div className="flex items-center">
             <div className="w-3 h-3 bg-blue-200 border-l-2 border-blue-600 mr-2"></div>
-            <span>Programmé</span>
+            <span>Programm&eacute;</span>
           </div>
           <div className="flex items-center">
             <div className="w-3 h-3 bg-green-200 border-l-2 border-green-600 mr-2"></div>
-            <span>Confirmé</span>
+            <span>Confirm&eacute;</span>
           </div>
           <div className="flex items-center">
             <div className="w-3 h-3 bg-yellow-200 border-l-2 border-yellow-600 mr-2"></div>
@@ -426,7 +428,7 @@ export default function AppointmentCalendar({
           </div>
           <div className="flex items-center">
             <div className="w-3 h-3 bg-gray-200 border-l-2 border-gray-600 mr-2"></div>
-            <span>Terminé</span>
+            <span>Termin&eacute;</span>
           </div>
           <div className="flex items-center">
             <div className="w-3 h-3 bg-red-200 border-l-2 border-red-600 mr-2"></div>

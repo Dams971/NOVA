@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { User } from '@/types/auth';
 
 /**
  * NOVA Platform Middleware
@@ -107,7 +108,7 @@ async function checkAuthentication(request: NextRequest) {
 /**
  * Tenant access validation
  */
-async function checkTenantAccess(request: NextRequest, user: any) {
+async function checkTenantAccess(request: NextRequest, user: User) {
   // Extract tenant ID from URL or headers
   const pathname = request.nextUrl.pathname;
   const tenantMatch = pathname.match(/\/manager\/([^\/]+)/);
@@ -137,7 +138,7 @@ async function checkTenantAccess(request: NextRequest, user: any) {
 /**
  * Route-based authorization
  */
-async function checkAuthorization(pathname: string, user: any) {
+async function checkAuthorization(pathname: string, user: User) {
   // Admin routes require admin or super_admin role
   if (ADMIN_ROUTES.test(pathname)) {
     if (!['admin', 'super_admin'].includes(user.role)) {
@@ -169,7 +170,7 @@ async function checkAuthorization(pathname: string, user: any) {
 /**
  * API-specific authorization rules
  */
-async function checkAPIAuthorization(pathname: string, user: any) {
+async function checkAPIAuthorization(pathname: string, user: User) {
   const sensitiveEndpoints = [
     '/api/admin',
     '/api/system',
@@ -297,9 +298,9 @@ function getClientIP(request: NextRequest): string {
 // Placeholder functions - implement in their respective modules
 async function verifyAccessToken(token: string) {
   // Import and use your JWT verification logic
-  const { JWTManager } = await import('@/lib/auth/jwt');
+  const { default: JWTManager } = await import('@/lib/auth/jwt');
   const jwtManager = JWTManager.getInstance();
-  return jwtManager.verifyAccessToken(token);
+  return await jwtManager.verifyAccessToken(token);
 }
 
 async function checkTokenRevocation(jti?: string): Promise<boolean> {
@@ -307,9 +308,9 @@ async function checkTokenRevocation(jti?: string): Promise<boolean> {
   return false;
 }
 
-async function logAccess(request: NextRequest, user: any, ip: string, userAgent: string) {
+async function logAccess(request: NextRequest, user: User, ip: string, userAgent: string) {
   // Implement audit logging
-  console.log(`Access: ${user.userId} from ${ip} to ${request.nextUrl.pathname}`);
+  console.warn(`Access: ${user.userId} from ${ip} to ${request.nextUrl.pathname}`);
 }
 
 async function logSecurityEvent(request: NextRequest, ip: string, event: string) {

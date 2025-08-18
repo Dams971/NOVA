@@ -1,6 +1,6 @@
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import React from 'react';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import ManagerDashboard from '@/components/manager/ManagerDashboard';
 import { Cabinet, CabinetStatus } from '@/lib/models/cabinet';
 import { PerformanceService } from '@/lib/services/performance-service';

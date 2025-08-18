@@ -1,6 +1,6 @@
 import 'server-only';
-import nodemailer from 'nodemailer';
 import { createClient } from '@supabase/supabase-js';
+import nodemailer from 'nodemailer';
 
 // Validate environment at module load
 const requiredEnvVars = ['SMTP_HOST', 'SMTP_USER', 'SMTP_PASSWORD', 'SMTP_FROM'];

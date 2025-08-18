@@ -12,12 +12,11 @@ import {
   endOfWeek,
   addDays,
   subDays,
-  isToday,
-  getDay
+  isToday
 } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { ChevronLeft, ChevronRight, Calendar } from 'lucide-react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 
 interface DatePickerProps {
   label: string;
@@ -287,7 +286,7 @@ export default function DatePicker({
               
               {/* Calendar days */}
               <div className="grid grid-cols-7 gap-1">
-                {days.map((day, index) => {
+                {days.map((day, _index) => {
                   const isCurrentMonth = isSameMonth(day, currentMonth);
                   const isSelected = value && isSameDay(day, value);
                   const isDisabled = isDateDisabled(day);

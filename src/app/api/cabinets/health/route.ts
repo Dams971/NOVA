@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server';
-import { CabinetHealthService } from '@/lib/services/cabinet-health-service';
+import { NextRequest, NextResponse } from 'next/server';
 import APIGateway from '@/lib/api/gateway';
+import { CabinetHealthService } from '@/lib/services/cabinet-health-service';
 
 const gateway = new APIGateway({
   auth: { required: true, roles: ['super_admin', 'admin'] },

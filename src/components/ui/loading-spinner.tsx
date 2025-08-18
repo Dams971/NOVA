@@ -13,7 +13,7 @@ interface LoadingSpinnerProps {
   className?: string;
 }
 
-export function LoadingSpinner({ size = 'md', color = '#3b82f6', className = '' }: LoadingSpinnerProps) {
+export function LoadingSpinner({ size = 'md', color: _color = '#3b82f6', className = '' }: LoadingSpinnerProps) {
   const sizeClasses = {
     sm: 'w-4 h-4',
     md: 'w-6 h-6', 

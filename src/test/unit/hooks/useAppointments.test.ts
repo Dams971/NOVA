@@ -11,7 +11,6 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { renderHook, act, waitFor } from '@/test/test-utils';
 import { 
   useAppointments, 
   useAvailableSlots, 
@@ -22,6 +21,7 @@ import {
   type TimeSlot,
   type AIResponse
 } from '@/hooks/useAppointments';
+import { renderHook, act, waitFor } from '@/test/test-utils';
 
 // Mock useWebSocket hook
 const mockWebSocketHook = {

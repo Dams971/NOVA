@@ -9,11 +9,11 @@
  * - Conformité timezone Africa/Algiers
  */
 
-import { z } from 'zod';
 import { format, parseISO, isBefore, isAfter, addHours, startOfDay, endOfDay } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { AppointmentAssistant, AppointmentResponse } from '@/lib/llm/appointments';
+import { z } from 'zod';
 import { getUnifiedConnection } from '@/lib/database/unified-connection';
+import { AppointmentAssistant, AppointmentResponse } from '@/lib/llm/appointments';
 import { logger } from '@/lib/logging/logger';
 
 // =============================================
@@ -517,7 +517,7 @@ export class AppointmentService {
   /**
    * Recherche des rendez-vous avec filtres
    */
-  async searchAppointments(options: AppointmentSearchOptions): Promise<any[]> {
+  async searchAppointments(options: AppointmentSearchOptions): Promise<Appointment[]> {
     const connection = await getUnifiedConnection();
 
     const {

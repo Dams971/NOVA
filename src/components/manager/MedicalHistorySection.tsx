@@ -1,6 +1,5 @@
 'use client';
 
-import React, { useState } from 'react';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { 
@@ -16,6 +15,7 @@ import {
   Edit,
   Trash2
 } from 'lucide-react';
+import React, { useState } from 'react';
 import { Patient, MedicalRecord } from '@/lib/models/patient';
 
 interface MedicalHistorySectionProps {
@@ -211,7 +211,7 @@ export default function MedicalHistorySection({ patient, onMedicalRecordAdd }: M
               <button
                 key={option.value}
                 type="button"
-                onClick={() => setFilterType(option.value as any)}
+                onClick={() => setFilterType(option.value as 'all' | 'consultation' | 'prescription' | 'exam' | 'vaccination')}
                 className={`flex items-center justify-center p-3 rounded-lg text-sm font-medium transition-colors ${
                   filterType === option.value
                     ? 'bg-blue-100 text-blue-700 border-2 border-blue-300'
@@ -261,11 +261,11 @@ export default function MedicalHistorySection({ patient, onMedicalRecordAdd }: M
               record={record}
               onEdit={() => {
                 // This would open an edit form
-                console.log('Edit record:', record.id);
+                console.warn('Edit record:', record.id);
               }}
               onDelete={() => {
                 // This would show a confirmation dialog
-                console.log('Delete record:', record.id);
+                console.warn('Delete record:', record.id);
               }}
             />
           ))}

@@ -1,8 +1,8 @@
 'use client';
 
-import React from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, Clock, Phone, Star, Calendar, Users, Award, Mail } from 'lucide-react';
+import React from 'react';
 
 interface Cabinet {
   id: string;
@@ -123,13 +123,13 @@ const statusConfig = {
 };
 
 export default function CabinetsNetwork() {
-  const handleBookAppointment = (cabinetId: string) => {
+  const handleBookAppointment = (_cabinetId: string) => {
     // Redirection vers l'interface moderne de prise de rendez-vous
     window.location.href = '/rdv';
   };
 
-  const handleViewDetails = (cabinetId: string) => {
-    console.log(`Voir détails du cabinet ${cabinetId}`);
+  const handleViewDetails = (_cabinetId: string) => {
+    console.warn(`Voir détails du cabinet ${_cabinetId}`);
     // Logique pour afficher les détails du cabinet
   };
 
@@ -242,7 +242,7 @@ export default function CabinetsNetwork() {
 
                 {/* Spécialités */}
                 <div className="mb-6">
-                  <p className="text-xs text-gray-500 mb-2">Spécialités :</p>
+                  <p className="text-xs text-gray-500 mb-2">Sp&eacute;cialit&eacute;s :</p>
                   <div className="flex flex-wrap gap-1">
                     {cabinet.specialties.map((specialty, idx) => (
                       <span

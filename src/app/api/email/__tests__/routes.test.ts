@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
+import { GET as verifyGet } from '../../debug/email/verify/route';
 import { POST as appointmentPost } from '../appointment-confirmation/route';
 import { POST as otpPost } from '../otp/route';
-import { GET as verifyGet } from '../../debug/email/verify/route';
 
 
 // Mock the email service

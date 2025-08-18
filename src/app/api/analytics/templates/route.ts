@@ -43,7 +43,7 @@ export async function GET() {
       success: true,
       data: templates
     });
-  } catch (_error) {
+  } catch (error) {
     console.error('Error in analytics/templates API:', error);
     return NextResponse.json(
       { 

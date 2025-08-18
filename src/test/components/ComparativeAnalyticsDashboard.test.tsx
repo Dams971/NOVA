@@ -1,5 +1,5 @@
-import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import React from 'react';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import ComparativeAnalyticsDashboard from '@/components/admin/ComparativeAnalyticsDashboard';
 import { Cabinet, CabinetStatus } from '@/lib/models/cabinet';
@@ -78,8 +78,8 @@ describe('ComparativeAnalyticsDashboard', () => {
     // Mock the analytics service constructor
     (AnalyticsService as any).mockImplementation(() => mockAnalyticsService);
     
-    // Setup default mock analytics data
-    mockAnalyticsService.generateMockAnalytics.mockReturnValue({
+    // Setup default mock analytics data as a function that takes cabinetId
+    mockAnalyticsService.generateMockAnalytics.mockImplementation((cabinetId: string) => ({
       cabinetId,
       period: {
         start: new Date('2024-01-01'),
@@ -332,7 +332,7 @@ describe('ComparativeAnalyticsDashboard', () => {
         previousPeriod: { appointments: 0, revenue: 0, patients: 0, utilization: 0 },
         networkAverage: { appointments: 0, revenue: 0, patients: 0, utilization: 0 }
       }
-    });
+    }));
 
     render(<ComparativeAnalyticsDashboard cabinets={mockCabinets} />);
     

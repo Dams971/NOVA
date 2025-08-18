@@ -71,7 +71,6 @@ export function LoadingSpinner({
   );
 }
 
-export default LoadingSpinner;
 
 // Loading overlay component
 interface LoadingOverlayProps {

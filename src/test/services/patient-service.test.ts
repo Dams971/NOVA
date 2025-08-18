@@ -1,6 +1,6 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { PatientService } from '@/lib/services/patient-service';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { CreatePatientRequest, UpdatePatientRequest, Gender } from '@/lib/models/patient';
+import { PatientService } from '@/lib/services/patient-service';
 
 describe('PatientService', () => {
   let patientService: PatientService;

@@ -61,9 +61,10 @@ export function AnnouncerProvider({ children }: { children: React.ReactNode }) {
 
   // Clear timeout when component unmounts
   useEffect(() => {
+    const timeoutsMap = timeouts.current;
     return () => {
-      timeouts.current.forEach(timeout => clearTimeout(timeout));
-      timeouts.current.clear();
+      timeoutsMap.forEach(timeout => clearTimeout(timeout));
+      timeoutsMap.clear();
     };
   }, []);
 

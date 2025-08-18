@@ -21,7 +21,7 @@ const appointmentEmailSchema = z.object({
   userId: z.string(),
 });
 
-export async function POST() {
+export async function POST(request: Request) {
   try {
     const body = await request.json();
     const validated = appointmentEmailSchema.parse(body);
@@ -33,7 +33,7 @@ export async function POST() {
     );
     
     return NextResponse.json({ ok: success });
-  } catch (_error) {
+  } catch (error) {
     console.error('Appointment email error:', error);
     
     if (error instanceof z.ZodError) {

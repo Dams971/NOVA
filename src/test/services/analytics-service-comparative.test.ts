@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { AnalyticsService } from '@/lib/services/analytics-service';
 import { MetricType, TimeGranularity } from '@/lib/models/analytics';
+import { AnalyticsService } from '@/lib/services/analytics-service';
 
 // Mock fetch globally
 global.fetch = vi.fn();

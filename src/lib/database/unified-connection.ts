@@ -30,17 +30,17 @@ export class UnifiedDatabase {
         const isConnected = await this.pgConnection.testConnection();
         if (isConnected) {
           this.useInMemory = false;
-          console.log('✅ Using PostgreSQL database');
+          console.warn('✅ Using PostgreSQL database');
           return;
         }
       }
     } catch (_error) {
-      console.log('⚠️ PostgreSQL not available, using in-memory database');
+      console.warn('⚠️ PostgreSQL not available, using in-memory database');
     }
     
     // Fallback to in-memory
     this.useInMemory = true;
-    console.log('✅ Using in-memory database (development mode)');
+    console.warn('✅ Using in-memory database (development mode)');
   }
   
   // Test connection

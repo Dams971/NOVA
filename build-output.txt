@@ -6,568 +6,20 @@
    - Environments: .env.local
 
    Creating an optimized production build ...
- ✓ Compiled successfully in 6.0s
+ ✓ Compiled successfully in 9.0s
    Linting and checking validity of types ...
-
-Failed to compile.
-
-./src/app/api/admin/stats/route.ts
-43:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-52:47  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/app/api/analytics/cabinet/route.ts
-11:11  Warning: 'granularity' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-33:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/api/analytics/export/route.ts
-8:32  Warning: 'includeCharts' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-8:47  Warning: 'sections' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-67:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-79:40  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-99:52  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-106:47  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-114:57  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-121:55  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/app/api/analytics/templates/route.ts
-46:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/api/appointments/create/route.ts
-1:10  Warning: 'NextRequest' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-5:10  Warning: 'SupabaseAuthService' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-22:18  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-303:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/api/appointments/route.ts
-32:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-77:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/api/appointments/[id]/route.ts
-26:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-61:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-89:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/api/auth/callback/route.ts
-1:10  Warning: 'NextRequest' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-19:53  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-22:41  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/app/api/auth/login/route.ts
-33:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/api/auth/logout/route.ts
-30:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/api/auth/mfa/backup-codes/route.ts
-37:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/api/auth/mfa/disable/route.ts
-35:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/api/auth/mfa/enable/route.ts
-35:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/api/auth/mfa/setup/route.ts
-36:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/api/auth/mfa/status/route.ts
-30:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/api/auth/mfa/verify/route.ts
-33:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/api/auth/refresh/route.ts
-33:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/api/auth/register/route.ts
-54:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/api/auth/sign-in-otp/route.ts
-1:10  Warning: 'NextRequest' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-14:12  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-15:15  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-123:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/api/auth/validate/route.ts
-2:10  Warning: 'AuthService' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-35:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/api/cabinets/provision/route.ts
-52:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/api/cabinets/route.ts
-94:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-151:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/api/cabinets/[cabinetId]/patients/route.ts
-2:10  Warning: 'RBACService' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-81:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-147:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/api/chat/route.ts
-145:11  Warning: 'orchestrator' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-214:27  Warning: 'sessionId' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
-219:30  Warning: 'sessionId' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
-219:49  Warning: 'context' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
-223:30  Warning: 'sessionId' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
-
-./src/app/api/debug/email/verify/route.ts
-20:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/api/deployments/[deploymentId]/route.ts
-49:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-87:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/api/email/appointment-confirmation/route.ts
-36:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/api/email/otp/route.ts
-24:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/api/health/route.ts
-10:30  Warning: 'req' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
-
-./src/app/api/manager/dashboard/[cabinetId]/route.ts
-62:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-78:11  Warning: 'cabinetId' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-103:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/api/manager/patients/route.ts
-47:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-93:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/api/manager/patients/statistics/route.ts
-30:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/api/manager/patients/[patientId]/medical-history/route.ts
-6:7  Warning: 'getMockUserContext' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-32:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-91:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/api/manager/patients/[patientId]/route.ts
-33:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-71:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-102:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/api/patients/route.ts
-27:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-57:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/api/patients/[id]/route.ts
-26:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-56:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-80:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/api/rdv/route.ts
-13:10  Warning: 'getSharedAppointmentAssistant' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-
-./src/app/api/system/status/route.ts
-11:30  Warning: 'req' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
-
-./src/app/api/templates/route.ts
-14:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-52:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/api/templates/[templateId]/route.ts
-33:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-88:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/api/users/route.ts
-18:11  Warning: 'authService' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-19:11  Warning: 'rbacService' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-23:11  Warning: 'cabinetId' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-24:11  Warning: 'role' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-91:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-164:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/cabinets/page.tsx
-16:77  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-
-./src/app/chat/page.tsx
-39:53  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/app/international/page.tsx
-17:29  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-17:65  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-
-./src/app/manager/[cabinetId]/page.tsx
-30:16  Warning: '_err' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/rdv/error.tsx
-29:25  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-86:23  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-
-./src/app/rdv/page.backup.tsx
-10:3  Warning: 'Calendar' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-11:3  Warning: 'Clock' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-13:3  Warning: 'User' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-15:3  Warning: 'Mail' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-16:3  Warning: 'MessageCircle' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-44:10  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-267:15  Warning: 'wsMessages' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-268:18  Warning: 'wsSendMessage' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-271:15  Warning: 'wsTyping' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-301:10  Warning: 'pendingAddress' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-301:26  Warning: 'setPendingAddress' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-340:9  Warning: 'validateEmail' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-344:9  Warning: 'validatePhone' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-362:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-446:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-467:72  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-509:20  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-525:13  Warning: 'bestAccuracy' is never reassigned. Use 'const' instead.  prefer-const
-669:6  Warning: React Hook useEffect has missing dependencies: 'addBotMessage' and 'wsConnect'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
-1151:29  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-1464:66  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-1644:73  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-1667:17  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
-1667:47  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-1667:62  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-1667:104  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
-
-./src/app/rdv/page.nova.tsx
-11:13  Warning: 'Clock' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-11:28  Warning: 'User' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-11:34  Warning: 'Phone' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-11:41  Warning: 'Mail' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-11:47  Warning: 'MessageCircle' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-11:67  Warning: 'Sparkles' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-12:17  Warning: 'Star' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-12:57  Warning: 'NavigationIcon' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-12:73  Warning: 'Target' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-13:16  Warning: 'CheckCircle2' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-13:30  Warning: 'ArrowRight' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-14:3  Warning: 'TrendingDown' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-14:24  Warning: 'Award' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-14:38  Warning: 'ChevronDown' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-14:51  Warning: 'Play' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-30:10  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-118:6  Warning: React Hook useEffect has missing dependencies: 'addBotMessage' and 'wsConnect'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
-493:78  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-
-./src/app/rdv/page.styled.tsx
-9:41  Warning: 'spacing' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-9:62  Warning: 'transitions' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-9:86  Warning: 'glass' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-9:93  Warning: 'animations' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-11:3  Warning: 'Calendar' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-11:13  Warning: 'Clock' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-11:34  Warning: 'Phone' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-11:41  Warning: 'Mail' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-11:47  Warning: 'MessageCircle' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-12:17  Warning: 'Star' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-12:63  Warning: 'Activity' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-13:3  Warning: 'AlertCircle' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-13:16  Warning: 'CheckCircle2' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-29:10  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-126:7  Warning: 'careTypes' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-143:21  Warning: 'wsMessages' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-143:46  Warning: 'wsSendMessage' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-143:117  Warning: 'wsTyping' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-147:10  Warning: 'currentStep' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-148:21  Warning: 'setUserPrefs' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-158:26  Warning: 'setNearbyCabinets' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-159:10  Warning: 'locationRequested' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-159:29  Warning: 'setLocationRequested' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-160:10  Warning: 'isManualAddressMode' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-160:31  Warning: 'setIsManualAddressMode' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-182:9  Warning: 'findNearbyCabinets' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-238:6  Warning: React Hook useEffect has missing dependencies: 'addBotMessage' and 'wsConnect'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
-
-./src/app/rdv/page.tsx
-33:16  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-34:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-41:10  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-126:122  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-149:58  Warning: 'type' is assigned a value but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
-149:121  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-242:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-410:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-429:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-455:47  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-878:53  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-1063:62  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-1078:28  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-1105:20  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/app/services/page.tsx
-17:44  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-
-./src/app/urgences/page.tsx
-27:53  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-
-./src/components/admin/AdminDashboard.tsx
-29:16  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/components/admin/CabinetDetailView.tsx
-324:53  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/components/admin/CabinetOverviewGrid.tsx
-36:3  Warning: 'onCabinetSelect' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
-84:14  Warning: '_err' is defined but never used.  @typescript-eslint/no-unused-vars
-197:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-197:32  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-372:93  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-389:99  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/components/admin/ComparativeAnalyticsDashboard.tsx
-34:10  Warning: 'format' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-86:27  Warning: 'setCustomDateRange' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-389:35  Warning: 'index' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
-
-./src/components/auth/LoginModal.styled.tsx
-6:41  Warning: 'spacing' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-6:62  Warning: 'transitions' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-6:86  Warning: 'glass' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-34:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/components/auth/LoginModal.tsx
-25:14  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/components/auth/OTPInput.tsx
-49:40  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/components/auth/SignInForm.tsx
-20:30  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-473:27  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-
-./src/components/auth/SignUpForm.tsx
-22:30  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-170:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-455:20  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-474:20  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-493:20  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-518:29  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-
-./src/components/auth/SignupModal.styled.tsx
-4:61  Warning: 'CheckCircle' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-6:41  Warning: 'spacing' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-6:62  Warning: 'transitions' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-6:86  Warning: 'glass' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-85:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-417:18  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-419:31  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-
-./src/components/auth/SignupModal.tsx
-78:14  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
-268:18  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-270:31  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-
-./src/components/chat/animated-message.tsx
-4:49  Warning: 'Clock' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-29:3  Warning: 'id' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
-200:3  Warning: 'primaryColor' is assigned a value but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
-234:3  Warning: 'primaryColor' is assigned a value but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
-
-./src/components/chat/chat-widget.tsx
-10:3  Warning: 'Maximize2' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-11:3  Warning: 'Phone' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-12:3  Warning: 'Clock' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-19:10  Warning: 'LoadingSpinner' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-47:10  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-50:37  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-79:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-81:33  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-94:3  Warning: 'theme' is assigned a value but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
-98:3  Warning: 'maxMessages' is assigned a value but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
-141:67  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-169:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-243:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-280:6  Warning: React Hook useCallback has missing dependencies: 'addSystemMessage', 'handleChatResponse', 'handleEscalation', and 'sendMessage'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
-322:57  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-327:6  Warning: React Hook useCallback has a missing dependency: 'addSystemMessage'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
-413:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-418:6  Warning: React Hook useCallback has missing dependencies: 'addSystemMessage' and 'handleChatResponse'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
-464:9  Warning: 'formatTime' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-477:65  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/components/error-boundary.tsx
-41:65  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-44:59  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-49:77  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-
-./src/components/landing/CabinetsDetails.tsx
-13:3  Warning: 'Award' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-134:34  Warning: 'cabinetId' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
-150:27  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-
-./src/components/landing/CabinetsNetwork.tsx
-126:34  Warning: 'cabinetId' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
-151:37  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-305:29  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-
-./src/components/landing/CallToAction.tsx
-14:3  Warning: 'Users' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-
-./src/components/landing/EmergencySection.tsx
-97:60  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-105:52  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-118:58  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-266:40  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-276:38  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-314:14  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-314:44  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-
-./src/components/landing/Features.tsx
-140:16  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-284:42  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-394:76  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-397:30  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-
-./src/components/landing/Footer.tsx
-3:10  Warning: 'motion' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-13:3  Warning: 'FileText' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-14:3  Warning: 'HelpCircle' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-15:3  Warning: 'ArrowRight' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-73:16  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-132:61  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-146:18  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-
-./src/components/landing/GlobalOverview.tsx
-52:38  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-
-./src/components/landing/GlobalPresence.tsx
-5:32  Warning: 'Award' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-5:39  Warning: 'Calendar' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-128:7  Warning: 'statusConfig' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-175:14  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-366:77  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-370:21  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-
-./src/components/landing/Hero.tsx
-87:18  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-107:38  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-204:45  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-
-./src/components/landing/InternationalExpansion.tsx
-118:35  Warning: 'index' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
-231:43  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-277:55  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-
-./src/components/landing/ServicesAndPricing.tsx
-154:34  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-343:21  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-
-./src/components/landing/Testimonials.tsx
-6:58  Warning: 'Users' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-196:23  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
-196:58  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
-
-./src/components/landing/TrustSection.tsx
-77:17  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
-77:36  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
-
-./src/components/manager/AppointmentCalendar.tsx
-4:104  Warning: 'addMinutes' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-53:10  Warning: 'dragPreview' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-53:23  Warning: 'setDragPreview' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-80:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-131:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-205:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-259:20  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-
-./src/components/manager/AppointmentForm.tsx
-111:6  Warning: React Hook useEffect has missing dependencies: 'initializeForm' and 'loadPatients'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
-227:71  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-267:9  Warning: 'currentDate' is never reassigned. Use 'const' instead.  prefer-const
-427:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-700:33  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-
-./src/components/manager/AppointmentList.tsx
-8:3  Warning: 'Filter' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-13:3  Warning: 'Mail' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-52:6  Warning: React Hook useEffect has a missing dependency: 'loadAppointments'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
-92:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-265:64  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-268:44  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-
-./src/components/manager/AppointmentManagement.tsx
-6:26  Warning: 'Filter' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-6:34  Warning: 'Search' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-6:48  Warning: 'CheckCircle' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-6:61  Warning: 'XCircle' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-33:9  Warning: 'notificationService' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-126:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-138:34  Warning: 'appointment' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
-200:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-229:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/components/manager/AppointmentNotifications.tsx
-6:71  Warning: 'User' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-
-./src/components/manager/CabinetPerformanceDashboard.tsx
-18:3  Warning: 'onLayoutChange' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
-97:73  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-171:55  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-187:55  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-204:54  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-
-./src/components/manager/CommunicationHistorySection.tsx
-11:3  Warning: 'Plus' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-164:55  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-175:61  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-234:64  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/components/manager/ManagerDashboard.tsx
-5:41  Warning: 'DashboardWidget' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-37:6  Warning: React Hook useEffect has missing dependencies: 'handleRealtimeUpdate', 'loadDashboardData', 'performanceService', and 'setupRealtimeUpdates'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
-76:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-94:41  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-196:75  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-200:46  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
 
 ./src/components/manager/MedicalHistorySection.tsx
 214:62  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 
-./src/components/manager/PatientAnalytics.tsx
-9:3  Warning: 'PieChart' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-10:3  Warning: 'BarChart3' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-145:14  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
-154:6  Warning: React Hook useEffect has a missing dependency: 'loadAnalytics'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
-197:45  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-
-./src/components/manager/PatientDetail.tsx
-14:3  Warning: 'AlertTriangle' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-15:3  Warning: 'FileText' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-16:3  Warning: 'Plus' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-20:3  Warning: 'Pill' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-21:3  Warning: 'Activity' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-23:19  Warning: 'MedicalRecord' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-42:9  Warning: 'patientService' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-49:6  Warning: React Hook useEffect has a missing dependency: 'loadCommunicationHistory'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
-58:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-223:81  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-
 ./src/components/manager/PatientFiltersPanel.tsx
 16:65  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-126:34  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-
-./src/components/manager/PatientForm.tsx
-113:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/components/manager/PatientList.tsx
-4:10  Warning: 'format' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-5:10  Warning: 'fr' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-
-./src/components/manager/PatientManagement.tsx
-4:10  Warning: 'format' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-5:10  Warning: 'fr' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-12:3  Warning: 'Mail' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-13:3  Warning: 'Phone' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-14:3  Warning: 'Calendar' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-15:3  Warning: 'FileText' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-16:3  Warning: 'Settings' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-17:3  Warning: 'MoreVertical' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-19:35  Warning: 'PatientSearchResult' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-82:14  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
-139:14  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
 
 ./src/components/manager/WidgetCustomizer.tsx
 18:9  Warning: 'availableWidgetTypes' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
 192:104  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 224:107  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 240:107  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-256:34  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
 
 ./src/components/manager/widgets/ChartWidget.tsx
 11:47  Warning: 'kpis' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
@@ -576,120 +28,80 @@ Failed to compile.
 102:59  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 
 ./src/components/monitoring/CabinetHealthDashboard.tsx
-54:14  Warning: '_err' is defined but never used.  @typescript-eslint/no-unused-vars
-70:14  Warning: '_err' is defined but never used.  @typescript-eslint/no-unused-vars
-86:14  Warning: '_err' is defined but never used.  @typescript-eslint/no-unused-vars
-100:14  Warning: '_err' is defined but never used.  @typescript-eslint/no-unused-vars
+54:14  Warning: '_err' is defined but never used. Allowed unused caught errors must match /^(_error|__error|err)$/u.  @typescript-eslint/no-unused-vars
+70:14  Warning: '_err' is defined but never used. Allowed unused caught errors must match /^(_error|__error|err)$/u.  @typescript-eslint/no-unused-vars
+86:14  Warning: '_err' is defined but never used. Allowed unused caught errors must match /^(_error|__error|err)$/u.  @typescript-eslint/no-unused-vars
+100:14  Warning: '_err' is defined but never used. Allowed unused caught errors must match /^(_error|__error|err)$/u.  @typescript-eslint/no-unused-vars
 
 ./src/components/rdv/AppointmentCalendar.tsx
-15:27  Warning: 'useEffect' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-19:47  Warning: 'User' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-19:53  Warning: 'Phone' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-24:13  Warning: 'isValid' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-101:3  Warning: 'selectedSlot' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
-129:85  Warning: 'i' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
-319:54  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
-485:9  Warning: 'careConfig' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+464:3  Warning: 'careType' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
 
-./src/components/rdv/RDVErrorBoundary.tsx
-106:34  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
+./src/components/rdv/PatientContext.tsx
+1:16  Warning: 'Phone' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
 
-./src/components/rdv/WelcomeScreen.tsx
-21:10  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-42:44  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+./src/components/rdv/RDVHeroSection.tsx
+11:77  Warning: 'userFirstName' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./src/components/rdv/types.ts
+12:16  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+13:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+20:10  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/components/ui/Announcer.tsx
+66:16  Warning: The ref value 'timeouts.current' will likely have changed by the time this effect cleanup function runs. If this ref points to a node rendered by React, copy 'timeouts.current' to a variable inside the effect, and use that variable in the cleanup function.  react-hooks/exhaustive-deps
 
 ./src/components/ui/calendar/DatePicker.tsx
-18:3  Warning: 'getDay' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+16:3  Warning: 'getDay' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
 290:33  Warning: 'index' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./src/components/ui/Dialog.tsx
+208:5  Warning: 'closeOnOutsideClick' is assigned a value but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
+373:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/components/ui/forms/Select.tsx
+120:9  Warning: 'actualVariant' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+362:3  Warning: 'position' is assigned a value but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./src/components/ui/KeyboardNavigation.tsx
+150:6  Warning: React Hook useEffect has a missing dependency: 'callback'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+150:43  Warning: React Hook useEffect has a spread element in its dependency array. This means we can't statically verify whether you've passed the correct dependencies.  react-hooks/exhaustive-deps
+282:6  Warning: React Hook useEffect has a missing dependency: 'containerRef'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
 
 ./src/components/ui/loading-spinner.tsx
 16:47  Warning: 'color' is assigned a value but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
 
-./src/contexts/AuthContext.tsx
-3:65  Warning: 'useCallback' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-69:14  Warning: '_err' is defined but never used.  @typescript-eslint/no-unused-vars
-162:14  Warning: '_err' is defined but never used.  @typescript-eslint/no-unused-vars
-197:14  Warning: '_err' is defined but never used.  @typescript-eslint/no-unused-vars
-214:6  Warning: React Hook useEffect has a missing dependency: 'refreshToken'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
-
 ./src/hooks/use-chat.ts
-31:10  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-34:37  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-57:18  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-61:36  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-77:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-139:18  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-165:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-170:6  Warning: React Hook useCallback has a missing dependency: 'handleWebSocketMessage'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
-188:56  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-225:6  Warning: React Hook useCallback has missing dependencies: 'addSystemMessage', 'handleChatResponse', 'handleEscalation', and 'sendMessage'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
-257:57  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-262:6  Warning: React Hook useCallback has a missing dependency: 'addSystemMessage'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
-347:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
+62:36  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+171:6  Warning: React Hook useCallback has a missing dependency: 'handleWebSocketMessage'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+226:6  Warning: React Hook useCallback has missing dependencies: 'addSystemMessage', 'handleChatResponse', 'handleEscalation', and 'sendMessage'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+263:6  Warning: React Hook useCallback has a missing dependency: 'addSystemMessage'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
 
 ./src/hooks/useAppointments.ts
-17:36  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-20:34  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-23:34  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-26:35  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+24:5  Warning: Unexpected console statement. Only these console methods are allowed: warn, error.  no-console
+28:7  Warning: Unexpected console statement. Only these console methods are allowed: warn, error.  no-console
 129:11  Warning: 'isConnected' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-370:16  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/hooks/usePatients.ts
-163:6  Warning: React Hook useEffect has missing dependencies: 'fetchPatients' and 'initialFilters'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
 
 ./src/hooks/useScreenReaderAnnouncements.tsx
+3:1  Warning: There should be no empty line between import groups  import/order
 28:9  Warning: 'lastAnnouncementRef' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
 
 ./src/lib/ai/nlp-service.ts
-1:10  Warning: 'env' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-2:10  Warning: 'z' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-167:25  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-190:16  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-191:14  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-192:25  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-436:62  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-436:83  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-437:33  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-483:15  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-546:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/lib/api/gateway.ts
-88:36  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-153:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-153:56  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-166:32  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-191:38  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-191:72  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+1:10  Warning: 'z' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+2:10  Warning: 'env' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
 
 ./src/lib/auth/auth-service.ts
-3:22  Warning: 'JWTPayload' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+4:22  Warning: 'JWTPayload' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
 136:30  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 162:30  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 203:29  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 217:29  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 
 ./src/lib/auth/jwt-enhanced.ts
-194:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-227:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-292:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-323:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-367:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-393:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-415:37  Warning: 'userId' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
-429:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/lib/auth/jwt.ts
-68:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-81:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
+209:18  Warning: '_decodeError' is defined but never used. Allowed unused caught errors must match /^(_error|__error|err)$/u.  @typescript-eslint/no-unused-vars
+421:37  Warning: 'userId' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
 
 ./src/lib/auth/mfa-service.ts
 4:10  Warning: 'db' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-118:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-168:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-225:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-259:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-294:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
 326:30  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 
 ./src/lib/auth/rbac.ts
@@ -702,12 +114,6 @@ Failed to compile.
 12:10  Warning: 'parsePhoneNumber' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
 12:28  Warning: 'isValidPhoneNumber' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
 12:48  Warning: 'CountryCode' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-98:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-99:27  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-222:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-389:38  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-503:49  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-697:46  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 
 ./src/lib/chat/dialogManager-v3.ts
 13:10  Warning: 'parsePhoneNumber' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
@@ -715,24 +121,6 @@ Failed to compile.
 16:10  Warning: 'AppointmentResponseV3' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
 16:49  Warning: 'OutOfScopeDetector' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
 16:69  Warning: 'PhoneValidatorV3' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-71:12  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-140:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-141:27  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-339:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-376:15  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-399:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-429:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-443:15  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-470:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-485:15  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-514:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-524:22  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-536:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-970:38  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/lib/chat/dialogManager.ts
-232:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-318:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 
 ./src/lib/content/microcopy.ts
 507:3  Warning: 'persona' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
@@ -741,18 +129,11 @@ Failed to compile.
 533:12  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 575:1  Warning: Assign object to a variable before exporting as module default  import/no-anonymous-default-export
 
-./src/lib/core/init.ts
-19:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
 ./src/lib/database/config.ts
 33:10  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-58:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
 
 ./src/lib/database/connection.ts
 1:40  Warning: 'ConnectionOptions' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-176:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-189:16  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-204:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
 
 ./src/lib/database/memory-db.ts
 32:20  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
@@ -762,46 +143,33 @@ Failed to compile.
 ./src/lib/database/migrate.ts
 28:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 32:7  Warning: 'recordMigration' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-129:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
 142:16  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 147:34  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 
 ./src/lib/database/migration-runner.ts
 41:26  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-65:20  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-73:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-95:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-113:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
 127:23  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-132:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
 
 ./src/lib/database/patient-repository.ts
-2:79  Warning: 'MedicalRecord' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+3:79  Warning: 'MedicalRecord' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
 88:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 171:25  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 202:28  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 
 ./src/lib/database/postgresql-connection.ts
-1:16  Warning: 'Client' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-62:27  Warning: 'client' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
 83:45  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 83:61  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 96:49  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 96:65  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 104:48  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 104:64  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-163:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
 172:36  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-189:16  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-219:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-238:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
 246:55  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 256:55  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 266:65  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 278:92  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 
 ./src/lib/database/unified-connection.ts
-37:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
 55:49  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 63:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 71:26  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
@@ -831,29 +199,16 @@ Failed to compile.
 326:29  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 
 ./src/lib/email/email-queue.ts
-4:10  Warning: 'PoolClient' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+1:10  Warning: 'PoolClient' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
 12:7  Warning: 'EmailQueueJobSchema' is assigned a value but only used as a type. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-71:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-209:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-243:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
 299:34  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-369:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-493:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
 522:39  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 
 ./src/lib/email/email-service.ts
 100:39  Warning: 'success' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
-108:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-147:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-174:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-201:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-228:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-258:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-803:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
 
 ./src/lib/email/queue.ts
 23:29  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-126:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
 
 ./src/lib/errors/rdv-errors.ts
 122:44  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
@@ -880,29 +235,11 @@ Failed to compile.
 390:38  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 454:45  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 
-./src/lib/llm/appointments-v2.ts
-330:44  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-391:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
 ./src/lib/llm/appointments-v3.ts
 14:28  Warning: 'isValidPhoneNumber' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-350:12  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-525:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-569:47  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-617:36  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-646:51  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-735:44  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-804:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-882:18  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/lib/llm/appointments.ts
-186:9  Warning: Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free.  @typescript-eslint/ban-ts-comment
-198:44  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-217:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
 
 ./src/lib/logging/logger.ts
 16:10  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-97:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
 115:12  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 132:40  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 132:55  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
@@ -919,10 +256,6 @@ Failed to compile.
 
 ./src/lib/middleware/auth.ts
 3:23  Warning: 'UserRole' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-43:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-327:68  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-327:76  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-328:20  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 
 ./src/lib/models/cabinet.ts
 69:16  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
@@ -931,8 +264,6 @@ Failed to compile.
 88:9  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 
 ./src/lib/monitoring/health.ts
-12:13  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-213:18  Warning: A `require()` style import is forbidden.  @typescript-eslint/no-require-imports
 214:13  Warning: 'stats' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
 
 ./src/lib/monitoring/metrics.ts
@@ -941,149 +272,60 @@ Failed to compile.
 ./src/lib/performance.ts
 5:22  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 6:17  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-35:5  Warning: 'clsEntries' is never reassigned. Use 'const' instead.  prefer-const
 308:36  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 422:55  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 
 ./src/lib/repositories/appointment-repository.ts
-87:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
 137:58  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-188:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
 230:38  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 288:37  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 371:50  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 434:62  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 443:36  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 495:40  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-510:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
 
 ./src/lib/repositories/cabinet-repository.ts
 1:10  Warning: 'Connection' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
 21:64  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-76:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-104:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-132:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
 143:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-184:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
 201:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-268:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-284:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-309:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
 315:70  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-332:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-348:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-368:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/lib/security/ratelimit.ts
-95:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-231:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-256:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-269:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
 
 ./src/lib/services/analytics-service.ts
-4:3  Warning: 'AnalyticsQuery' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-7:3  Warning: 'DrillDownData' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-13:18  Warning: 'subDays' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-13:27  Warning: 'subWeeks' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-13:37  Warning: 'subMonths' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-13:48  Warning: 'startOfDay' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-13:60  Warning: 'endOfDay' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-13:89  Warning: 'eachWeekOfInterval' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-13:109  Warning: 'eachMonthOfInterval' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-52:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-83:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-121:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-143:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-257:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-287:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-318:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-351:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/lib/services/appointment-service.ts
-180:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-229:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-260:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-339:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-402:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-467:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-535:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-548:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
+1:18  Warning: 'subDays' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+1:27  Warning: 'subWeeks' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+1:37  Warning: 'subMonths' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+1:48  Warning: 'startOfDay' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+1:60  Warning: 'endOfDay' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+1:89  Warning: 'eachWeekOfInterval' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+1:109  Warning: 'eachMonthOfInterval' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+5:3  Warning: 'AnalyticsQuery' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+8:3  Warning: 'DrillDownData' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
 
 ./src/lib/services/auth-service.ts
-15:25  Warning: 'ResultSetHeader' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-66:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-109:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-128:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-138:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-165:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-191:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
+3:25  Warning: 'ResultSetHeader' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
 
 ./src/lib/services/cabinet-access-control.ts
 140:14  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 141:6  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 
-./src/lib/services/cabinet-provisioning-service.ts
-173:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-275:9  Warning: 'rollbackActions' is never reassigned. Use 'const' instead.  prefer-const
-422:20  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-436:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
 ./src/lib/services/cabinet-service.ts
-76:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-100:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-124:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-141:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-175:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-214:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
 227:94  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-242:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
 251:77  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-267:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-284:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
 293:94  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 301:31  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-307:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/lib/services/notification-service.ts
-228:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-272:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
 
 ./src/lib/services/patient-communication-service.ts
 1:10  Warning: 'Patient' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-198:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-214:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-238:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-273:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-292:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-341:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-355:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
 
 ./src/lib/services/patient-search-service.ts
 1:35  Warning: 'MedicalRecord' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-160:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-261:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-386:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-415:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-445:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
 450:31  Warning: 'patients' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
 450:52  Warning: 'options' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
 455:29  Warning: 'patients' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
 455:50  Warning: 'options' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
 
-./src/lib/services/patient-service.ts
-247:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-259:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-291:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-333:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-354:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-386:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-423:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-449:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-467:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-519:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-
 ./src/lib/services/performance-service.ts
-31:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
 100:42  Warning: 'cabinetId' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
 100:61  Warning: 'startDate' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
 100:78  Warning: 'endDate' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
@@ -1097,8 +339,6 @@ Failed to compile.
 123:42  Warning: 'cabinetId' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
 123:61  Warning: 'startDate' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
 123:78  Warning: 'endDate' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
-194:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-212:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
 
 ./src/lib/utils/cache.ts
 140:70  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
@@ -1119,104 +359,68 @@ Failed to compile.
 
 ./src/lib/utils/pagination.ts
 77:64  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-102:7  Warning: 'end' is never reassigned. Use 'const' instead.  prefer-const
-156:12  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-179:16  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
+156:12  Warning: 'error' is defined but never used. Allowed unused caught errors must match /^(_error|__error|err)$/u.  @typescript-eslint/no-unused-vars
 
 ./src/lib/utils/touch-targets.ts
-228:5  Warning: Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free.  @typescript-eslint/ban-ts-comment
+303:3  Warning: Unexpected console statement. Only these console methods are allowed: warn, error.  no-console
+309:5  Warning: Unexpected console statement. Only these console methods are allowed: warn, error.  no-console
+314:5  Warning: Unexpected console statement. Only these console methods are allowed: warn, error.  no-console
+322:3  Warning: Unexpected console statement. Only these console methods are allowed: warn, error.  no-console
 326:1  Warning: Assign object to a variable before exporting as module default  import/no-anonymous-default-export
 
 ./src/lib/utils.ts
-109:46  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-109:56  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 166:34  Warning: 'color1' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
 166:50  Warning: 'color2' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
 198:1  Warning: Assign object to a variable before exporting as module default  import/no-anonymous-default-export
 
 ./src/lib/websocket/chat-server.ts
 5:10  Warning: 'db' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-56:9  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-226:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-240:67  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-268:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-277:64  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-351:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
 369:69  Warning: 'response' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
-401:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-428:20  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-452:20  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/lib/websocket/client.ts
-10:14  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-26:25  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-63:20  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-100:31  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-141:14  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+465:5  Warning: Unexpected console statement. Only these console methods are allowed: warn, error.  no-console
 
 ./src/middleware.ts
-10:7  Warning: 'PUBLIC_ROUTES' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-31:34  Warning: 'request' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
-39:16  Warning: 'checkRateLimits' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-75:16  Warning: 'checkAuthentication' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-101:12  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-110:16  Warning: 'checkTenantAccess' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-110:62  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-140:16  Warning: 'checkAuthorization' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-140:59  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-172:62  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-194:10  Warning: 'addSecurityHeaders' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-205:10  Warning: 'createRateLimitResponse' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-223:10  Warning: 'redirectToLogin' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-230:10  Warning: 'createAccessDeniedResponse' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-247:10  Warning: 'createForbiddenResponse' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-264:10  Warning: 'createInternalErrorResponse' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-284:10  Warning: 'getClientIP' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-305:37  Warning: 'jti' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
-310:16  Warning: 'logAccess' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-310:54  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-310:71  Warning: 'userAgent' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
-315:16  Warning: 'logSecurityEvent' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-320:7  Warning: 'SecurityError' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+11:7  Warning: 'PUBLIC_ROUTES' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+32:34  Warning: 'request' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
+40:16  Warning: 'checkRateLimits' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+76:16  Warning: 'checkAuthentication' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+111:16  Warning: 'checkTenantAccess' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+141:16  Warning: 'checkAuthorization' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+195:10  Warning: 'addSecurityHeaders' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+206:10  Warning: 'createRateLimitResponse' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+224:10  Warning: 'redirectToLogin' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+231:10  Warning: 'createAccessDeniedResponse' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+248:10  Warning: 'createForbiddenResponse' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+265:10  Warning: 'createInternalErrorResponse' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+285:10  Warning: 'getClientIP' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+306:37  Warning: 'jti' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
+311:16  Warning: 'logAccess' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+311:72  Warning: 'userAgent' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
+316:16  Warning: 'logSecurityEvent' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+321:7  Warning: 'SecurityError' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
 
 ./src/server/email/ionos-email.service.ts
-106:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-154:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
 196:31  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-203:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/server/email/__tests__/ionos-email.service.test.ts
-46:11  Warning: 'service' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-136:10  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 
 ./src/services/appointment.service.ts
-13:28  Warning: 'isBefore' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-13:38  Warning: 'isAfter' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-13:47  Warning: 'addHours' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-13:57  Warning: 'startOfDay' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-13:69  Warning: 'endOfDay' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+12:28  Warning: 'isBefore' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+12:38  Warning: 'isAfter' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+12:47  Warning: 'addHours' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+12:57  Warning: 'startOfDay' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+12:69  Warning: 'endOfDay' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
 201:48  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-520:72  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 614:56  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 746:52  Warning: 'title' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
 
+./src/services/auth-edge.service.ts
+7:8  Warning: 'bcrypt' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
 ./src/services/auth.service.ts
-14:8  Warning: 'bcrypt' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-504:61  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-532:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
+13:8  Warning: 'bcrypt' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
 
 ./src/services/chat/orchestrator.ts
 2:10  Warning: 'env' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
 47:7  Warning: 'NLUResultSchema' is assigned a value but only used as a type. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-83:18  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-100:10  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-175:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-330:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-391:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
 450:13  Warning: 'result' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-465:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-510:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-544:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
 578:22  Warning: 'context' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
 590:25  Warning: 'context' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
 625:5  Warning: 'context' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
@@ -1224,331 +428,64 @@ Failed to compile.
 658:49  Warning: 'context' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
 718:32  Warning: 'user' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
 718:59  Warning: 'cabinetId' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
-723:81  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-733:81  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-743:55  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+734:5  Warning: Unexpected console statement. Only these console methods are allowed: log, warn, error, debug.  no-console
 
 ./src/services/chat/tools/appointment-tools.ts
 2:10  Warning: 'env' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
 3:10  Warning: 'db' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-454:22  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-575:88  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-582:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-630:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 635:5  Warning: 'serviceType' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
-641:22  Warning: 'openMinute' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+641:22  Warning: 'openMinute' is assigned a value but never used. Allowed unused elements of array destructuring must match /^_/u.  @typescript-eslint/no-unused-vars
 689:76  Warning: 'tenantId' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
 719:83  Warning: 'timezone' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
 
 ./src/services/chat/tools/cabinet-tools.ts
 2:10  Warning: 'db' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
 21:7  Warning: 'GetBusinessHoursSchema' is assigned a value but only used as a type. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-48:35  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-131:26  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-268:26  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-476:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
 
 ./src/services/chat/tools/patient-tools.ts
 2:10  Warning: 'db' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-61:32  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-222:27  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-281:22  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-448:92  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-457:22  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 
 ./src/services/email.service.ts
-13:22  Warning: 'fs' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-14:8  Warning: 'path' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-41:34  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+12:22  Warning: 'fs' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+13:8  Warning: 'path' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
 219:13  Warning: 'payload' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
 415:59  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-674:38  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-714:16  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-837:24  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
 
 ./src/services/ionos-email.service.ts
-49:24  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 95:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-135:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-468:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
+118:22  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 
 ./src/services/supabase-auth.service.ts
-9:10  Warning: 'parsePhoneNumber' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-15:10  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-31:15  Warning: 'data' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-54:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-88:21  Warning: 'authData' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-113:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-147:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-174:14  Warning: '_error' is defined but never used.  @typescript-eslint/no-unused-vars
-249:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-249:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-273:56  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+8:10  Warning: 'parsePhoneNumber' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+100:21  Warning: 'authData' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
 
 ./src/styles/design-system.ts
 326:1  Warning: Assign object to a variable before exporting as module default  import/no-anonymous-default-export
 
+./src/styles/design-tokens.ts
+369:34  Warning: 'hex1' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
+369:48  Warning: 'hex2' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
+
 ./src/test/accessibility/a11y.test.tsx
-20:45  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-375:9  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+374:9  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
 ./src/test/accessibility/accessibility.test.tsx
-26:16  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-148:17  Warning: A `require()` style import is forbidden.  @typescript-eslint/no-require-imports
-277:15  Warning: 'container' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-287:15  Warning: 'container' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-365:15  Warning: 'styles' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-
-./src/test/api/analytics.test.ts
-1:32  Warning: 'beforeEach' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-369:13  Warning: 'request' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-382:13  Warning: 'request' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-400:13  Warning: 'request' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-405:56  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-416:13  Warning: 'request' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-421:52  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-430:13  Warning: 'request' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-435:54  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-444:13  Warning: 'request' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-449:52  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/test/api/auth.test.ts
-25:24  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-34:33  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-322:12  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-339:12  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-357:12  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/test/api/cabinet-health.test.ts
-1:48  Warning: 'Mock' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-5:37  Warning: 'manageAlert' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-14:26  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-81:13  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-111:13  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-143:13  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-168:13  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-194:13  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-220:13  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-247:13  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-276:13  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-302:13  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/test/api/cabinet-provisioning.test.ts
-440:53  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/test/api/manager/dashboard.test.ts
-18:89  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/test/auth/auth-service.test.ts
-71:23  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-148:23  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-187:26  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-222:26  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-258:23  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-275:23  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-289:23  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-303:26  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-304:23  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-314:26  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-348:23  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-365:23  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-384:23  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/test/auth/jwt.test.ts
-31:20  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-49:20  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-76:22  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-85:22  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-99:22  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-108:22  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-166:22  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-193:22  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-211:22  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-219:22  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/test/auth/mfa-service.test.ts
-82:36  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-83:28  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-118:36  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-122:28  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-145:33  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-164:33  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-199:33  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-218:33  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-241:33  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-280:33  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-298:33  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-316:33  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-331:33  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/test/auth/rbac.test.ts
-2:33  Warning: 'PERMISSIONS' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-
-./src/test/chat/appointment-booking.integration.test.ts
-1:66  Warning: 'afterAll' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-2:10  Warning: 'db' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-223:11  Warning: 'response' is never reassigned. Use 'const' instead.  prefer-const
-235:11  Warning: 'response' is never reassigned. Use 'const' instead.  prefer-const
-247:11  Warning: 'response' is never reassigned. Use 'const' instead.  prefer-const
-257:11  Warning: 'response' is never reassigned. Use 'const' instead.  prefer-const
-274:13  Warning: 'response' is never reassigned. Use 'const' instead.  prefer-const
-295:13  Warning: 'response' is never reassigned. Use 'const' instead.  prefer-const
-316:13  Warning: 'response' is never reassigned. Use 'const' instead.  prefer-const
-335:7  Warning: 'response' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-348:7  Warning: 'response' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-363:11  Warning: 'response' is never reassigned. Use 'const' instead.  prefer-const
-408:13  Warning: 'queueSpy' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-
-./src/test/chat/chat-orchestrator.test.ts
-1:48  Warning: 'Mock' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-2:65  Warning: 'ChatResponse' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-366:13  Warning: 'response' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-
-./src/test/components/admin/CabinetDetailView.test.tsx
-14:29  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-16:29  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-18:28  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-20:28  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-28:39  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-34:29  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-133:26  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/test/components/admin/CabinetOverviewGrid.test.tsx
-31:8  Warning: 'data' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
-36:37  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/test/components/ComparativeAnalyticsDashboard.test.tsx
-165:6  Error: Parsing error: ';' expected.
-
-./src/test/components/manager/AppointmentCalendar.test.tsx
-14:85  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/test/components/manager/AppointmentForm.test.tsx
-16:85  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/test/components/manager/AppointmentManagement.test.tsx
-11:61  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-21:79  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-31:35  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-40:36  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-56:85  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/test/components/manager/ManagerDashboard.test.tsx
-85:89  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/test/components/manager/PatientForm.test.tsx
-16:77  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/test/components/manager/PatientManagement.test.tsx
-15:77  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-19:76  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-21:31  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-34:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-44:44  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-56:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-350:13  Warning: 'rerender' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-
-./src/test/hooks/usePatients.test.ts
-178:14  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-296:28  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/test/integration/admin-dashboard.test.tsx
-43:37  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/test/services/analytics-service-comparative.test.ts
-10:37  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/test/services/analytics-service.test.ts
-10:19  Warning: 'format' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-235:28  Warning: A `require()` style import is forbidden.  @typescript-eslint/no-require-imports
-287:24  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-300:24  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-314:24  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-333:24  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-363:24  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+13:1  Warning: `@/components/manager/PatientDetail` import should occur before import of `@/components/manager/PatientForm`  import/order
 
 ./src/test/services/appointment-service-secure.test.ts
-18:82  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
 22:7  Warning: 'adminUser' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-116:30  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-169:30  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-191:30  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-235:30  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-258:30  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/test/services/cabinet-health-service.test.ts
-2:32  Warning: 'CabinetHealthStatus' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-36:23  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-71:10  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/test/services/cabinet-provisioning-service.test.ts
-29:32  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-76:34  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-96:66  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-102:70  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-112:51  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/test/services/cabinet-service.test.ts
-1:44  Warning: 'vi' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-15:32  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-103:66  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-109:70  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-119:51  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/test/services/notification-service.test.ts
-17:85  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-21:24  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-216:31  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/test/services/patient-search-service.test.ts
-13:77  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-17:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-404:26  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/test/services/patient-service.test.ts
-1:32  Warning: 'vi' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-
-./src/test/services/performance-service.test.ts
-3:23  Warning: 'PerformanceAlert' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-11:28  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/test/setup.tsx
-48:37  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-275:27  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-276:34  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-277:88  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-286:51  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/test/validation/cabinet.test.ts
-134:65  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/tests/accessibility/ui-compliance.test.tsx
-3:10  Warning: 'validateTouchTarget' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-3:31  Warning: 'validatePageTouchTargets' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-66:13  Warning: 'focusableElements' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-441:77  Warning: 'browserName' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
-
-./src/tests/auth-email.test.ts
-840:13  Warning: 'result' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-1001:34  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-1014:34  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-1024:63  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-
-./src/tests/handoff.test.ts
-19:7  Warning: 'assistant' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-342:13  Warning: 'result' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-
-./src/tests/rdv-validation.test.ts
-3:10  Warning: 'appointmentService' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-392:13  Warning: 'invalidSlots' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-401:29  Warning: 'day' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
-402:23  Warning: 'minutes' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-
-./src/tests/slot-filling.test.ts
-13:3  Warning: 'getSharedDialogManager' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-17:3  Warning: 'getSharedAppointmentAssistant' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-423:12  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-430:35  Warning: 'sessionId' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
-507:11  Warning: 'result1' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
 
 info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+Failed to compile.
+
+./src/components/auth/SignInForm.tsx:15:10
+Type error: '"../ui/LiveRegion"' has no exported member named 'LiveRegion'. Did you mean 'useLiveRegion'?
+
+[0m [90m 13 |[39m [36mimport[39m { [33mErrorMessage[39m } [36mfrom[39m [32m'../ui/ErrorMessage'[39m[33m;[39m[0m
+[0m [90m 14 |[39m [36mimport[39m [33mFocusTrap[39m [36mfrom[39m [32m'../ui/FocusTrap'[39m[33m;[39m[0m
+[0m[31m[1m>[22m[39m[90m 15 |[39m [36mimport[39m { [33mLiveRegion[39m } [36mfrom[39m [32m'../ui/LiveRegion'[39m[33m;[39m[0m
+[0m [90m    |[39m          [31m[1m^[22m[39m[0m
+[0m [90m 16 |[39m [36mimport[39m { [33mLoadingSpinner[39m } [36mfrom[39m [32m'../ui/LoadingSpinner'[39m[33m;[39m[0m
+[0m [90m 17 |[39m [36mimport[39m { [33mSuccessMessage[39m } [36mfrom[39m [32m'../ui/SuccessMessage'[39m[33m;[39m[0m
+[0m [90m 18 |[39m[0m
+Next.js build worker exited with code: 1 and signal: null

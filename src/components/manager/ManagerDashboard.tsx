@@ -2,16 +2,15 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { Cabinet } from '@/lib/models/cabinet';
-import { CabinetKPIs, PerformanceAlert, DashboardWidget, ManagerDashboardLayout } from '@/lib/models/performance';
+import { CabinetKPIs, PerformanceAlert, ManagerDashboardLayout } from '@/lib/models/performance';
 import { PerformanceService } from '@/lib/services/performance-service';
-import CabinetPerformanceDashboard from './CabinetPerformanceDashboard';
-import AlertsPanel from './AlertsPanel';
-import WidgetCustomizer from './WidgetCustomizer';
+import { cn } from '@/lib/utils';
 import AppointmentManagement from './AppointmentManagement';
+import CabinetPerformanceDashboard from './CabinetPerformanceDashboard';
 import PatientManagement from './PatientManagement';
+import WidgetCustomizer from './WidgetCustomizer';
 
 // Import utility functions
-import { cn } from '@/lib/utils';
 
 interface ManagerDashboardProps {
   cabinet: Cabinet;
@@ -81,7 +80,15 @@ export default function ManagerDashboard({ cabinet, userId }: ManagerDashboardPr
     } finally {
       setLoading(false);
     }
-  }, [cabinet.id, selectedTimeRange, performanceService]);
+  }, [cabinet.id, selectedTimeRange, performanceService, getDefaultDashboardLayout, userId]);
+
+  const handleRealtimeUpdate = useCallback((update: { type: string; [key: string]: unknown }) => {
+    console.warn('Real-time update received:', update);
+    // In real implementation, update the relevant state based on update type
+    if (update.type === 'kpi') {
+      loadDashboardData(); // Refresh KPIs
+    }
+  }, [loadDashboardData]);
 
   const setupRealtimeUpdates = useCallback(() => {
     performanceService.subscribeToUpdates(cabinet.id, handleRealtimeUpdate);
@@ -94,15 +101,7 @@ export default function ManagerDashboard({ cabinet, userId }: ManagerDashboardPr
     return () => clearInterval(interval);
   }, [cabinet.id, performanceService, handleRealtimeUpdate]);
 
-  const handleRealtimeUpdate = useCallback((update: any) => {
-    console.log('Real-time update received:', update);
-    // In real implementation, update the relevant state based on update type
-    if (update.type === 'kpi') {
-      loadDashboardData(); // Refresh KPIs
-    }
-  }, [loadDashboardData]);
-
-  const handleAlertAcknowledge = async (alertId: string) => {
+  const _handleAlertAcknowledge = async (alertId: string) => {
     const result = await performanceService.acknowledgeAlert(alertId, userId);
     if (result.success) {
       setAlerts(prev => prev.filter(alert => alert.id !== alertId));
@@ -112,10 +111,10 @@ export default function ManagerDashboard({ cabinet, userId }: ManagerDashboardPr
   const handleLayoutUpdate = (newLayout: ManagerDashboardLayout) => {
     setDashboardLayout(newLayout);
     // In real implementation, save to backend
-    console.log('Dashboard layout updated:', newLayout);
+    console.warn('Dashboard layout updated:', newLayout);
   };
 
-  const getDefaultDashboardLayout = (userId: string, cabinetId: string): ManagerDashboardLayout => {
+  const getDefaultDashboardLayout = useCallback((userId: string, cabinetId: string): ManagerDashboardLayout => {
     return {
       userId,
       cabinetId,
@@ -171,7 +170,7 @@ export default function ManagerDashboard({ cabinet, userId }: ManagerDashboardPr
       ],
       updatedAt: new Date()
     };
-  };
+  }, [selectedTimeRange]);
 
   if (loading) {
     return (
@@ -220,7 +219,7 @@ export default function ManagerDashboard({ cabinet, userId }: ManagerDashboardPr
                   <select
                     id="time-range"
                     value={selectedTimeRange}
-                    onChange={(e) => setSelectedTimeRange(e.target.value as any)}
+                    onChange={(e) => setSelectedTimeRange(e.target.value as 'day' | 'week' | 'month' | 'quarter')}
                     className={cn(
                       "px-3 py-2 border border-medical-gray-300 rounded-medical-small",
                       "bg-white text-medical-gray-900",
@@ -356,7 +355,7 @@ export default function ManagerDashboard({ cabinet, userId }: ManagerDashboardPr
                       </div>
                       <div className="flex gap-2">
                         <button
-                          onClick={() => console.log('Show alerts')}
+                          onClick={() => console.warn('Show alerts')}
                           className="px-3 py-1 text-sm font-medium text-white bg-red-600 rounded hover:bg-red-700"
                         >
                           Voir les alertes
@@ -416,7 +415,7 @@ export default function ManagerDashboard({ cabinet, userId }: ManagerDashboardPr
                         currency: 'DZD' 
                       }).format(kpis?.totalRevenue || 0)}
                     </div>
-                    <div className="text-sm text-medical-gray-600">Chiffre d'affaires</div>
+                    <div className="text-sm text-medical-gray-600">Chiffre d&apos;affaires</div>
                     <div className="mt-2 text-xs text-medical-green-600 font-medium">
                       +8% ce mois
                     </div>
@@ -444,7 +443,7 @@ export default function ManagerDashboard({ cabinet, userId }: ManagerDashboardPr
                     <div className="text-2xl font-bold text-medical-gray-900 mb-1">
                       {((kpis?.noShowRate || 0) * 100).toFixed(1)}%
                     </div>
-                    <div className="text-sm text-medical-gray-600">Taux d'absentéisme</div>
+                    <div className="text-sm text-medical-gray-600">Taux d&apos;absentéisme</div>
                     <div className="mt-2 text-xs text-medical-red-600 font-medium">
                       -2% vs semaine
                     </div>

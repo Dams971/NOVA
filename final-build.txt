@@ -1,0 +1,94 @@
+
+> nova@0.1.0 build
+> next build
+
+   ▲ Next.js 15.3.5
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 8.0s
+   Linting and checking validity of types ...
+
+./src/app/cabinets/page.tsx
+6:1  Warning: `lucide-react` import should occur before import of `next/link`  import/order
+
+./src/components/chat/chat-widget.tsx
+4:1  Warning: `lucide-react` import should occur before import of `react`  import/order
+
+./src/components/manager/MedicalHistorySection.tsx
+214:62  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/components/manager/PatientFiltersPanel.tsx
+16:65  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/components/manager/WidgetCustomizer.tsx
+18:9  Warning: 'availableWidgetTypes' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+192:104  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+224:107  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+240:107  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/components/manager/widgets/ChartWidget.tsx
+11:47  Warning: 'kpis' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./src/components/manager/widgets/KPIWidget.tsx
+102:59  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/components/monitoring/CabinetHealthDashboard.tsx
+54:14  Warning: '_err' is defined but never used. Allowed unused caught errors must match /^(_error|__error|err)$/u.  @typescript-eslint/no-unused-vars
+70:14  Warning: '_err' is defined but never used. Allowed unused caught errors must match /^(_error|__error|err)$/u.  @typescript-eslint/no-unused-vars
+86:14  Warning: '_err' is defined but never used. Allowed unused caught errors must match /^(_error|__error|err)$/u.  @typescript-eslint/no-unused-vars
+100:14  Warning: '_err' is defined but never used. Allowed unused caught errors must match /^(_error|__error|err)$/u.  @typescript-eslint/no-unused-vars
+
+./src/components/rdv/AppointmentCalendar.tsx
+464:3  Warning: 'careType' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./src/components/rdv/PatientContext.tsx
+1:16  Warning: 'Phone' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./src/components/rdv/RDVHeroSection.tsx
+11:77  Warning: 'userFirstName' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./src/components/rdv/types.ts
+12:16  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+13:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+20:10  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/components/ui/Announcer.tsx
+66:16  Warning: The ref value 'timeouts.current' will likely have changed by the time this effect cleanup function runs. If this ref points to a node rendered by React, copy 'timeouts.current' to a variable inside the effect, and use that variable in the cleanup function.  react-hooks/exhaustive-deps
+
+./src/components/ui/calendar/DatePicker.tsx
+16:3  Warning: 'getDay' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+290:33  Warning: 'index' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./src/components/ui/Dialog.tsx
+208:5  Warning: 'closeOnOutsideClick' is assigned a value but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
+373:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/components/ui/forms/Select.tsx
+120:9  Warning: 'actualVariant' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+362:3  Warning: 'position' is assigned a value but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./src/components/ui/KeyboardNavigation.tsx
+150:6  Warning: React Hook useEffect has a missing dependency: 'callback'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+150:43  Warning: React Hook useEffect has a spread element in its dependency array. This means we can't statically verify whether you've passed the correct dependencies.  react-hooks/exhaustive-deps
+282:6  Warning: React Hook useEffect has a missing dependency: 'containerRef'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/components/ui/loading-spinner.tsx
+16:47  Warning: 'color' is assigned a value but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./src/hooks/use-chat.ts
+62:36  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+171:6  Warning: React Hook useCallback has a missing dependency: 'handleWebSocketMessage'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+226:6  Warning: React Hook useCallback has missing dependencies: 'addSystemMessage', 'handleChatResponse', 'handleEscalation', and 'sendMessage'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+263:6  Warning: React Hook useCallback has a missing dependency: 'addSystemMessage'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/hooks/useAppointments.ts
+24:5  Warning: Unexpected console statement. Only these console methods are allowed: warn, error.  no-console
+28:7  Warning: Unexpected console statement. Only these console methods are allowed: warn, error.  no-console
+129:11  Warning: 'isConnected' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./src/hooks/useScreenReaderAnnouncements.tsx
+3:1  Warning: There should be no empty line between import groups  import/order
+28:9  Warning: 'lastAnnouncementRef' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./src/lib/ai/nlp-service.

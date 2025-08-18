@@ -1,6 +1,6 @@
-import jwt from 'jsonwebtoken';
-import { v4 as uuidv4 } from 'uuid';
 import { Redis } from 'ioredis';
+import { SignJWT, jwtVerify } from 'jose';
+import { v4 as uuidv4 } from 'uuid';
 import { env } from '@/config/env';
 
 export interface JWTPayload {
@@ -41,15 +41,15 @@ export interface TokenRevocationEntry {
  */
 class EnhancedJWTManager {
   private static instance: EnhancedJWTManager;
-  private readonly accessTokenSecret: string;
-  private readonly refreshTokenSecret: string;
+  private readonly accessTokenSecret: Uint8Array;
+  private readonly refreshTokenSecret: Uint8Array;
   private readonly accessTokenExpiry: string;
   private readonly refreshTokenExpiry: string;
   private redis: Redis;
 
   private constructor() {
-    this.accessTokenSecret = env.JWT_ACCESS_SECRET;
-    this.refreshTokenSecret = env.JWT_REFRESH_SECRET;
+    this.accessTokenSecret = new TextEncoder().encode(env.JWT_ACCESS_SECRET);
+    this.refreshTokenSecret = new TextEncoder().encode(env.JWT_REFRESH_SECRET);
     this.accessTokenExpiry = env.JWT_EXPIRES_IN;
     this.refreshTokenExpiry = env.REFRESH_EXPIRES_IN;
     
@@ -81,11 +81,13 @@ class EnhancedJWTManager {
       jti: accessJti,
     };
 
-    const accessToken = jwt.sign(accessTokenPayload, this.accessTokenSecret, {
-      expiresIn: this.accessTokenExpiry,
-      issuer: 'nova-platform',
-      audience: 'nova-users',
-    });
+    const accessToken = await new SignJWT(accessTokenPayload)
+      .setProtectedHeader({ alg: 'HS256' })
+      .setExpirationTime(this.accessTokenExpiry)
+      .setIssuer('nova-platform')
+      .setAudience('nova-users')
+      .setIssuedAt()
+      .sign(this.accessTokenSecret);
 
     // Create refresh token
     const refreshTokenPayload: RefreshTokenPayload = {
@@ -94,11 +96,13 @@ class EnhancedJWTManager {
       tokenFamily,
     };
 
-    const refreshToken = jwt.sign(refreshTokenPayload, this.refreshTokenSecret, {
-      expiresIn: this.refreshTokenExpiry,
-      issuer: 'nova-platform',
-      audience: 'nova-refresh',
-    });
+    const refreshToken = await new SignJWT(refreshTokenPayload)
+      .setProtectedHeader({ alg: 'HS256' })
+      .setExpirationTime(this.refreshTokenExpiry)
+      .setIssuer('nova-platform')
+      .setAudience('nova-refresh')
+      .setIssuedAt()
+      .sign(this.refreshTokenSecret);
 
     // Store refresh token metadata in Redis
     const refreshTokenKey = `refresh:${refreshJti}`;
@@ -143,7 +147,8 @@ class EnhancedJWTManager {
   async refreshAccessToken(refreshToken: string): Promise<TokenPair | null> {
     try {
       // Verify refresh token
-      const decoded = jwt.verify(refreshToken, this.refreshTokenSecret) as RefreshTokenPayload;
+      const { payload } = await jwtVerify(refreshToken, this.refreshTokenSecret);
+      const decoded = payload as RefreshTokenPayload;
       
       // Check if refresh token exists and is active
       const refreshTokenKey = `refresh:${decoded.jti}`;
@@ -215,7 +220,8 @@ class EnhancedJWTManager {
    */
   async verifyAccessToken(token: string): Promise<JWTPayload | null> {
     try {
-      const decoded = jwt.verify(token, this.accessTokenSecret) as JWTPayload;
+      const { payload } = await jwtVerify(token, this.accessTokenSecret);
+      const decoded = payload as JWTPayload;
       
       // Check if token is revoked
       const isRevoked = await this.isTokenRevoked(decoded.jti);

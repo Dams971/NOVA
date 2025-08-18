@@ -60,7 +60,7 @@ export class PostgreSQLManager {
 
       // Handle client connections
       pool.on('connect', (_client) => {
-        console.log('New PostgreSQL client connected');
+        console.warn('New PostgreSQL client connected');
       });
 
       this.pools.set(key, pool);
@@ -185,7 +185,7 @@ export class PostgreSQLManager {
     const closePromises = Array.from(this.pools.entries()).map(async ([key, pool]) => {
       try {
         await pool.end();
-        console.log(`Closed PostgreSQL pool: ${key}`);
+        console.warn(`Closed PostgreSQL pool: ${key}`);
       } catch (_error) {
         console.error(`Error closing PostgreSQL pool ${key}:`, error);
       }
@@ -206,14 +206,14 @@ export class PostgreSQLManager {
         throw new Error('Failed to connect to PostgreSQL database');
       }
 
-      console.log('✅ PostgreSQL database connected successfully');
+      console.warn('✅ PostgreSQL database connected successfully');
       
       // Check if tables exist
       const tablesExist = await this.checkTablesExist();
       if (!tablesExist) {
-        console.log('⚠️ Database tables not found. Please run the setup-postgresql.sql script first.');
+        console.warn('⚠️ Database tables not found. Please run the setup-postgresql.sql script first.');
       } else {
-        console.log('✅ Database tables verified');
+        console.warn('✅ Database tables verified');
       }
 
     } catch (error) {

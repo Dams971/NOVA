@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
 import { format } from 'date-fns';
 import { X, Calendar, Clock, User, Stethoscope, FileText, DollarSign, Search, Plus, Repeat } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   Appointment, 
   CreateAppointmentRequest, 
@@ -105,11 +105,6 @@ export default function AppointmentForm({
     { value: AppointmentStatus.NO_SHOW, label: 'Absent' }
   ];
 
-  useEffect(() => {
-    loadPatients();
-    initializeForm();
-  }, [appointment, initialDate, initialTime, loadPatients, initializeForm]);
-
   const loadPatients = useCallback(async () => {
     // Mock patients - in real implementation, this would fetch from API
     const mockPatients: Patient[] = [
@@ -170,7 +165,15 @@ export default function AppointmentForm({
         duration: appointment.duration,
         status: appointment.status,
         notes: appointment.notes || '',
-        price: appointment.price || 0
+        price: appointment.price || 0,
+        recurring: {
+          enabled: false,
+          frequency: 'weekly',
+          interval: 1,
+          endDate: '',
+          occurrences: 1,
+          weekDays: []
+        }
       });
     } else {
       // Create mode
@@ -188,6 +191,11 @@ export default function AppointmentForm({
       }));
     }
   }, [appointment, initialDate, initialTime]);
+
+  useEffect(() => {
+    loadPatients();
+    initializeForm();
+  }, [appointment, initialDate, initialTime, loadPatients, initializeForm]);
 
   const handleInputChange = (field: keyof FormData, value: string | number) => {
     setFormData(prev => ({
@@ -224,7 +232,7 @@ export default function AppointmentForm({
     }
   };
 
-  const handleRecurringChange = (field: keyof RecurringConfig, value: any) => {
+  const handleRecurringChange = (field: keyof RecurringConfig, value: RecurringConfig[keyof RecurringConfig]) => {
     setFormData(prev => ({
       ...prev,
       recurring: {
@@ -264,7 +272,7 @@ export default function AppointmentForm({
     const appointments: CreateAppointmentRequest[] = [];
     const { recurring } = data;
 
-    let currentDate = new Date(startDate);
+    const currentDate = new Date(startDate);
     const endDate = recurring.endDate ? new Date(recurring.endDate) : null;
     const maxOccurrences = recurring.occurrences || 1;
 
@@ -424,7 +432,7 @@ export default function AppointmentForm({
           }
         }
       }
-    } catch (error) {
+    } catch (_error) {
       setErrors({ general: 'Une erreur inattendue s\'est produite' });
     } finally {
       setLoading(false);

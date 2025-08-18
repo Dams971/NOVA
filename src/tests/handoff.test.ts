@@ -12,8 +12,8 @@
  */
 
 import { describe, test, expect, beforeEach, afterEach } from 'vitest';
-import { AppointmentAssistantV3, OutOfScopeDetector, PhoneValidatorV3 } from '../lib/llm/appointments-v3';
 import { DialogManagerV2, getSharedDialogManagerV2 } from '../lib/chat/dialogManager-v2';
+import { AppointmentAssistantV3, OutOfScopeDetector, PhoneValidatorV3 } from '../lib/llm/appointments-v3';
 
 describe('NOVA RDV Handoff System', () => {
   let assistant: AppointmentAssistantV3;

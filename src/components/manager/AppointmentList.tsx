@@ -1,22 +1,20 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { 
   Search, 
-  Filter, 
   Calendar, 
   Clock, 
   User, 
   Phone, 
-  Mail, 
   MoreVertical,
   CheckCircle,
   XCircle,
   Trash2,
   Edit
 } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Appointment, AppointmentStatus, AppointmentFilters } from '@/lib/models/appointment';
 import { Patient } from '@/lib/models/patient';
 import { AppointmentService, CalendarEvent } from '@/lib/services/appointment-service';
@@ -47,9 +45,71 @@ export default function AppointmentList({
 
   const appointmentService = AppointmentService.getInstance();
 
-  useEffect(() => {
-    loadAppointments();
-  }, [loadAppointments]);
+  const getMockPatient = useCallback((patientId: string): Patient => {
+    const mockPatients: Record<string, Patient> = {
+      'patient-1': {
+        id: 'patient-1',
+        cabinetId,
+        firstName: 'Marie',
+        lastName: 'Dubois',
+        email: 'marie.dubois@email.com',
+        phone: '+33123456789',
+        dateOfBirth: new Date('1985-03-15'),
+        medicalHistory: [],
+        preferences: {
+          preferredLanguage: 'fr',
+          communicationMethod: 'email',
+          reminderEnabled: true,
+          reminderHours: [24]
+        },
+        isActive: true,
+        totalVisits: 12,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      'patient-2': {
+        id: 'patient-2',
+        cabinetId,
+        firstName: 'Jean',
+        lastName: 'Martin',
+        email: 'jean.martin@email.com',
+        phone: '+33987654321',
+        dateOfBirth: new Date('1970-08-22'),
+        medicalHistory: [],
+        preferences: {
+          preferredLanguage: 'fr',
+          communicationMethod: 'sms',
+          reminderEnabled: true,
+          reminderHours: [48, 24]
+        },
+        isActive: true,
+        totalVisits: 12,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    };
+
+    return mockPatients[patientId] || {
+      id: patientId,
+      cabinetId,
+      firstName: 'Patient',
+      lastName: 'Inconnu',
+      email: '',
+      phone: '',
+      dateOfBirth: new Date(),
+      medicalHistory: [],
+      preferences: {
+        preferredLanguage: 'fr',
+        communicationMethod: 'email',
+        reminderEnabled: true,
+        reminderHours: [24]
+      },
+      isActive: true,
+      totalVisits: 0,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+  }, [cabinetId]);
 
   const loadAppointments = useCallback(async () => {
     setLoading(true);
@@ -90,77 +150,15 @@ export default function AppointmentList({
         setAppointments(appointmentsWithPatients);
       }
     } catch (_error) {
-      console.error('Error loading appointments:', error);
+      console.error('Error loading appointments:', _error);
     } finally {
       setLoading(false);
     }
-  }, [cabinetId, statusFilter, dateFilter]);
+  }, [cabinetId, statusFilter, dateFilter, appointmentService, getMockPatient]);
 
-  const getMockPatient = (patientId: string): Patient => {
-    const mockPatients: Record<string, Patient> = {
-      'patient-1': {
-        id: 'patient-1',
-        cabinetId,
-        firstName: 'Marie',
-        lastName: 'Dubois',
-        email: 'marie.dubois@email.com',
-        phone: '+33123456789',
-        dateOfBirth: new Date('1985-03-15'),
-        medicalHistory: [],
-        preferences: {
-          preferredLanguage: 'fr',
-          communicationMethod: 'email',
-          reminderEnabled: true,
-          reminderHours: [24, 2]
-        },
-        isActive: true,
-        totalVisits: 5,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      'patient-2': {
-        id: 'patient-2',
-        cabinetId,
-        firstName: 'Jean',
-        lastName: 'Martin',
-        email: 'jean.martin@email.com',
-        phone: '+33123456790',
-        dateOfBirth: new Date('1978-07-22'),
-        medicalHistory: [],
-        preferences: {
-          preferredLanguage: 'fr',
-          communicationMethod: 'sms',
-          reminderEnabled: true,
-          reminderHours: [24]
-        },
-        isActive: true,
-        totalVisits: 12,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      }
-    };
-
-    return mockPatients[patientId] || {
-      id: patientId,
-      cabinetId,
-      firstName: 'Patient',
-      lastName: 'Inconnu',
-      email: '',
-      phone: '',
-      dateOfBirth: new Date(),
-      medicalHistory: [],
-      preferences: {
-        preferredLanguage: 'fr',
-        communicationMethod: 'email',
-        reminderEnabled: true,
-        reminderHours: [24]
-      },
-      isActive: true,
-      totalVisits: 0,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
-  };
+  useEffect(() => {
+    loadAppointments();
+  }, [loadAppointments]);
 
   const filteredAppointments = appointments.filter(appointment => {
     if (!searchTerm) return true;
@@ -262,7 +260,7 @@ export default function AppointmentList({
 
             <select
               value={dateFilter}
-              onChange={(e) => setDateFilter(e.target.value as any)}
+              onChange={(e) => setDateFilter(e.target.value as 'today' | 'week' | 'month' | 'all')}
               className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="today">Aujourd&apos;hui</option>

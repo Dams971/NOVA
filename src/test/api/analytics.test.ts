@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { NextRequest } from 'next/server';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { GET } from '@/app/api/analytics/cabinet/route';
 import { POST } from '@/app/api/analytics/export/route';
 import { GET as getTemplates } from '@/app/api/analytics/templates/route';

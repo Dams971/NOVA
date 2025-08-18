@@ -1,14 +1,14 @@
 'use client';
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { 
-  Search, MapPin, Clock, Phone, Mail, Star, Award, 
-  Shield, Calendar, ChevronRight, Filter, X, Check,
+  Search, MapPin, Clock, Star, 
+  Shield, Filter,
   Wifi, Car, CreditCard, Heart, Users, Sparkles,
   Navigation, Globe, Building
 } from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
 
 interface Cabinet {
   id: string;
@@ -39,7 +39,7 @@ export default function CabinetsPage() {
   const [selectedCity, setSelectedCity] = useState('all');
   const [showFilters, setShowFilters] = useState(false);
   const [selectedSpecialty, setSelectedSpecialty] = useState('all');
-  const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
+  const [_selectedAmenities, _setSelectedAmenities] = useState<string[]>([]);
 
   const cabinets: Cabinet[] = [
     {
@@ -52,7 +52,7 @@ export default function CabinetsPage() {
       specialties: ['Implantologie', 'Orthodontie', 'Esthétique'],
       image: '/cabinet1.jpg',
       doctors: 5,
-      nextAvailable: 'Aujourd\'hui 14h30',
+      nextAvailable: 'Aujourd&apos;hui 14h30',
       distance: '2.5 km',
       amenities: ['wifi', 'parking', 'accessibility', 'card'],
       languages: ['Français', 'Arabe', 'Anglais'],
@@ -90,13 +90,13 @@ export default function CabinetsPage() {
       id: '3',
       name: 'Clinique Sourire Plus',
       location: 'Constantine',
-      address: 'Avenue de l\'Indépendance',
+      address: 'Avenue de l&apos;Indépendance',
       rating: 4.7,
       reviews: 156,
       specialties: ['Chirurgie', 'Implants', 'Blanchiment'],
       image: '/cabinet3.jpg',
       doctors: 6,
-      nextAvailable: 'Aujourd\'hui 16h00',
+      nextAvailable: 'Aujourd&apos;hui 16h00',
       amenities: ['wifi', 'accessibility', 'card', 'lab'],
       languages: ['Français', 'Arabe', 'Anglais', 'Espagnol'],
       insurance: ['CNAS', 'International'],
@@ -120,7 +120,7 @@ export default function CabinetsPage() {
     'Chirurgie'
   ];
 
-  const amenityIcons: Record<string, any> = {
+  const amenityIcons: Record<string, { icon: React.ComponentType<{ size?: number; color?: string }>; label: string }> = {
     wifi: { icon: Wifi, label: 'WiFi gratuit' },
     parking: { icon: Car, label: 'Parking' },
     accessibility: { icon: Heart, label: 'Accessible PMR' },
@@ -362,7 +362,7 @@ export default function CabinetsPage() {
                           className="w-8 h-8 bg-gray-50 rounded-lg flex items-center justify-center"
                           title={amenityIcons[amenity].label}
                         >
-                          <AmenityIcon className="w-4 h-4 text-gray-600" />
+                          {React.createElement(AmenityIcon, { size: 16, color: "#4B5563" })}
                         </div>
                       ) : null;
                     })}
@@ -418,7 +418,7 @@ export default function CabinetsPage() {
               </span>
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              NOVA s'étend à l'international pour offrir des soins dentaires de qualité 
+              NOVA s&apos;étend à l&apos;international pour offrir des soins dentaires de qualité 
               aux patients du monde entier.
             </p>
           </div>

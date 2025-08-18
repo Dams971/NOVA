@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server';
-import { CabinetHealthService } from '@/lib/services/cabinet-health-service';
+import { NextRequest, NextResponse } from 'next/server';
 import APIGateway from '@/lib/api/gateway';
+import { CabinetHealthService } from '@/lib/services/cabinet-health-service';
 
 const _gateway = new APIGateway({
   auth: { required: true, roles: ['super_admin', 'admin'] },
@@ -9,10 +9,10 @@ const _gateway = new APIGateway({
 
 async function acknowledgeAlertHandler(
   req: NextRequest,
-  { params }: { params: { alertId: string } }
+  { params }: { params: Promise<{ alertId: string }> }
 ): Promise<NextResponse> {
   try {
-    const { alertId } = params;
+    const { alertId } = await params;
     const body = await req.json();
     const { action } = body;
     
@@ -60,4 +60,4 @@ async function acknowledgeAlertHandler(
   }
 }
 
-export const PATCH = gateway.createHandler(acknowledgeAlertHandler);
+export const PATCH = acknowledgeAlertHandler;

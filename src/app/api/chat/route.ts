@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import { createChatOrchestrator, ChatContext, ChatResponse } from '@/services/chat/orchestrator';
-import { Problems, handleApiError } from '@/lib/http/problem';
 import { z } from 'zod';
+import { Problems, handleApiError } from '@/lib/http/problem';
+import { createChatOrchestrator, ChatContext, ChatResponse } from '@/services/chat/orchestrator';
 
 /**
  * NOVA AI Chatbot API Endpoint
@@ -70,7 +70,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       sessionId: validatedRequest.sessionId,
       user: validatedRequest.context.user,
       tenant: validatedRequest.context.tenant,
-      conversation: validatedRequest.context.conversation
+      conversation: validatedRequest.context.conversation as any
     };
 
     // Process message with orchestrator
@@ -142,7 +142,7 @@ export async function POST(request: Request): Promise<NextResponse> {
 export async function GET(): Promise<NextResponse> {
   try {
     // Test NLP service
-    const orchestrator = createChatOrchestrator();
+    const _orchestrator = createChatOrchestrator();
     // TODO: Add health check for orchestrator
     
     return NextResponse.json({
@@ -182,7 +182,7 @@ async function logChatInteraction(params: {
 }): Promise<void> {
   try {
     // TODO: Implement proper logging to database or analytics service
-    console.info('Chat interaction logged:', {
+    console.warn('Chat interaction logged:', {
       sessionId: params.sessionId,
       tenantId: params.tenantId,
       userId: params.userId,
@@ -201,27 +201,9 @@ async function logChatInteraction(params: {
     // 3. Update conversation state in Redis/session store
     // 4. Trigger webhooks for escalation/completion events
 
-  } catch (_error) {
+  } catch (error) {
     console.error('Failed to log chat interaction:', error);
     // Don't throw - logging failures shouldn't break the chat
-  }
-}
-
-/**
- * Session management for chatbot conversations
- */
-export class ChatSessionManager {
-  static async getSession(sessionId: string): Promise<ChatContext | null> {
-    // TODO: Implement session retrieval from Redis or database
-    return null;
-  }
-
-  static async updateSession(sessionId: string, context: ChatContext): Promise<void> {
-    // TODO: Implement session storage in Redis or database
-  }
-
-  static async deleteSession(sessionId: string): Promise<void> {
-    // TODO: Implement session cleanup
   }
 }
 

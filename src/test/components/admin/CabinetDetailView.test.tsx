@@ -1,7 +1,7 @@
-import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import React from 'react';
+import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import CabinetDetailView from '@/components/admin/CabinetDetailView';
 import { Cabinet, CabinetStatus } from '@/lib/models/cabinet';
 import { AnalyticsService } from '@/lib/services/analytics-service';

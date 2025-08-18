@@ -2,8 +2,8 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'framer-motion';
+import { ChevronLeft, ChevronRight, Star, Quote, MapPin } from 'lucide-react';
 import { useRef, useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Star, Quote, MapPin, Users } from 'lucide-react';
 
 interface Testimonial {
   id: number;

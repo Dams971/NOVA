@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PatientService } from '@/lib/services/patient-service';
 import { UpdatePatientRequest } from '@/lib/models/patient';
 import { UserContext } from '@/lib/services/cabinet-access-control';
+import { PatientService } from '@/lib/services/patient-service';
 
 // Mock user context - in real implementation, this would come from JWT token
 const getMockUserContext = (): UserContext => ({
@@ -13,11 +13,12 @@ const getMockUserContext = (): UserContext => ({
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { patientId: string } }
+  { params }: { params: Promise<{ patientId: string }> }
 ) {
   try {
+    const { patientId } = await params;
     const patientService = PatientService.getInstance();
-    const result = await patientService.getPatientById(params.patientId);
+    const result = await patientService.getPatientById(patientId);
 
     if (result.success) {
       return NextResponse.json({
@@ -30,7 +31,7 @@ export async function GET(
         error: result.error
       }, { status: 404 });
     }
-  } catch (_error) {
+  } catch (error) {
     console.error('Error fetching patient:', error);
     return NextResponse.json({
       success: false,
@@ -41,9 +42,10 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { patientId: string } }
+  { params }: { params: Promise<{ patientId: string }> }
 ) {
   try {
+    const { patientId } = await params;
     const patientService = PatientService.getInstance();
     const userContext = getMockUserContext();
     const body = await request.json();
@@ -55,7 +57,7 @@ export async function PUT(
     };
 
     // Use secure method with access control
-    const result = await patientService.updatePatientSecure(userContext, params.patientId, updateRequest);
+    const result = await patientService.updatePatientSecure(userContext, patientId, updateRequest);
 
     if (result.success) {
       return NextResponse.json({
@@ -69,7 +71,7 @@ export async function PUT(
       }, { status: 400 });
     }
   } catch (_error) {
-    console.error('Error updating patient:', error);
+    console.error('Error updating patient:', _error);
     return NextResponse.json({
       success: false,
       error: 'Internal server error'
@@ -79,14 +81,15 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { patientId: string } }
+  { params }: { params: Promise<{ patientId: string }> }
 ) {
   try {
+    const { patientId } = await params;
     const patientService = PatientService.getInstance();
     const userContext = getMockUserContext();
 
     // Use secure method with access control
-    const result = await patientService.deletePatientSecure(userContext, params.patientId);
+    const result = await patientService.deletePatientSecure(userContext, patientId);
 
     if (result.success) {
       return NextResponse.json({
@@ -100,7 +103,7 @@ export async function DELETE(
       }, { status: 400 });
     }
   } catch (_error) {
-    console.error('Error deleting patient:', error);
+    console.error('Error deleting patient:', _error);
     return NextResponse.json({
       success: false,
       error: 'Internal server error'

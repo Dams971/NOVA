@@ -32,7 +32,7 @@ let config = DEFAULT_CONFIG;
 
 // CLS value tracker
 let clsValue = 0;
-let clsEntries: PerformanceEntry[] = [];
+const clsEntries: PerformanceEntry[] = [];
 
 // Performance thresholds based on Core Web Vitals
 const THRESHOLDS = {
@@ -54,7 +54,7 @@ function getRating(metricName: string, value: number): 'good' | 'needs-improveme
 
 function logMetric(metric: WebVitalMetric) {
   if (config.enableLogging) {
-    console.log(`${metric.name}:`, {
+    console.warn(`${metric.name}:`, {
       value: Math.round(metric.value),
       rating: metric.rating,
       id: metric.id,
@@ -316,7 +316,7 @@ function observeMemory() {
       };
       
       if (config.enableLogging) {
-        console.log('Memory usage:', {
+        console.warn('Memory usage:', {
           used: Math.round(memoryUsage.usedJSHeapSize / 1024 / 1024) + 'MB',
           total: Math.round(memoryUsage.totalJSHeapSize / 1024 / 1024) + 'MB',
           limit: Math.round(memoryUsage.jsHeapSizeLimit / 1024 / 1024) + 'MB',
@@ -387,7 +387,7 @@ export function initPerformanceMonitoring(userConfig?: PerformanceConfig) {
   config = { ...DEFAULT_CONFIG, ...userConfig };
 
   if (config.enableLogging) {
-    console.log('Initializing performance monitoring...');
+    console.warn('Initializing performance monitoring...');
   }
 
   // Start observing web vitals

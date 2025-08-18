@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+import DatabaseManager from '../database/connection';
 import { 
   Cabinet, 
   CreateCabinetRequest, 
@@ -5,8 +7,6 @@ import {
   CabinetSettings 
 } from '../models/cabinet';
 import { CabinetService, CabinetServiceResult } from './cabinet-service';
-import DatabaseManager from '../database/connection';
-import { v4 as uuidv4 } from 'uuid';
 
 export enum DeploymentStatus {
   PENDING = 'pending',
@@ -272,7 +272,7 @@ export class CabinetProvisioningService {
     deployment.updatedAt = new Date();
 
     let cabinet: Cabinet | undefined;
-    let rollbackActions: (() => Promise<void>)[] = [];
+    const rollbackActions: (() => Promise<void>)[] = [];
 
     try {
       // Step 1: Validate data

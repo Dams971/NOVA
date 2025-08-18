@@ -301,16 +301,16 @@ export function debugTouchTargets(): void {
   const validation = validatePageTouchTargets();
   
   console.group('🎯 Touch Target Validation');
-  console.log(`Total elements: ${validation.totalElements}`);
-  console.log(`Valid elements: ${validation.validElements}`);
-  console.log(`Issues found: ${validation.issues.length}`);
+  console.warn(`Total elements: ${validation.totalElements}`);
+  console.warn(`Valid elements: ${validation.validElements}`);
+  console.warn(`Issues found: ${validation.issues.length}`);
   
   validation.issues.forEach(({ element, validation }, index) => {
     console.group(`Issue ${index + 1}`);
-    console.log('Element:', element);
-    console.log('Size:', validation.size);
-    console.log('Issues:', validation.issues);
-    console.log('Recommendations:', validation.recommendations);
+    console.warn('Element:', element);
+    console.warn('Size:', validation.size);
+    console.warn('Issues:', validation.issues);
+    console.warn('Recommendations:', validation.recommendations);
     console.groupEnd();
     
     // Add visual indicator

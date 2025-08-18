@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { 
   Calendar, 
   Mail, 
@@ -9,10 +8,7 @@ import {
   Linkedin, 
   Twitter, 
   Facebook,
-  Shield,
-  FileText,
-  HelpCircle,
-  ArrowRight
+  Shield
 } from 'lucide-react';
 
 export default function Footer() {
@@ -39,7 +35,7 @@ export default function Footer() {
 
   const handleNewsletterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Newsletter subscription');
+    console.warn('Newsletter subscription');
     // Logique d'inscription à la newsletter
   };
 

@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
 import { X, User, Mail, Phone, Calendar } from 'lucide-react';
+import React, { useState } from 'react';
 import { Patient, CreatePatientRequest, UpdatePatientRequest, Gender } from '@/lib/models/patient';
 
 interface PatientFormProps {
@@ -110,7 +110,7 @@ export default function PatientForm({ patient, cabinetId, onSave, onCancel }: Pa
           setErrors({ general: result.error || 'Erreur lors de la création' });
         }
       }
-    } catch (error) {
+    } catch (_error) {
       setErrors({ general: 'Erreur inattendue' });
     } finally {
       setLoading(false);

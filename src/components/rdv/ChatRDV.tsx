@@ -1,6 +1,6 @@
+import { Send, Bot, User } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { ButtonMedical } from '@/components/ui/nova/ButtonMedical';
-import { Send, Bot, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface Message {
@@ -145,7 +145,7 @@ export function ChatRDV({ className }: ChatRDVProps) {
               <Bot className="w-4 h-4 text-primary-600" aria-hidden="true" />
             </div>
             <div className="bg-neutral-50 rounded-medical-small p-3">
-              <div className="flex gap-1" aria-label="L'assistant tape une réponse">
+              <div className="flex gap-1" aria-label="L&apos;assistant tape une réponse">
                 <span className="w-2 h-2 bg-neutral-400 rounded-full animate-bounce" />
                 <span className="w-2 h-2 bg-neutral-400 rounded-full animate-bounce delay-100" />
                 <span className="w-2 h-2 bg-neutral-400 rounded-full animate-bounce delay-200" />

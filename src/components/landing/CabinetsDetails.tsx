@@ -1,6 +1,5 @@
 'use client';
 
-import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
   MapPin, 
@@ -9,9 +8,9 @@ import {
   Star, 
   Users, 
   Calendar,
-  ChevronRight,
-  Award
+  ChevronRight
 } from 'lucide-react';
+import React, { useState } from 'react';
 
 interface Cabinet {
   id: string;
@@ -131,7 +130,7 @@ export default function CabinetsDetails() {
     ? cabinets
     : cabinets.filter(c => c.country === selectedCountry);
 
-  const handleBookAppointment = (cabinetId: string) => {
+  const handleBookAppointment = (_cabinetId: string) => {
     // Redirection vers l'interface moderne de prise de rendez-vous
     window.location.href = '/rdv';
   };

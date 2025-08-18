@@ -156,7 +156,7 @@ test.describe('Parcours Patient Anxieux - Fatima', () => {
     
     // Vérifier que le parcours prend moins de 3 minutes
     expect(totalTime).toBeLessThan(180) // 3 minutes
-    console.log(`Parcours patient anxieux complété en ${totalTime}s`)
+    console.warn(`Parcours patient anxieux complété en ${totalTime}s`)
   })
   
   test('devrait offrir un support chat personnalisé', async ({ page }) => {

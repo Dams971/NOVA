@@ -5,20 +5,53 @@
 
 'use client'
 
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback } from 'react'
 import { cn } from '@/lib/utils'
-
 // Import nouveaux composants médicaux
-import {
-  MedicalButton,
-  MedicalInput, 
-  ChatBubble,
-  PatientSummaryCard,
-  UrgencyBanner,
-  type ChatMessage,
-  type PatientSummaryData,
-  type AppointmentSummary
-} from '@/components/ui/medical'
+// TODO: Create these components in '@/components/ui/medical'
+// import {
+//   MedicalButton,
+//   MedicalInput, 
+//   ChatBubble,
+//   PatientSummaryCard,
+//   UrgencyBanner,
+//   type ChatMessage,
+//   type PatientSummaryData,
+//   type AppointmentSummary
+// } from '@/components/ui/medical'
+
+// Temporary type definitions and component placeholders
+interface ChatMessage {
+  id: string;
+  text: string;
+  sender: 'user' | 'bot';
+  timestamp: Date;
+}
+
+interface PatientSummaryData {
+  name: string;
+  phone: string;
+  email?: string;
+  appointmentReason?: string;
+  preferredDate?: string;
+}
+
+interface AppointmentSummary {
+  id?: string;
+  date?: string;
+  time?: string;
+  doctor?: string;
+  reason?: string;
+  status: 'selecting' | 'confirming' | 'confirmed' | 'pending' | 'cancelled';
+  currentStep?: number;
+  totalSteps?: number;
+}
+
+const MedicalButton = 'button' as React.ElementType;
+const MedicalInput = 'input' as React.ElementType;
+const ChatBubble = 'div' as React.ElementType;
+const PatientSummaryCard = 'div' as React.ElementType;
+const UrgencyBanner = 'div' as React.ElementType;
 
 /**
  * Interface pour les créneaux disponibles
@@ -92,11 +125,9 @@ const sampleSlots: TimeSlot[] = [
 const initialMessages: ChatMessage[] = [
   {
     id: '1',
-    content: 'Bienvenue sur NOVA RDV ! Je suis votre assistant pour prendre rendez-vous. Comment vous appelez-vous ?',
+    text: 'Bienvenue sur NOVA RDV ! Je suis votre assistant pour prendre rendez-vous. Comment vous appelez-vous ?',
     sender: 'bot',
-    timestamp: new Date(),
-    suggestions: ['Je préfère ne pas dire', 'Continuer sans nom'],
-    type: 'text'
+    timestamp: new Date()
   }
 ]
 
@@ -107,7 +138,7 @@ export default function NovaRDVPage() {
   // État principal de l'application
   const [rdvState, setRDVState] = useState<RDVState>({
     currentStep: 1,
-    patient: {},
+    patient: { name: '', phone: '' },
     chatMessages: initialMessages,
     appointment: {
       status: 'selecting',
@@ -125,10 +156,9 @@ export default function NovaRDVPage() {
     
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
-      content,
-      sender: 'patient',
-      timestamp: new Date(),
-      status: 'sent'
+      text: content,
+      sender: 'user',
+      timestamp: new Date()
     }
     
     setRDVState(prev => ({
@@ -140,11 +170,9 @@ export default function NovaRDVPage() {
     setTimeout(() => {
       const botResponse: ChatMessage = {
         id: (Date.now() + 1).toString(),
-        content: 'Parfait ! Merci pour cette information. Maintenant, pouvez-vous me donner votre numéro de téléphone au format +213XXXXXXXXX ?',
+        text: 'Parfait ! Merci pour cette information. Maintenant, pouvez-vous me donner votre numéro de téléphone au format +213XXXXXXXXX ?',
         sender: 'bot',
-        timestamp: new Date(),
-        suggestions: ['J\'ai des questions', 'Continuer'],
-        type: 'text'
+        timestamp: new Date()
       }
       
       setRDVState(prev => ({
@@ -184,10 +212,9 @@ export default function NovaRDVPage() {
     // Ajouter message de confirmation bot
     const confirmMessage: ChatMessage = {
       id: Date.now().toString(),
-      content: `Excellent ! J'ai réservé votre créneau pour le ${slot.date.toLocaleDateString('fr-FR')} à ${slot.time}. Veuillez vérifier les détails dans le résumé à droite.`,
+      text: `Excellent ! J'ai réservé votre créneau pour le ${slot.date.toLocaleDateString('fr-FR')} à ${slot.time}. Veuillez vérifier les détails dans le résumé à droite.`,
       sender: 'bot',
-      timestamp: new Date(),
-      type: 'confirmation'
+      timestamp: new Date()
     }
     
     setRDVState(prev => ({
@@ -211,10 +238,9 @@ export default function NovaRDVPage() {
     // Message de confirmation final
     const finalMessage: ChatMessage = {
       id: Date.now().toString(),
-      content: 'Parfait ! Votre rendez-vous est confirmé. Vous recevrez un SMS de confirmation avec tous les détails.',
+      text: 'Parfait ! Votre rendez-vous est confirmé. Vous recevrez un SMS de confirmation avec tous les détails.',
       sender: 'bot',
-      timestamp: new Date(),
-      type: 'confirmation'
+      timestamp: new Date()
     }
     
     setRDVState(prev => ({
@@ -383,10 +409,10 @@ export default function NovaRDVPage() {
             <div className="flex gap-3">
               <MedicalInput
                 value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewMessage(e.target.value)}
                 placeholder="Tapez votre message..."
                 className="flex-1"
-                onKeyDown={(e) => {
+                onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
                   if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault()
                     handleSendMessage(newMessage)

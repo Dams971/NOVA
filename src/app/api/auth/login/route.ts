@@ -30,7 +30,7 @@ async function handleLogin(request: NextRequest): Promise<NextResponse> {
       ...loginResponse
     }, { status: 200 });
 
-  } catch (_error) {
+  } catch (error) {
     console.error('Login error:', error);
 
     if (error instanceof AuthenticationError) {

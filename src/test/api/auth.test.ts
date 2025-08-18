@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { NextRequest } from 'next/server';
+import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { AuthService, AuthenticationError } from '@/lib/auth/auth-service';
 
 // Mock AuthService

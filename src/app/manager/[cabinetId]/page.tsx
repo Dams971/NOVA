@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { Cabinet } from '@/lib/models/cabinet';
-import { CabinetService } from '@/lib/services/cabinet-service';
+import React, { useState, useEffect } from 'react';
 import ManagerDashboard from '@/components/manager/ManagerDashboard';
 import { DashboardSkeleton } from '@/components/ui/LoadingSkeleton';
+import { Cabinet } from '@/lib/models/cabinet';
+import { CabinetService } from '@/lib/services/cabinet-service';
 
 /**
  * Manager Dashboard Page

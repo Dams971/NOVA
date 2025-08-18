@@ -15,13 +15,13 @@ async function handleGetUsers(request: AuthenticatedRequest): Promise<NextRespon
     // This endpoint requires user read permission
     // The withPermission middleware already checked this
 
-    const authService = AuthService.getInstance();
-    const rbacService = RBACService.getInstance();
+    const _authService = AuthService.getInstance();
+    const _rbacService = RBACService.getInstance();
 
     // Get query parameters for filtering
     const url = new URL(request.url);
-    const cabinetId = url.searchParams.get('cabinetId');
-    const role = url.searchParams.get('role');
+    const _cabinetId = url.searchParams.get('cabinetId');
+    const _role = url.searchParams.get('role');
 
     // For non-super-admin users, filter based on their accessible cabinets
     const userRole = request.auth!.user.role;
@@ -88,7 +88,7 @@ async function handleGetUsers(request: AuthenticatedRequest): Promise<NextRespon
       total: filteredUsers.length,
     });
 
-  } catch (_error) {
+  } catch (error) {
     console.error('Get users error:', error);
     return NextResponse.json(
       { error: 'Internal server error', code: 'INTERNAL_ERROR' },
@@ -161,7 +161,7 @@ async function handleCreateUser(request: AuthenticatedRequest): Promise<NextResp
       }
     }, { status: 201 });
 
-  } catch (_error) {
+  } catch (error) {
     console.error('Create user error:', error);
 
     if (error instanceof AuthenticationError) {

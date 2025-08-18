@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { PatientService } from '@/lib/services/patient-service';
-import { PatientSearchService } from '@/lib/services/patient-search-service';
-import { PatientCommunicationService } from '@/lib/services/patient-communication-service';
 import { CreatePatientRequest, Gender } from '@/lib/models/patient';
+import { PatientCommunicationService } from '@/lib/services/patient-communication-service';
+import { PatientSearchService } from '@/lib/services/patient-search-service';
+import { PatientService } from '@/lib/services/patient-service';
 
 describe('Patient Management Integration', () => {
   let patientService: PatientService;

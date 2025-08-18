@@ -1,7 +1,7 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 
 interface User {
   id: string;
@@ -40,12 +40,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
-  // Check for existing session on mount
-  useEffect(() => {
-    checkAuth();
-  }, []);
-
-  const checkAuth = async () => {
+  // Memoize checkAuth to avoid recreation on every render
+  const checkAuth = useCallback(async () => {
     try {
       const token = localStorage.getItem('accessToken');
       if (!token) {
@@ -71,9 +67,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []); // No dependencies needed as it only uses localStorage and setters
 
-  const login = async (email: string, password: string) => {
+  // Check for existing session on mount
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+
+  const login = useCallback(async (email: string, password: string) => {
     try {
       setError(null);
       setIsLoading(true);
@@ -112,9 +113,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [router]);
 
-  const signup = async (signupData: SignupData) => {
+  const signup = useCallback(async (signupData: SignupData) => {
     try {
       setError(null);
       setIsLoading(true);
@@ -146,9 +147,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [login]);
 
-  const logout = async () => {
+  const logout = useCallback(async () => {
     try {
       const token = localStorage.getItem('accessToken');
       
@@ -168,7 +169,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(null);
       router.push('/');
     }
-  };
+  }, [router]);
 
   const refreshToken = useCallback(async () => {
     try {
