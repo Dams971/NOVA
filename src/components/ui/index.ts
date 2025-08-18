@@ -5,8 +5,8 @@ export { default as DatePicker } from './calendar/DatePicker';
 export * from './Skeleton';
 
 // Nova Design System components - Direct export
-export { ButtonMedical, buttonVariants } from './nova/ButtonMedical';
-export type { ButtonMedicalProps } from './nova/ButtonMedical';
+export { ButtonMedical, buttonVariants } from './ButtonMedical';
+export type { ButtonMedicalProps } from './ButtonMedical';
 
 // Utility components - Named exports
 export { ErrorMessage, FieldError, FormError } from './ErrorMessage';
