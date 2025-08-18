@@ -1,4 +1,3 @@
-import { PoolClient } from 'pg';
 import { z } from 'zod';
 import { db } from '@/lib/database/postgresql-connection';
 import EmailService, { AppointmentEmailParams, ReminderEmailParams } from './email-service';
@@ -69,8 +68,8 @@ export class EmailQueue {
         console.warn('⚠️ Email queue table not found - run setup-postgresql.sql first');
       }
     } catch (_error) {
-      console.error('❌ Failed to check email queue table:', error);
-      throw error;
+      console.error('❌ Failed to check email queue table:', _error);
+      throw _error;
     }
   }
 
@@ -93,6 +92,7 @@ export class EmailQueue {
       scheduleFor: undefined, // Send immediately
       status: 'pending',
       attempts: 0,
+      maxRetries: 3,
       createdAt: new Date()
     };
 
@@ -122,6 +122,7 @@ export class EmailQueue {
       scheduleFor,
       status: 'pending',
       attempts: 0,
+      maxRetries: 3,
       createdAt: new Date()
     };
 
@@ -150,6 +151,7 @@ export class EmailQueue {
       scheduleFor: undefined, // Send immediately
       status: 'pending',
       attempts: 0,
+      maxRetries: 3,
       createdAt: new Date()
     };
 
@@ -179,6 +181,7 @@ export class EmailQueue {
       scheduleFor: undefined, // Send immediately
       status: 'pending',
       attempts: 0,
+      maxRetries: 3,
       createdAt: new Date()
     };
 
@@ -207,8 +210,8 @@ export class EmailQueue {
       return success;
 
     } catch (_error) {
-      console.error('❌ Failed to cancel email job:', error);
-      throw error;
+      console.error('❌ Failed to cancel email job:', _error);
+      throw _error;
     }
   }
 
@@ -241,8 +244,8 @@ export class EmailQueue {
       return stats;
 
     } catch (_error) {
-      console.error('❌ Failed to get queue stats:', error);
-      throw error;
+      console.error('❌ Failed to get queue stats:', _error);
+      throw _error;
     }
   }
 
@@ -250,35 +253,33 @@ export class EmailQueue {
    * Get failed jobs for manual retry
    */
   async getFailedJobs(limit: number = 100): Promise<EmailQueueJob[]> {
-    const connection = await createConnection();
-    
     try {
-      const [rows] = await connection.execute<RowDataPacket[]>(
+      const rows = await db.queryRows(
         `SELECT * FROM email_queue 
          WHERE status = 'failed' 
          ORDER BY created_at DESC 
-         LIMIT ?`,
+         LIMIT $1`,
         [limit]
       );
 
       return rows.map(row => ({
         id: row.id,
-        type: row.type,
+        type: row.job_type,
         recipientEmail: row.recipient_email,
-        tenantId: row.tenant_id,
-        priority: row.priority,
-        scheduleFor: row.schedule_for ? new Date(row.schedule_for) : undefined,
-        maxRetries: row.max_retries,
-        data: JSON.parse(row.data),
+        tenantId: row.cabinet_id,
+        priority: row.priority === 1 ? 'high' : row.priority === 5 ? 'normal' : 'low',
+        scheduleFor: row.scheduled_for ? new Date(row.scheduled_for) : undefined,
+        maxRetries: row.max_attempts,
+        data: JSON.parse(row.template_data),
         status: row.status,
         attempts: row.attempts,
         lastError: row.last_error,
         createdAt: new Date(row.created_at),
-        processedAt: row.processed_at ? new Date(row.processed_at) : undefined
+        processedAt: row.completed_at ? new Date(row.completed_at) : undefined
       }));
-
-    } finally {
-      await connection.end();
+    } catch (_error) {
+      console.error('Failed to get failed jobs:', _error);
+      throw _error;
     }
   }
 
@@ -286,26 +287,24 @@ export class EmailQueue {
    * Retry failed job
    */
   async retryJob(jobId: string): Promise<boolean> {
-    const connection = await createConnection();
-    
     try {
-      const [result] = await connection.execute(
+      const result = await db.query(
         `UPDATE email_queue 
-         SET status = 'pending', last_error = NULL, processed_at = NULL 
-         WHERE id = ? AND status = 'failed'`,
+         SET status = 'pending', last_error = NULL, completed_at = NULL 
+         WHERE id = $1 AND status = 'failed'`,
         [jobId]
       );
 
-      const success = (result as any).affectedRows > 0;
+      const success = result.rowCount > 0;
       
       if (success) {
         console.warn(`🔄 Retrying email job ${jobId}`);
       }
       
       return success;
-
-    } finally {
-      await connection.end();
+    } catch (_error) {
+      console.error('Failed to retry job:', _error);
+      throw _error;
     }
   }
 
@@ -344,15 +343,14 @@ export class EmailQueue {
     if (this.isProcessing) return;
     
     this.isProcessing = true;
-    const connection = await createConnection();
 
     try {
       // Get pending jobs ready to be processed
-      const [jobs] = await connection.execute<RowDataPacket[]>(`
+      const jobs = await db.queryRows(`
         SELECT * FROM email_queue 
         WHERE status = 'pending' 
-        AND (schedule_for IS NULL OR schedule_for <= NOW())
-        ORDER BY priority DESC, created_at ASC
+        AND (scheduled_for IS NULL OR scheduled_for <= NOW())
+        ORDER BY priority ASC, created_at ASC
         LIMIT 10
       `);
 
@@ -363,44 +361,43 @@ export class EmailQueue {
       console.warn(`📧 Processing ${jobs.length} email jobs`);
 
       for (const jobRow of jobs) {
-        await this.processJob(jobRow, connection);
+        await this.processJob(jobRow);
       }
 
     } catch (_error) {
-      console.error('Email queue processing error:', error);
+      console.error('Email queue processing error:', _error);
     } finally {
       this.isProcessing = false;
-      await connection.end();
     }
   }
 
   /**
    * Process individual email job
    */
-  private async processJob(jobRow: RowDataPacket, connection: Connection): Promise<void> {
+  private async processJob(jobRow: any): Promise<void> {
     const jobId = jobRow.id;
 
     try {
       // Mark as processing
-      await connection.execute(
-        'UPDATE email_queue SET status = ?, attempts = attempts + 1 WHERE id = ?',
+      await db.query(
+        'UPDATE email_queue SET status = $1, attempts = attempts + 1 WHERE id = $2',
         ['processing', jobId]
       );
 
       const job: EmailQueueJob = {
         id: jobRow.id,
-        type: jobRow.type,
+        type: jobRow.job_type,
         recipientEmail: jobRow.recipient_email,
-        tenantId: jobRow.tenant_id,
-        priority: jobRow.priority,
-        scheduleFor: jobRow.schedule_for ? new Date(jobRow.schedule_for) : undefined,
-        maxRetries: jobRow.max_retries,
-        data: JSON.parse(jobRow.data),
+        tenantId: jobRow.cabinet_id,
+        priority: jobRow.priority === 1 ? 'high' : jobRow.priority === 5 ? 'normal' : 'low',
+        scheduleFor: jobRow.scheduled_for ? new Date(jobRow.scheduled_for) : undefined,
+        maxRetries: jobRow.max_attempts,
+        data: JSON.parse(jobRow.template_data),
         status: jobRow.status,
         attempts: jobRow.attempts,
         lastError: jobRow.last_error,
         createdAt: new Date(jobRow.created_at),
-        processedAt: jobRow.processed_at ? new Date(jobRow.processed_at) : undefined
+        processedAt: jobRow.completed_at ? new Date(jobRow.completed_at) : undefined
       };
 
       // Process email based on type
@@ -408,24 +405,24 @@ export class EmailQueue {
 
       switch (job.type) {
         case 'appointment_confirmation':
-          const confirmResult = await this.emailService.sendAppointmentConfirmation(job.data);
+          const confirmResult = await this.emailService.sendAppointmentConfirmation(job.data as AppointmentEmailParams);
           success = confirmResult.success;
           break;
 
         case 'appointment_reminder':
-          const reminderResult = await this.emailService.sendAppointmentReminder(job.data);
+          const reminderResult = await this.emailService.sendAppointmentReminder(job.data as ReminderEmailParams);
           success = reminderResult.success;
           break;
 
         case 'appointment_cancellation':
-          const cancelResult = await this.emailService.sendAppointmentCancellation(job.data);
+          const cancelResult = await this.emailService.sendAppointmentCancellation(job.data as AppointmentEmailParams);
           success = cancelResult.success;
           break;
 
         case 'appointment_reschedule':
           const rescheduleResult = await this.emailService.sendAppointmentReschedule(
-            job.data.oldParams,
-            job.data.newParams
+            job.data.oldParams as AppointmentEmailParams,
+            job.data.newParams as AppointmentEmailParams
           );
           success = rescheduleResult.success;
           break;
@@ -436,8 +433,8 @@ export class EmailQueue {
 
       if (success) {
         // Mark as completed
-        await connection.execute(
-          'UPDATE email_queue SET status = ?, processed_at = NOW(), last_error = NULL WHERE id = ?',
+        await db.query(
+          'UPDATE email_queue SET status = $1, completed_at = NOW(), last_error = NULL WHERE id = $2',
           ['completed', jobId]
         );
         console.warn(`✅ Email job ${jobId} completed successfully`);
@@ -445,24 +442,24 @@ export class EmailQueue {
         throw new Error('Email sending failed');
       }
 
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    } catch (_error) {
+      const errorMessage = _error instanceof Error ? _error.message : 'Unknown error';
       const attempts = jobRow.attempts + 1;
 
-      if (attempts >= jobRow.max_retries) {
+      if (attempts >= jobRow.max_attempts) {
         // Mark as failed
-        await connection.execute(
-          'UPDATE email_queue SET status = ?, processed_at = NOW(), last_error = ? WHERE id = ?',
+        await db.query(
+          'UPDATE email_queue SET status = $1, completed_at = NOW(), last_error = $2 WHERE id = $3',
           ['failed', errorMessage, jobId]
         );
         console.error(`❌ Email job ${jobId} failed after ${attempts} attempts: ${errorMessage}`);
       } else {
         // Mark as pending for retry
-        await connection.execute(
-          'UPDATE email_queue SET status = ?, last_error = ? WHERE id = ?',
+        await db.query(
+          'UPDATE email_queue SET status = $1, last_error = $2 WHERE id = $3',
           ['pending', errorMessage, jobId]
         );
-        console.warn(`⚠️ Email job ${jobId} failed (attempt ${attempts}/${jobRow.max_retries}): ${errorMessage}`);
+        console.warn(`⚠️ Email job ${jobId} failed (attempt ${attempts}/${jobRow.max_attempts}): ${errorMessage}`);
       }
     }
   }
@@ -491,8 +488,8 @@ export class EmailQueue {
         job.createdAt
       ]);
     } catch (_error) {
-      console.error('❌ Failed to add job to database:', error);
-      throw error;
+      console.error('❌ Failed to add job to database:', _error);
+      throw _error;
     }
   }
 
@@ -511,24 +508,22 @@ export class EmailQueue {
    * Cleanup old completed jobs
    */
   async cleanup(olderThanDays: number = 30): Promise<number> {
-    const connection = await createConnection();
-    
     try {
-      const [result] = await connection.execute(
-        'DELETE FROM email_queue WHERE status = ? AND processed_at < DATE_SUB(NOW(), INTERVAL ? DAY)',
-        ['completed', olderThanDays]
+      const result = await db.query(
+        `DELETE FROM email_queue WHERE status = $1 AND completed_at < NOW() - INTERVAL '${olderThanDays} days'`,
+        ['completed']
       );
 
-      const deletedCount = (result as any).affectedRows;
+      const deletedCount = result.rowCount || 0;
       
       if (deletedCount > 0) {
         console.warn(`🧹 Cleaned up ${deletedCount} old email jobs`);
       }
       
       return deletedCount;
-
-    } finally {
-      await connection.end();
+    } catch (_error) {
+      console.error('Failed to cleanup old jobs:', _error);
+      throw _error;
     }
   }
 }

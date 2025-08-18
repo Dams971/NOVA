@@ -1,6 +1,9 @@
 import { z } from 'zod';
+import { RowDataPacket } from 'mysql2';
+import { Connection } from 'mysql2/promise';
 import { env } from '@/config/env';
 import { db } from '@/lib/database/postgresql-connection';
+import DatabaseManager from '@/lib/database/connection';
 import EmailQueue from '@/lib/email/email-queue';
 import { Problems } from '@/lib/http/problem';
 
@@ -238,7 +241,7 @@ export class AppointmentTools {
       if (conflicts.length > 0) {
         await connection.rollback();
         throw Problems.appointmentConflict(
-          conflicts.map(c => ({
+          conflicts.map((c: any) => ({
             id: c.id,
             startTime: c.start_utc,
             endTime: c.end_utc
@@ -310,7 +313,7 @@ export class AppointmentTools {
 
     } catch (_error) {
       await connection.rollback();
-      throw error;
+      throw _error;
     } finally {
       await connection.end();
     }
@@ -378,7 +381,7 @@ export class AppointmentTools {
       if (conflicts.length > 0) {
         await connection.rollback();
         throw Problems.appointmentConflict(
-          conflicts.map(c => ({
+          conflicts.map((c: any) => ({
             id: c.id,
             startTime: c.start_utc,
             endTime: c.end_utc
@@ -413,7 +416,7 @@ export class AppointmentTools {
 
     } catch (_error) {
       await connection.rollback();
-      throw error;
+      throw _error;
     } finally {
       await connection.end();
     }
@@ -503,7 +506,7 @@ export class AppointmentTools {
         validated.status ? [validated.patientEmail, ...validated.status] : [validated.patientEmail]
       );
 
-      return rows.map(row => ({
+      return rows.map((row: any) => ({
         id: row.id,
         patientId: row.patient_id,
         patientEmail: validated.patientEmail,
@@ -527,7 +530,8 @@ export class AppointmentTools {
 
   private async getTenantConnection(tenantId: string): Promise<Connection> {
     // Get tenant database name from main database
-    const mainConnection = await createConnection();
+    const dbManager = DatabaseManager.getInstance();
+    const mainConnection = await dbManager.getMainConnection();
     
     try {
       const [rows] = await mainConnection.execute<RowDataPacket[]>(
@@ -540,7 +544,7 @@ export class AppointmentTools {
       }
 
       const databaseName = rows[0].database_name;
-      return await createConnection(databaseName);
+      return await dbManager.getCabinetConnection(tenantId);
 
     } finally {
       await mainConnection.end();
@@ -744,6 +748,7 @@ export class AppointmentTools {
     const cabinetInfo = await this.getCabinetInfo(tenantId);
     
     const emailParams = {
+      locale: 'fr',
       tenantId,
       appointmentId: appointment.id,
       patientEmail: appointment.patientEmail,
@@ -774,6 +779,7 @@ export class AppointmentTools {
       const cabinetInfo = await this.getCabinetInfo(tenantId);
       
       const reminderParams = {
+        locale: 'fr',
         tenantId,
         appointmentId: appointment.id,
         patientEmail: appointment.patientEmail,
@@ -796,6 +802,7 @@ export class AppointmentTools {
       const cabinetInfo = await this.getCabinetInfo(tenantId);
       
       const reminderParams = {
+        locale: 'fr',
         tenantId,
         appointmentId: appointment.id,
         patientEmail: appointment.patientEmail,
@@ -820,6 +827,7 @@ export class AppointmentTools {
     const cabinetInfo = await this.getCabinetInfo(tenantId);
     
     const emailParams = {
+      locale: 'fr',
       tenantId,
       appointmentId: appointment.id,
       patientEmail: appointment.patientEmail,
@@ -844,7 +852,8 @@ export class AppointmentTools {
     address?: string;
     phone?: string;
   }> {
-    const mainConnection = await createConnection();
+    const dbManager = DatabaseManager.getInstance();
+    const mainConnection = await dbManager.getMainConnection();
     
     try {
       const [rows] = await mainConnection.execute<RowDataPacket[]>(

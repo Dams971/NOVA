@@ -64,7 +64,7 @@ export class AuthService {
         expiresAt: session.expiresAt
       };
     } catch (_error) {
-      console.error('Registration error:', error);
+      console.error('Registration error:', _error);
       return { success: false, error: 'Registration failed' };
     }
   }
@@ -107,7 +107,7 @@ export class AuthService {
         expiresAt: session.expiresAt
       };
     } catch (_error) {
-      console.error('Login error:', error);
+      console.error('Login error:', _error);
       return { success: false, error: 'Login failed' };
     }
   }
@@ -126,7 +126,7 @@ export class AuthService {
 
       return true;
     } catch (_error) {
-      console.error('Logout error:', error);
+      console.error('Logout error:', _error);
       return false;
     }
   }
@@ -135,7 +135,7 @@ export class AuthService {
   async verifyJWT(token: string): Promise<JWTPayload | null> {
     try {
       const { payload } = await jwtVerify(token, this.jwtSecret);
-      return payload as JWTPayload;
+      return payload as unknown as JWTPayload;
     } catch (error) {
       return null;
     }
@@ -164,7 +164,7 @@ export class AuthService {
 
       return await this.getUserById(payload.userId);
     } catch (_error) {
-      console.error('Get user by token error:', error);
+      console.error('Get user by token error:', _error);
       return null;
     }
   }
@@ -190,7 +190,7 @@ export class AuthService {
         assignedCabinets
       };
     } catch (_error) {
-      console.error('Get user permissions error:', error);
+      console.error('Get user permissions error:', _error);
       return null;
     }
   }

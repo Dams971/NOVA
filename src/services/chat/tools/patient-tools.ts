@@ -1,5 +1,8 @@
 import { z } from 'zod';
+import { RowDataPacket } from 'mysql2';
+import { Connection } from 'mysql2/promise';
 import { db } from '@/lib/database/postgresql-connection';
+import DatabaseManager from '@/lib/database/connection';
 import { Problems } from '@/lib/http/problem';
 
 /**
@@ -502,7 +505,8 @@ export class PatientTools {
 
   private async getTenantConnection(tenantId: string): Promise<Connection> {
     // Get tenant database name from main database
-    const mainConnection = await createConnection();
+    const dbManager = DatabaseManager.getInstance();
+    const mainConnection = await dbManager.getMainConnection();
     
     try {
       const [rows] = await mainConnection.execute<RowDataPacket[]>(
@@ -515,7 +519,7 @@ export class PatientTools {
       }
 
       const databaseName = rows[0].database_name;
-      return await createConnection(databaseName);
+      return await dbManager.getCabinetConnection(tenantId);
 
     } finally {
       await mainConnection.end();

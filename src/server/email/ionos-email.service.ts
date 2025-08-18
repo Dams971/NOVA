@@ -40,7 +40,7 @@ class IonosEmailService {
     }
 
     // Create transporter with proper config
-    this.transporter = nodemailer.createTransporter({
+    this.transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST!,
       port: parseInt(process.env.SMTP_PORT || '587', 10),
       secure: process.env.SMTP_SECURE === 'true',
@@ -104,7 +104,7 @@ class IonosEmailService {
 
       return true;
     } catch (_error) {
-      console.error('Email send error:', error);
+      console.error('Email send error:', _error);
       
       // Log error
       await this.logEmail({
@@ -113,7 +113,7 @@ class IonosEmailService {
         subject: `Confirmation de votre rendez-vous`,
         template_name: 'appointment_confirmation',
         status: 'failed',
-        error_message: error instanceof Error ? error.message : 'Unknown error',
+        error_message: _error instanceof Error ? _error.message : 'Unknown error',
         metadata: {
           appointment_id: data.appointment_id,
         },
@@ -152,14 +152,14 @@ class IonosEmailService {
 
       return true;
     } catch (_error) {
-      console.error('OTP email send error:', error);
+      console.error('OTP email send error:', _error);
       
       await this.logEmail({
         to_email: email,
         subject: 'Votre code de vérification NOVA',
         template_name: 'otp',
         status: 'failed',
-        error_message: error instanceof Error ? error.message : 'Unknown error',
+        error_message: _error instanceof Error ? _error.message : 'Unknown error',
       });
 
       return false;
@@ -201,7 +201,7 @@ class IonosEmailService {
         sent_at: new Date().toISOString(),
       });
     } catch (_error) {
-      console.error('Failed to log email:', error);
+      console.error('Failed to log email:', _error);
     }
   }
 

@@ -12,9 +12,10 @@
 import { format, parseISO, isBefore, isAfter, addHours, startOfDay, endOfDay } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { z } from 'zod';
-import { getUnifiedConnection } from '@/lib/database/unified-connection';
+import db from '@/lib/database/unified-connection';
 import { AppointmentAssistant, AppointmentResponse } from '@/lib/llm/appointments';
-import { logger } from '@/lib/logging/logger';
+import Logger from '@/lib/logging/logger';
+const logger = Logger.getInstance();
 
 // =============================================
 // TYPES ET SCHEMAS VALIDATION
@@ -135,7 +136,7 @@ export class AppointmentService {
    */
   async findOrCreatePatient(patientData: Patient): Promise<{ id: string; isNew: boolean }> {
     const validatedData = PatientSchema.parse(patientData);
-    const connection = await getUnifiedConnection();
+    const connection = db;
 
     try {
       // Recherche patient existant par téléphone
@@ -190,7 +191,7 @@ export class AppointmentService {
 
       return { id: patientId, isNew: true };
     } catch (_error) {
-      logger.error('Erreur création/recherche patient:', error);
+      logger.error('Erreur création/recherche patient:', _error);
       throw new Error('Échec de la gestion du patient');
     }
   }
@@ -199,7 +200,7 @@ export class AppointmentService {
    * Récupère les informations d'un patient
    */
   async getPatient(patientId: string): Promise<any> {
-    const connection = await getUnifiedConnection();
+    const connection = db;
 
     const result = await connection.query(`
       SELECT 
@@ -232,14 +233,14 @@ export class AppointmentService {
     careType: string = 'consultation',
     practitionerId?: string
   ): Promise<AvailableSlot[]> {
-    const connection = await getUnifiedConnection();
+    const connection = db;
 
     try {
       const result = await connection.query(`
         SELECT * FROM generate_available_slots($1, $2, $3)
       `, [date, careType, practitionerId || null]);
 
-      return result.rows.map(row => ({
+      return result.rows.map((row: any) => ({
         startTime: new Date(row.start_time),
         endTime: new Date(row.end_time),
         duration: row.duration,
@@ -248,7 +249,7 @@ export class AppointmentService {
         careType: careType
       }));
     } catch (_error) {
-      logger.error('Erreur récupération créneaux:', error);
+      logger.error('Erreur récupération créneaux:', _error);
       throw new Error('Impossible de récupérer les créneaux disponibles');
     }
   }
@@ -262,7 +263,7 @@ export class AppointmentService {
     practitionerId?: string,
     excludeAppointmentId?: string
   ): Promise<boolean> {
-    const connection = await getUnifiedConnection();
+    const connection = db;
 
     try {
       const result = await connection.query(`
@@ -271,7 +272,7 @@ export class AppointmentService {
 
       return result.rows[0].is_available;
     } catch (_error) {
-      logger.error('Erreur vérification disponibilité:', error);
+      logger.error('Erreur vérification disponibilité:', _error);
       return false;
     }
   }
@@ -285,7 +286,7 @@ export class AppointmentService {
    */
   async createAppointment(appointmentData: Appointment): Promise<string> {
     const validatedData = AppointmentSchema.parse(appointmentData);
-    const connection = await getUnifiedConnection();
+    const connection = db;
 
     try {
       // Vérifier disponibilité du créneau
@@ -344,9 +345,9 @@ export class AppointmentService {
       await this.scheduleAppointmentNotification(appointmentId, 'appointment_created');
 
       return appointmentId;
-    } catch (error) {
-      logger.error('Erreur création rendez-vous:', error);
-      throw error;
+    } catch (_error) {
+      logger.error('Erreur création rendez-vous:', _error);
+      throw _error;
     }
   }
 
@@ -354,7 +355,7 @@ export class AppointmentService {
    * Met à jour un rendez-vous existant
    */
   async updateAppointment(appointmentId: string, updates: Partial<Appointment>): Promise<void> {
-    const connection = await getUnifiedConnection();
+    const connection = db;
 
     try {
       // Construire la requête de mise à jour dynamique
@@ -386,9 +387,9 @@ export class AppointmentService {
 
       await connection.query(query, values);
       logger.info(`Rendez-vous mis à jour: ${appointmentId}`);
-    } catch (error) {
-      logger.error('Erreur mise à jour rendez-vous:', error);
-      throw error;
+    } catch (_error) {
+      logger.error('Erreur mise à jour rendez-vous:', _error);
+      throw _error;
     }
   }
 
@@ -400,7 +401,7 @@ export class AppointmentService {
     reason: string,
     cancelledBy?: string
   ): Promise<void> {
-    const connection = await getUnifiedConnection();
+    const connection = db;
 
     try {
       await connection.query(`
@@ -417,9 +418,9 @@ export class AppointmentService {
 
       // Notifier le patient
       await this.scheduleAppointmentNotification(appointmentId, 'appointment_cancelled');
-    } catch (error) {
-      logger.error('Erreur annulation rendez-vous:', error);
-      throw error;
+    } catch (_error) {
+      logger.error('Erreur annulation rendez-vous:', _error);
+      throw _error;
     }
   }
 
@@ -431,7 +432,7 @@ export class AppointmentService {
     newScheduledAt: string,
     newDurationMinutes?: number
   ): Promise<void> {
-    const connection = await getUnifiedConnection();
+    const connection = db;
 
     try {
       // Récupérer les informations actuelles
@@ -480,9 +481,9 @@ export class AppointmentService {
 
       // Notifier le patient
       await this.scheduleAppointmentNotification(appointmentId, 'appointment_rescheduled');
-    } catch (error) {
-      logger.error('Erreur reprogrammation rendez-vous:', error);
-      throw error;
+    } catch (_error) {
+      logger.error('Erreur reprogrammation rendez-vous:', _error);
+      throw _error;
     }
   }
 
@@ -490,7 +491,7 @@ export class AppointmentService {
    * Confirme un rendez-vous
    */
   async confirmAppointment(appointmentId: string, confirmedBy: string = 'patient'): Promise<void> {
-    const connection = await getUnifiedConnection();
+    const connection = db;
 
     try {
       await connection.query(`
@@ -504,9 +505,9 @@ export class AppointmentService {
       `, [confirmedBy, appointmentId]);
 
       logger.info(`Rendez-vous confirmé: ${appointmentId} par ${confirmedBy}`);
-    } catch (error) {
-      logger.error('Erreur confirmation rendez-vous:', error);
-      throw error;
+    } catch (_error) {
+      logger.error('Erreur confirmation rendez-vous:', _error);
+      throw _error;
     }
   }
 
@@ -518,7 +519,7 @@ export class AppointmentService {
    * Recherche des rendez-vous avec filtres
    */
   async searchAppointments(options: AppointmentSearchOptions): Promise<Appointment[]> {
-    const connection = await getUnifiedConnection();
+    const connection = db;
 
     const {
       patientId,
@@ -602,9 +603,9 @@ export class AppointmentService {
 
       const result = await connection.query(query, values);
       return result.rows;
-    } catch (error) {
-      logger.error('Erreur recherche rendez-vous:', error);
-      throw error;
+    } catch (_error) {
+      logger.error('Erreur recherche rendez-vous:', _error);
+      throw _error;
     }
   }
 
@@ -612,7 +613,7 @@ export class AppointmentService {
    * Récupère un rendez-vous par ID
    */
   async getAppointment(appointmentId: string): Promise<any> {
-    const connection = await getUnifiedConnection();
+    const connection = db;
 
     try {
       const result = await connection.query(`
@@ -631,9 +632,9 @@ export class AppointmentService {
       }
 
       return result.rows[0];
-    } catch (error) {
-      logger.error('Erreur récupération rendez-vous:', error);
-      throw error;
+    } catch (_error) {
+      logger.error('Erreur récupération rendez-vous:', _error);
+      throw _error;
     }
   }
 
@@ -659,8 +660,8 @@ export class AppointmentService {
       }
       
       return response;
-    } catch (error) {
-      logger.error('Erreur traitement IA:', error);
+    } catch (_error) {
+      logger.error('Erreur traitement IA:', _error);
       
       // Retourner une réponse d'erreur structurée
       return {
@@ -682,7 +683,7 @@ export class AppointmentService {
     userMessage: string,
     aiResponse: AppointmentResponse
   ): Promise<void> {
-    const connection = await getUnifiedConnection();
+    const connection = db;
 
     try {
       await connection.query(`
@@ -711,7 +712,7 @@ export class AppointmentService {
         'claude-3-7-sonnet-20250219'
       ]);
     } catch (_error) {
-      logger.error('Erreur sauvegarde conversation IA:', error);
+      logger.error('Erreur sauvegarde conversation IA:', _error);
     }
   }
 
@@ -726,7 +727,7 @@ export class AppointmentService {
     appointmentId: string,
     notificationType: string
   ): Promise<void> {
-    const connection = await getUnifiedConnection();
+    const connection = db;
 
     try {
       // Récupérer les informations du rendez-vous et du patient
@@ -781,7 +782,7 @@ export class AppointmentService {
       ]);
 
     } catch (_error) {
-      logger.error('Erreur programmation notification:', error);
+      logger.error('Erreur programmation notification:', _error);
     }
   }
 

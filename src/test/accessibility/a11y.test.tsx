@@ -371,6 +371,7 @@ describe('Accessibility Tests', () => {
 
     it('should provide alternative text for images', () => {
       render(
+        // eslint-disable-next-line @next/next/no-img-element
         <img src="/test.jpg" alt="Description of image" />
       );
       

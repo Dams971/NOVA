@@ -63,16 +63,16 @@ export class MigrationRunner {
 
             console.warn(`✓ Migration ${migration.version} completed successfully`);
           } catch (_error) {
-            console.error(`✗ Migration ${migration.version} failed:`, error);
-            throw error;
+            console.error(`✗ Migration ${migration.version} failed:`, _error);
+            throw _error;
           }
         }
       }
 
       console.warn('All migrations completed successfully');
     } catch (_error) {
-      console.error('Migration runner failed:', error);
-      throw error;
+      console.error('Migration runner failed:', _error);
+      throw _error;
     }
   }
 
@@ -93,7 +93,7 @@ export class MigrationRunner {
         };
       });
     } catch (_error) {
-      console.error('Error reading migration files:', error);
+      console.error('Error reading migration files:', _error);
       return [];
     }
   }
@@ -111,8 +111,8 @@ export class MigrationRunner {
       console.warn(`Migration ${version} rolled back (record removed)`);
       console.warn('Note: This only removes the migration record. Manual rollback of schema changes may be required.');
     } catch (_error) {
-      console.error(`Error rolling back migration ${version}:`, error);
-      throw error;
+      console.error(`Error rolling back migration ${version}:`, _error);
+      throw _error;
     }
   }
 
@@ -130,7 +130,7 @@ export class MigrationRunner {
         executedAt: new Date(row.executed_at)
       }));
     } catch (_error) {
-      console.error('Error getting migration status:', error);
+      console.error('Error getting migration status:', _error);
       return [];
     }
   }

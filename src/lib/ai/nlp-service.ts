@@ -544,7 +544,7 @@ export class NLPService {
       const testResult = await this.extractIntentEntities("Bonjour, je voudrais prendre rendez-vous demain matin");
       return testResult.intent === 'book_appointment' && testResult.confidence > 0.5;
     } catch (_error) {
-      console.error('NLP service health check failed:', error);
+      console.error('NLP service health check failed:', _error);
       return false;
     }
   }

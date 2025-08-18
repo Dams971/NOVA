@@ -29,10 +29,10 @@ export class MFAError extends Error {
 
 export class MFAService {
   private static instance: MFAService;
-  private db: DatabaseConnection;
+  private db: typeof db;
 
   private constructor() {
-    this.db = DatabaseConnection.getInstance();
+    this.db = db;
   }
 
   public static getInstance(): MFAService {
@@ -88,26 +88,21 @@ export class MFAService {
       const qrCodeDataUrl = await QRCode.toDataURL(secret.otpauth_url!);
 
       // Store MFA setup in database (not yet enabled)
-      const connection = await this.db.getConnection();
-      
-      try {
-        await connection.execute(`
-          INSERT INTO user_mfa (id, user_id, secret, backup_codes, is_enabled, created_at)
-          VALUES (?, ?, ?, ?, FALSE, CURRENT_TIMESTAMP)
-          ON DUPLICATE KEY UPDATE
-          secret = VALUES(secret),
-          backup_codes = VALUES(backup_codes),
-          is_enabled = FALSE,
-          updated_at = CURRENT_TIMESTAMP
-        `, [
-          uuidv4(),
-          userId,
-          secret.base32,
-          JSON.stringify(backupCodes)
-        ]);
-      } finally {
-        connection.release();
-      }
+      // PostgreSQL uses $1, $2, etc. for parameters
+      await this.db.query(`
+        INSERT INTO user_mfa (id, user_id, secret, backup_codes, is_enabled, created_at)
+        VALUES ($1, $2, $3, $4, FALSE, CURRENT_TIMESTAMP)
+        ON CONFLICT (user_id) DO UPDATE SET
+        secret = EXCLUDED.secret,
+        backup_codes = EXCLUDED.backup_codes,
+        is_enabled = FALSE,
+        updated_at = CURRENT_TIMESTAMP
+      `, [
+        uuidv4(),
+        userId,
+        secret.base32,
+        JSON.stringify(backupCodes)
+      ]);
 
       return {
         secret: secret.base32!,
@@ -116,9 +111,9 @@ export class MFAService {
       };
 
     } catch (_error) {
-      console.error('MFA setup error:', error);
-      if (error instanceof MFAError) {
-        throw error;
+      console.error('MFA setup error:', _error);
+      if (_error instanceof MFAError) {
+        throw _error;
       }
       throw new MFAError('Failed to setup MFA', 'MFA_SETUP_FAILED');
     }
@@ -138,6 +133,10 @@ export class MFAService {
         throw new MFAError('MFA is already enabled', 'MFA_ALREADY_ENABLED');
       }
 
+      if (!mfaData.secret) {
+        throw new MFAError('MFA secret not found', 'MFA_SECRET_NOT_FOUND');
+      }
+
       // Verify the token
       const isValid = speakeasy.totp.verify({
         secret: mfaData.secret,
@@ -151,24 +150,18 @@ export class MFAService {
       }
 
       // Enable MFA
-      const connection = await this.db.getConnection();
-      
-      try {
-        await connection.execute(`
-          UPDATE user_mfa 
-          SET is_enabled = TRUE, enabled_at = CURRENT_TIMESTAMP, updated_at = CURRENT_TIMESTAMP
-          WHERE user_id = ?
-        `, [userId]);
-      } finally {
-        connection.release();
-      }
+      await this.db.query(`
+        UPDATE user_mfa 
+        SET is_enabled = TRUE, enabled_at = CURRENT_TIMESTAMP, updated_at = CURRENT_TIMESTAMP
+        WHERE user_id = $1
+      `, [userId]);
 
       return true;
 
     } catch (_error) {
-      console.error('MFA enable error:', error);
-      if (error instanceof MFAError) {
-        throw error;
+      console.error('MFA enable error:', _error);
+      if (_error instanceof MFAError) {
+        throw _error;
       }
       throw new MFAError('Failed to enable MFA', 'MFA_ENABLE_FAILED');
     }
@@ -182,6 +175,10 @@ export class MFAService {
       const mfaData = await this.getUserMFA(userId);
       if (!mfaData || !mfaData.isEnabled) {
         throw new MFAError('MFA is not enabled for this user', 'MFA_NOT_ENABLED');
+      }
+
+      if (!mfaData.secret) {
+        throw new MFAError('MFA secret not found', 'MFA_SECRET_NOT_FOUND');
       }
 
       // First try TOTP verification
@@ -205,17 +202,11 @@ export class MFAService {
         backupCodes.splice(codeIndex, 1);
         
         // Update backup codes in database
-        const connection = await this.db.getConnection();
-        
-        try {
-          await connection.execute(`
-            UPDATE user_mfa 
-            SET backup_codes = ?, updated_at = CURRENT_TIMESTAMP
-            WHERE user_id = ?
-          `, [JSON.stringify(backupCodes), userId]);
-        } finally {
-          connection.release();
-        }
+        await this.db.query(`
+          UPDATE user_mfa 
+          SET backup_codes = $1, updated_at = CURRENT_TIMESTAMP
+          WHERE user_id = $2
+        `, [JSON.stringify(backupCodes), userId]);
 
         return { isValid: true, usedBackupCode: true };
       }
@@ -223,9 +214,9 @@ export class MFAService {
       return { isValid: false };
 
     } catch (_error) {
-      console.error('MFA verification error:', error);
-      if (error instanceof MFAError) {
-        throw error;
+      console.error('MFA verification error:', _error);
+      if (_error instanceof MFAError) {
+        throw _error;
       }
       throw new MFAError('Failed to verify MFA', 'MFA_VERIFICATION_FAILED');
     }
@@ -242,24 +233,18 @@ export class MFAService {
         throw new MFAError('Invalid MFA token', 'INVALID_MFA_TOKEN');
       }
 
-      const connection = await this.db.getConnection();
-      
-      try {
-        await connection.execute(`
-          UPDATE user_mfa 
-          SET is_enabled = FALSE, disabled_at = CURRENT_TIMESTAMP, updated_at = CURRENT_TIMESTAMP
-          WHERE user_id = ?
-        `, [userId]);
-      } finally {
-        connection.release();
-      }
+      await this.db.query(`
+        UPDATE user_mfa 
+        SET is_enabled = FALSE, disabled_at = CURRENT_TIMESTAMP, updated_at = CURRENT_TIMESTAMP
+        WHERE user_id = $1
+      `, [userId]);
 
       return true;
 
     } catch (_error) {
-      console.error('MFA disable error:', error);
-      if (error instanceof MFAError) {
-        throw error;
+      console.error('MFA disable error:', _error);
+      if (_error instanceof MFAError) {
+        throw _error;
       }
       throw new MFAError('Failed to disable MFA', 'MFA_DISABLE_FAILED');
     }
@@ -277,24 +262,19 @@ export class MFAService {
       }
 
       const newBackupCodes = this.generateBackupCodes();
-      const connection = await this.db.getConnection();
       
-      try {
-        await connection.execute(`
-          UPDATE user_mfa 
-          SET backup_codes = ?, updated_at = CURRENT_TIMESTAMP
-          WHERE user_id = ?
-        `, [JSON.stringify(newBackupCodes), userId]);
-      } finally {
-        connection.release();
-      }
+      await this.db.query(`
+        UPDATE user_mfa 
+        SET backup_codes = $1, updated_at = CURRENT_TIMESTAMP
+        WHERE user_id = $2
+      `, [JSON.stringify(newBackupCodes), userId]);
 
       return newBackupCodes;
 
     } catch (_error) {
-      console.error('Backup codes regeneration error:', error);
-      if (error instanceof MFAError) {
-        throw error;
+      console.error('Backup codes regeneration error:', _error);
+      if (_error instanceof MFAError) {
+        throw _error;
       }
       throw new MFAError('Failed to regenerate backup codes', 'BACKUP_CODES_REGENERATION_FAILED');
     }
@@ -310,30 +290,23 @@ export class MFAService {
     enabledAt?: Date;
     createdAt?: Date;
   } | null> {
-    const connection = await this.db.getConnection();
-    
-    try {
-      const [rows] = await connection.execute(`
-        SELECT is_enabled, secret, backup_codes, enabled_at, created_at
-        FROM user_mfa
-        WHERE user_id = ?
-      `, [userId]);
+    const row = await this.db.queryRow(`
+      SELECT is_enabled, secret, backup_codes, enabled_at, created_at
+      FROM user_mfa
+      WHERE user_id = $1
+    `, [userId]);
 
-      if (!Array.isArray(rows) || rows.length === 0) {
-        return null;
-      }
-
-      const row = rows[0] as any;
-      return {
-        isEnabled: row.is_enabled,
-        secret: row.secret,
-        backupCodes: row.backup_codes,
-        enabledAt: row.enabled_at,
-        createdAt: row.created_at,
-      };
-    } finally {
-      connection.release();
+    if (!row) {
+      return null;
     }
+
+    return {
+      isEnabled: row.is_enabled,
+      secret: row.secret,
+      backupCodes: row.backup_codes,
+      enabledAt: row.enabled_at,
+      createdAt: row.created_at,
+    };
   }
 
   /**

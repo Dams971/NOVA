@@ -6,11 +6,13 @@
  */
 
 import { render as rtlRender, RenderOptions } from '@testing-library/react';
-import React from 'react';
-import { AuthProvider } from '@/contexts/AuthContext';
+import React, { createContext } from 'react';
+import { vi } from 'vitest';
 import { createTestUser } from './setup';
 
-// Mock Auth Context for tests
+// Create mock Auth Context for tests
+const AuthContext = createContext<any>(null);
+
 const MockAuthProvider = ({ 
   children, 
   user = null, 
@@ -32,9 +34,9 @@ const MockAuthProvider = ({
   };
 
   return (
-    <AuthProvider value={mockAuthValue}>
+    <AuthContext.Provider value={mockAuthValue}>
       {children}
-    </AuthProvider>
+    </AuthContext.Provider>
   );
 };
 
@@ -215,15 +217,16 @@ export const createMockWebSocket = () => {
 
 // Mock API fetch helper
 export const setupMockFetch = (responses: Record<string, any>) => {
-  global.fetch = vi.fn((url: string) => {
+  global.fetch = vi.fn((input: RequestInfo | URL) => {
+    const url = typeof input === 'string' ? input : input.toString();
     const response = responses[url] || responses.default;
     return Promise.resolve({
       ok: true,
       status: 200,
       json: () => Promise.resolve(response),
       text: () => Promise.resolve(JSON.stringify(response)),
-    });
-  });
+    } as Response);
+  }) as any;
 };
 
 // Cleanup helper for tests

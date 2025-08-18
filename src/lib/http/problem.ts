@@ -489,5 +489,3 @@ export function handleApiError(error: unknown): NextResponse {
   // Default to internal server error
   return Problems.internalServerError().toResponse();
 }
-
-export type { ProblemDetails };

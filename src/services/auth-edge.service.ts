@@ -99,7 +99,7 @@ export class OTPService {
   generateOTP(): string {
     const buffer = crypto.randomBytes(4);
     const num = buffer.readUInt32BE(0);
-    return (num % 1000000).toString().padStart(this.OTP_LENGTH, '0');
+    return (num % 1000000).toString().padStart(OTPService.OTP_LENGTH, '0');
   }
 
   /**
@@ -122,13 +122,13 @@ export class OTPService {
       // Reset rate limit window
       this.rateLimitStore.set(rateLimitKey, {
         count: 0,
-        resetTime: now + this.RATE_LIMIT_WINDOW
+        resetTime: now + OTPService.RATE_LIMIT_WINDOW
       });
     }
 
     // Generate new OTP
     const code = this.generateOTP();
-    const expires_at = new Date(Date.now() + this.OTP_EXPIRY_MINUTES * 60 * 1000);
+    const expires_at = new Date(Date.now() + OTPService.OTP_EXPIRY_MINUTES * 60 * 1000);
     
     // Store OTP record
     const otpRecord: OTPRecord = {
@@ -188,7 +188,7 @@ export class OTPService {
     }
 
     // Check max attempts
-    if (activeOTP.attempts >= this.MAX_ATTEMPTS) {
+    if (activeOTP.attempts >= OTPService.MAX_ATTEMPTS) {
       return { 
         valid: false, 
         max_attempts_reached: true, 
@@ -206,7 +206,7 @@ export class OTPService {
       activeOTP.verified = true;
       return { valid: true };
     } else {
-      const remainingAttempts = this.MAX_ATTEMPTS - activeOTP.attempts;
+      const remainingAttempts = OTPService.MAX_ATTEMPTS - activeOTP.attempts;
       return { 
         valid: false, 
         remaining_attempts: remainingAttempts,

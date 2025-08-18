@@ -8,7 +8,9 @@
  * - Intégration logging
  */
 
-import { logger } from '@/lib/logging/logger';
+import Logger from '@/lib/logging/logger';
+
+const logger = Logger.getInstance();
 
 // =============================================
 // CODES D'ERREUR STANDARDISÉS
@@ -329,7 +331,7 @@ export function normalizeError(error: unknown, context?: Record<string, any>): R
     }
     
     if (error.message.includes('timeout')) {
-      return new RDVError('TIMEOUT_ERROR', error.message, 408, context);
+      return new SystemError('EXTERNAL_SERVICE_ERROR', error, { ...context, timeout: true });
     }
     
     if (error.message.includes('database') || error.message.includes('connection')) {
@@ -337,11 +339,11 @@ export function normalizeError(error: unknown, context?: Record<string, any>): R
     }
     
     // Erreur générique
-    return new RDVError('SERVER_ERROR', error.message, 500, context);
+    return new SystemError('EXTERNAL_SERVICE_ERROR', error, context);
   }
   
   // Erreur inconnue
-  return new RDVError('SERVER_ERROR', 'Une erreur inconnue s\'est produite', 500, {
+  return new SystemError('EXTERNAL_SERVICE_ERROR', new Error('Une erreur inconnue s\'est produite'), {
     ...context,
     originalError: String(error)
   });
@@ -397,7 +399,7 @@ export function withErrorHandling<T extends any[], R>(
     try {
       return await fn(...args);
     } catch (_error) {
-      throw normalizeError(error, { context, args: args.slice(0, 2) }); // Limiter les args loggés
+      throw normalizeError(_error, { context, args: args.slice(0, 2) }); // Limiter les args loggés
     }
   };
 }

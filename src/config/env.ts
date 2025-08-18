@@ -12,14 +12,18 @@ const EnvSchema = z.object({
   JWT_EXPIRES_IN: z.string().default('15m'),
   REFRESH_EXPIRES_IN: z.string().default('7d'),
   
-  // Database
+  // Database (Optional when using Supabase)
   DATABASE_URL: z.string().url('Invalid database URL').optional(),
   DB_HOST: z.string().default('localhost'),
   DB_PORT: z.coerce.number().default(5432),
   DB_USER: z.string().default('nova_user'),
-  DB_PASSWORD: z.string().min(1, 'Database password is required'),
+  DB_PASSWORD: z.string().optional(), // Optional when using Supabase
   DB_NAME: z.string().default('nova_db'),
   DB_SSL: z.string().default('false'),
+  
+  // Supabase Configuration
+  NEXT_PUBLIC_SUPABASE_URL: z.string().url('Invalid Supabase URL').optional(),
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().optional(),
   
   // Redis (for rate limiting, caching, real-time features)
   REDIS_URL: z.string().url('Invalid Redis URL').default('redis://localhost:6379'),
@@ -108,8 +112,12 @@ export const validateEnvForProduction = () => {
     errors.push('JWT_REFRESH_SECRET must be a strong, unique secret in production');
   }
   
-  if (env.DB_PASSWORD === 'password' || env.DB_PASSWORD.length < 12) {
-    errors.push('DB_PASSWORD must be strong and unique in production');
+  // Check if using Supabase or traditional database
+  if (!env.NEXT_PUBLIC_SUPABASE_URL && !env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    // Only validate DB_PASSWORD if not using Supabase
+    if (!env.DB_PASSWORD || env.DB_PASSWORD === 'password' || env.DB_PASSWORD.length < 12) {
+      errors.push('DB_PASSWORD must be strong and unique in production (or use Supabase)');
+    }
   }
   
   if (env.NEXT_PUBLIC_APP_URL.includes('localhost')) {

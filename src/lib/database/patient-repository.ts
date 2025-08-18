@@ -1,36 +1,33 @@
-import { RowDataPacket, ResultSetHeader } from 'mysql2';
 import { v4 as uuidv4 } from 'uuid';
 import { Patient, CreatePatientRequest, UpdatePatientRequest, PatientFilters, MedicalRecord } from '../models/patient';
-import { getPool } from './config';
+import { db } from './postgresql-connection';
 
 export class PatientRepository {
-  private pool = getPool();
 
   // Create a new patient
   async createPatient(data: CreatePatientRequest): Promise<Patient> {
-    const connection = await this.pool.getConnection();
+    const client = await db.beginTransaction();
     
     try {
-      await connection.beginTransaction();
       
       const patientId = uuidv4();
       const userId = uuidv4();
       
       // Create user record
-      await connection.execute(
+      await client.query(
         `INSERT INTO users (id, email, password_hash, first_name, last_name, phone, role, is_active, email_verified)
-         VALUES (?, ?, ?, ?, ?, ?, 'patient', TRUE, FALSE)`,
+         VALUES ($1, $2, $3, $4, $5, $6, 'patient', TRUE, FALSE)`,
         [userId, data.email, 'temp_hash', data.firstName, data.lastName, data.phone || null]
       );
       
       // Create patient record
-      await connection.execute(
+      await client.query(
         `INSERT INTO patients (
           id, user_id, cabinet_id, date_of_birth, gender,
           address_street, address_city, address_postal_code, address_country,
           emergency_contact_name, emergency_contact_phone, emergency_contact_relationship,
           preferences, is_active
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, TRUE)`,
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, TRUE)`,
         [
           patientId,
           userId,
@@ -48,21 +45,23 @@ export class PatientRepository {
         ]
       );
       
-      await connection.commit();
+      await db.commitTransaction(client);
       
       // Return the created patient
-      return await this.getPatientById(patientId);
+      const createdPatient = await this.getPatientById(patientId);
+      if (!createdPatient) {
+        throw new Error('Failed to retrieve created patient');
+      }
+      return createdPatient;
     } catch (_error) {
-      await connection.rollback();
-      throw error;
-    } finally {
-      connection.release();
+      await db.rollbackTransaction(client);
+      throw _error;
     }
   }
 
   // Get patient by ID
   async getPatientById(id: string): Promise<Patient | null> {
-    const [rows] = await this.pool.execute(
+    const row = await db.queryRow(
       `SELECT 
         p.id, p.date_of_birth, p.gender, p.total_visits, p.last_visit_date,
         p.address_street, p.address_city, p.address_postal_code, p.address_country,
@@ -71,14 +70,11 @@ export class PatientRepository {
         u.first_name, u.last_name, u.email, u.phone
        FROM patients p
        JOIN users u ON p.user_id = u.id
-       WHERE p.id = ?`,
+       WHERE p.id = $1`,
       [id]
     );
 
-    const patientRows = rows as RowDataPacket[];
-    if (patientRows.length === 0) return null;
-
-    const row = patientRows[0];
+    if (!row) return null;
     return this.mapRowToPatient(row);
   }
 
@@ -88,57 +84,58 @@ export class PatientRepository {
     const params: any[] = [];
 
     if (filters.cabinetId) {
-      whereClause += ' AND p.cabinet_id = ?';
+      whereClause += ` AND p.cabinet_id = $${params.length + 1}`;
       params.push(filters.cabinetId);
     }
 
     if (filters.search) {
-      whereClause += ' AND (u.first_name LIKE ? OR u.last_name LIKE ? OR u.email LIKE ?)';
+      whereClause += ` AND (u.first_name LIKE $${params.length + 1} OR u.last_name LIKE $${params.length + 2} OR u.email LIKE $${params.length + 3})`;
       const searchTerm = `%${filters.search}%`;
       params.push(searchTerm, searchTerm, searchTerm);
     }
 
     if (filters.isActive !== undefined) {
-      whereClause += ' AND p.is_active = ?';
+      whereClause += ` AND p.is_active = $${params.length + 1}`;
       params.push(filters.isActive);
     }
 
     if (filters.ageMin || filters.ageMax) {
       if (filters.ageMin) {
-        whereClause += ' AND TIMESTAMPDIFF(YEAR, p.date_of_birth, CURDATE()) >= ?';
+        whereClause += ` AND EXTRACT(YEAR FROM AGE(p.date_of_birth)) >= $${params.length + 1}`;
         params.push(filters.ageMin);
       }
       if (filters.ageMax) {
-        whereClause += ' AND TIMESTAMPDIFF(YEAR, p.date_of_birth, CURDATE()) <= ?';
+        whereClause += ` AND EXTRACT(YEAR FROM AGE(p.date_of_birth)) <= $${params.length + 1}`;
         params.push(filters.ageMax);
       }
     }
 
     if (filters.lastVisitFrom) {
-      whereClause += ' AND p.last_visit_date >= ?';
+      whereClause += ` AND p.last_visit_date >= $${params.length + 1}`;
       params.push(filters.lastVisitFrom);
     }
 
     if (filters.lastVisitTo) {
-      whereClause += ' AND p.last_visit_date <= ?';
+      whereClause += ` AND p.last_visit_date <= $${params.length + 1}`;
       params.push(filters.lastVisitTo);
     }
 
     // Count total
-    const [countRows] = await this.pool.execute(
+    const countRow = await db.queryRow(
       `SELECT COUNT(*) as total
        FROM patients p
        JOIN users u ON p.user_id = u.id
        ${whereClause}`,
       params
     );
-    const total = (countRows as RowDataPacket[])[0].total;
+    const total = parseInt(countRow?.total || '0');
 
     // Get patients
     const limit = filters.limit || 20;
     const offset = filters.offset || 0;
     
-    const [rows] = await this.pool.execute(
+    params.push(limit, offset);
+    const rows = await db.queryRows(
       `SELECT 
         p.id, p.date_of_birth, p.gender, p.total_visits, p.last_visit_date,
         p.address_street, p.address_city, p.address_postal_code, p.address_country,
@@ -149,11 +146,11 @@ export class PatientRepository {
        JOIN users u ON p.user_id = u.id
        ${whereClause}
        ORDER BY u.last_name, u.first_name
-       LIMIT ? OFFSET ?`,
-      [...params, limit, offset]
+       LIMIT $${params.length - 1} OFFSET $${params.length}`,
+      params
     );
 
-    const patients = (rows as RowDataPacket[]).map(row => this.mapRowToPatient(row));
+    const patients = rows.map(row => this.mapRowToPatient(row));
     const hasMore = offset + limit < total;
 
     return { patients, total, hasMore };
@@ -161,10 +158,9 @@ export class PatientRepository {
 
   // Update patient
   async updatePatient(id: string, data: UpdatePatientRequest): Promise<Patient | null> {
-    const connection = await this.pool.getConnection();
+    const client = await db.beginTransaction();
     
     try {
-      await connection.beginTransaction();
       
       // Update user data
       const userFields: string[] = [];
@@ -188,11 +184,12 @@ export class PatientRepository {
       }
       
       if (userFields.length > 0) {
-        await connection.execute(
+        const setClause = userFields.map((_, i) => `${userFields[i].split(' = ')[0]} = $${i + 1}`).join(', ');
+        await client.query(
           `UPDATE users u 
-           JOIN patients p ON u.id = p.user_id 
-           SET ${userFields.join(', ')} 
-           WHERE p.id = ?`,
+           SET ${setClause} 
+           FROM patients p 
+           WHERE u.id = p.user_id AND p.id = $${userParams.length + 1}`,
           [...userParams, id]
         );
       }
@@ -223,31 +220,30 @@ export class PatientRepository {
       }
       
       if (patientFields.length > 0) {
-        await connection.execute(
-          `UPDATE patients SET ${patientFields.join(', ')} WHERE id = ?`,
+        const setClause = patientFields.map((_, i) => `${patientFields[i].split(' = ')[0]} = $${i + 1}`).join(', ');
+        await client.query(
+          `UPDATE patients SET ${setClause} WHERE id = $${patientParams.length + 1}`,
           [...patientParams, id]
         );
       }
       
-      await connection.commit();
+      await db.commitTransaction(client);
       
       return await this.getPatientById(id);
     } catch (_error) {
-      await connection.rollback();
-      throw error;
-    } finally {
-      connection.release();
+      await db.rollbackTransaction(client);
+      throw _error;
     }
   }
 
   // Soft delete patient
   async deletePatient(id: string): Promise<boolean> {
-    const [result] = await this.pool.execute(
-      'UPDATE patients SET is_active = FALSE WHERE id = ?',
+    const result = await db.query(
+      'UPDATE patients SET is_active = FALSE WHERE id = $1',
       [id]
     );
     
-    return (result as ResultSetHeader).affectedRows > 0;
+    return result.rowCount > 0;
   }
 
   // Check if email exists in cabinet
@@ -256,21 +252,21 @@ export class PatientRepository {
       SELECT COUNT(*) as count
       FROM patients p
       JOIN users u ON p.user_id = u.id
-      WHERE u.email = ? AND p.cabinet_id = ? AND p.is_active = TRUE
+      WHERE u.email = $1 AND p.cabinet_id = $2 AND p.is_active = TRUE
     `;
     const params = [email, cabinetId];
     
     if (excludePatientId) {
-      query += ' AND p.id != ?';
+      query += ` AND p.id != $${params.length + 1}`;
       params.push(excludePatientId);
     }
     
-    const [rows] = await this.pool.execute(query, params);
-    return (rows as RowDataPacket[])[0].count > 0;
+    const row = await db.queryRow(query, params);
+    return parseInt(row?.count || '0') > 0;
   }
 
   // Map database row to Patient object
-  private mapRowToPatient(row: RowDataPacket): Patient {
+  private mapRowToPatient(row: any): Patient {
     return {
       id: row.id,
       firstName: row.first_name,
@@ -294,7 +290,7 @@ export class PatientRepository {
       preferences: JSON.parse(row.preferences || '{}'),
       medicalHistory: [], // Will be loaded separately
       totalVisits: row.total_visits,
-      lastVisitDate: row.last_visit_date ? new Date(row.last_visit_date) : undefined,
+      lastVisit: row.last_visit_date ? new Date(row.last_visit_date) : undefined,
       isActive: row.is_active,
       createdAt: new Date(row.created_at),
       updatedAt: new Date(row.updated_at)

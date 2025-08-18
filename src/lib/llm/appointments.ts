@@ -17,7 +17,7 @@ const tools = [
     name: "rdv_json",
     description: "Produire un JSON strict pour gérer les rendez-vous sans texte libre.",
     input_schema: {
-      type: "object",
+      type: "object" as const,
       properties: {
         action: {
           type: "string",
@@ -197,12 +197,12 @@ export class AppointmentAssistant {
       // Extraire le JSON depuis le bloc tool_use
       const toolUse = msg.content.find((c: any) => c.type === "tool_use" && c.name === "rdv_json");
       
-      if (!toolUse || !toolUse.input) {
+      if (!toolUse || !('input' in toolUse)) {
         throw new Error("Réponse sans JSON tool_use valide");
       }
       
       // Valider que l'adresse et le fuseau sont corrects
-      const response = toolUse.input as AppointmentResponse;
+      const response = (toolUse as any).input as AppointmentResponse;
       
       if (response.clinic_address !== "Cité 109, Daboussy El Achour, Alger") {
         throw new Error("Adresse du cabinet incorrecte");
@@ -215,7 +215,7 @@ export class AppointmentAssistant {
       return response;
       
     } catch (_error) {
-      console.error("Erreur dans processAppointment:", error);
+      console.error("Erreur dans processAppointment:", _error);
       
       // Retourner une erreur structurée
       return {

@@ -245,7 +245,6 @@ export default function ComparativeAnalyticsDashboard({
 
   useEffect(() => {
     fetchComparativeData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cabinets, dateRange]);
 
   useEffect(() => {

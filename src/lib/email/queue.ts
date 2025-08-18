@@ -46,7 +46,7 @@ export class EmailQueue extends EventEmitter {
   private initializeTransporter(): void {
     // In development, use Mailhog or console logging
     if (env.NODE_ENV === 'development') {
-      this.transporter = nodemailer.createTransporter({
+      this.transporter = nodemailer.createTransport({
         host: env.SMTP_HOST,
         port: env.SMTP_PORT,
         secure: false,
@@ -54,7 +54,7 @@ export class EmailQueue extends EventEmitter {
       });
     } else {
       // Production configuration
-      this.transporter = nodemailer.createTransporter({
+      this.transporter = nodemailer.createTransport({
         host: env.SMTP_HOST,
         port: env.SMTP_PORT,
         secure: env.SMTP_SECURE,
@@ -124,7 +124,7 @@ export class EmailQueue extends EventEmitter {
 
       await this.sendEmail(job);
     } catch (_error) {
-      console.error('Queue processing error:', error);
+      console.error('Queue processing error:', _error);
     } finally {
       this.processing = false;
     }
@@ -165,10 +165,10 @@ export class EmailQueue extends EventEmitter {
         const delay = Math.pow(2, job.attempts) * 1000;
         job.scheduledFor = new Date(Date.now() + delay);
         this.queue.push(job);
-        this.emit('job:retry', { job, error });
+        this.emit('job:retry', { job, error: _error });
       } else {
-        this.emit('job:failed', { job, error });
-        console.error('Email failed after max attempts:', error);
+        this.emit('job:failed', { job, error: _error });
+        console.error('Email failed after max attempts:', _error);
       }
     }
   }

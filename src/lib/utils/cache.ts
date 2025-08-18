@@ -13,7 +13,7 @@ export interface CacheOptions {
 
 // In-memory cache implementation
 export class MemoryCache<T> {
-  private cache = new Map<string, CacheEntry<T>>();
+  protected cache = new Map<string, CacheEntry<T>>();
   private defaultTTL: number;
   private maxSize: number;
 
@@ -26,7 +26,9 @@ export class MemoryCache<T> {
     // Remove oldest entries if cache is full
     if (this.cache.size >= this.maxSize) {
       const oldestKey = this.cache.keys().next().value;
-      this.cache.delete(oldestKey);
+      if (oldestKey !== undefined) {
+        this.cache.delete(oldestKey);
+      }
     }
 
     const entry: CacheEntry<T> = {

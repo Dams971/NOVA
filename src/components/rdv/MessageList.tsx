@@ -72,7 +72,7 @@ export default function MessageList({
                   <div className="mt-3 p-3 bg-white rounded-lg border border-green-300">
                     <div className="flex items-center space-x-2 text-green-700 text-xs font-medium">
                       <Calendar className="w-4 h-4" aria-hidden="true" />
-                      <span>ID Patient: {message.appointmentData.patientId.slice(-8).toUpperCase()}</span>
+                      <span>ID Patient: {(message.appointmentData.patientId as string)?.slice(-8).toUpperCase()}</span>
                     </div>
                   </div>
                 )}

@@ -76,7 +76,7 @@ const DialogTrigger = forwardRef<HTMLButtonElement, DialogTriggerProps>(
     }, [onClick, onOpenChange]);
 
     if (asChild && React.isValidElement(children)) {
-      return React.cloneElement(children, {
+      return React.cloneElement(children as React.ReactElement<any>, {
         ...props,
         onClick: handleClick,
         'aria-haspopup': 'dialog',
@@ -366,21 +366,33 @@ interface DialogTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
 const DialogTitle = forwardRef<HTMLHeadingElement, DialogTitleProps>(
   ({ className, children, level = 2, ...props }, ref) => {
     const { id } = useDialogContext();
-    const HeadingTag = `h${level}` as keyof JSX.IntrinsicElements;
+    
+    const headingProps = {
+      ref,
+      id: `${id}-title`,
+      className: cn(
+        'text-xl font-semibold text-foreground',
+        className
+      ),
+      ...props,
+      children
+    };
 
-    return (
-      <HeadingTag
-        ref={ref as React.Ref<HTMLHeadingElement>}
-        id={`${id}-title`}
-        className={cn(
-          'text-xl font-semibold text-foreground',
-          className
-        )}
-        {...props}
-      >
-        {children}
-      </HeadingTag>
-    );
+    switch (level) {
+      case 1:
+        return <h1 {...headingProps} />;
+      case 3:
+        return <h3 {...headingProps} />;
+      case 4:
+        return <h4 {...headingProps} />;
+      case 5:
+        return <h5 {...headingProps} />;
+      case 6:
+        return <h6 {...headingProps} />;
+      case 2:
+      default:
+        return <h2 {...headingProps} />;
+    }
   }
 );
 
@@ -503,7 +515,7 @@ const DialogClose = forwardRef<HTMLButtonElement, DialogCloseProps>(
     }, [onClick, onOpenChange]);
 
     if (asChild && React.isValidElement(children)) {
-      return React.cloneElement(children, {
+      return React.cloneElement(children as React.ReactElement<any>, {
         ...props,
         onClick: handleClick,
         ref

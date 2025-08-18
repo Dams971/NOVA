@@ -68,7 +68,7 @@ class HealthMonitor {
         this.checkAPIResponseTime()
       ]);
     } catch (_error) {
-      this.logger.error('Error running health checks', error);
+      this.logger.error('Error running health checks', _error);
     }
   }
 

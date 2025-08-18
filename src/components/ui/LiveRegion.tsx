@@ -23,7 +23,7 @@ export default function LiveRegion({
   clearOnUnmount = true,
   clearDelay = 0
 }: LiveRegionProps) {
-  const timeoutRef = useRef<NodeJS.Timeout>();
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     // Clear any existing timeout

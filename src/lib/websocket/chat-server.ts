@@ -43,7 +43,19 @@ const ChatMessageSchema = z.object({
         metadata: z.any().optional()
       })).default([]),
       state: z.enum(['active', 'waiting_for_input', 'completed', 'escalated']).default('active'),
-      currentIntent: z.string().optional(),
+      currentIntent: z.enum([
+        'greeting',
+        'check_availability',
+        'book_appointment', 
+        'reschedule_appointment',
+        'cancel_appointment',
+        'list_practitioners',
+        'clinic_info',
+        'emergency',
+        'help',
+        'goodbye',
+        'fallback'
+      ]).optional(),
       collectedSlots: z.record(z.any()).default({}),
       confirmationPending: z.boolean().optional()
     })
@@ -224,9 +236,9 @@ export class ChatWebSocketServer {
       }
 
     } catch (_error) {
-      console.error(`💥 Error handling message from ${sessionId}:`, error);
+      console.error(`💥 Error handling message from ${sessionId}:`, _error);
       
-      if (error instanceof z.ZodError) {
+      if (_error instanceof z.ZodError) {
         this.sendError(sessionId, 'Invalid message format');
       } else {
         this.sendError(sessionId, 'Internal server error');
@@ -249,8 +261,8 @@ export class ChatWebSocketServer {
         return;
       }
 
-      client.userId = authData.userId;
-      client.tenantId = authData.tenantId;
+      client.userId = String(authData.userId);
+      client.tenantId = String(authData.tenantId);
       client.authenticated = true;
 
       console.warn(`✅ Client authenticated - SessionID: ${sessionId}, UserID: ${authData.userId}, TenantID: ${authData.tenantId}`);
@@ -266,7 +278,7 @@ export class ChatWebSocketServer {
       });
 
     } catch (_error) {
-      console.error('Authentication error:', error);
+      console.error('Authentication error:', _error);
       this.sendError(sessionId, 'Authentication failed');
     }
   }
@@ -299,7 +311,12 @@ export class ChatWebSocketServer {
           messages: validatedChat.context.conversation.messages.map(msg => ({
             ...msg,
             timestamp: new Date(msg.timestamp)
-          }))
+          })),
+          collectedSlots: {
+            timezone: validatedChat.context.tenant.timezone || 'Europe/Paris',
+            urgency: 'routine' as const,
+            ...validatedChat.context.conversation.collectedSlots
+          }
         }
       };
 
@@ -349,7 +366,7 @@ export class ChatWebSocketServer {
       this.logInteraction(sessionId, validatedChat.message, response);
 
     } catch (_error) {
-      console.error('Chat message error:', error);
+      console.error('Chat message error:', _error);
       
       // Hide typing indicator
       this.sendMessage(sessionId, {
@@ -399,7 +416,7 @@ export class ChatWebSocketServer {
     try {
       client.ws.send(JSON.stringify(message));
     } catch (_error) {
-      console.error(`Failed to send message to ${sessionId}:`, error);
+      console.error(`Failed to send message to ${sessionId}:`, _error);
       this.clients.delete(sessionId);
     }
   }
@@ -426,7 +443,7 @@ export class ChatWebSocketServer {
           try {
             client.ws.ping();
           } catch (_error) {
-            console.warn(`Failed to ping client ${sessionId}:`, error);
+            console.warn(`Failed to ping client ${sessionId}:`, _error);
             this.clients.delete(sessionId);
           }
         } else {
@@ -450,7 +467,7 @@ export class ChatWebSocketServer {
           try {
             client.ws.close(1000, 'Connection timeout');
           } catch (_error) {
-            console.warn(`Error closing connection ${sessionId}:`, error);
+            console.warn(`Error closing connection ${sessionId}:`, _error);
           }
           this.clients.delete(sessionId);
         }

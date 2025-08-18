@@ -70,7 +70,7 @@ class MetricsCollector {
       this.recordMetric('system.uptime', process.uptime());
 
     } catch (_error) {
-      this.logger.error('Failed to collect system metrics', error);
+      this.logger.error('Failed to collect system metrics', _error);
     }
   }
 
@@ -172,7 +172,7 @@ class MetricsCollector {
 
   // Business metrics
   public recordAPIRequest(method: string, path: string, duration: number, status: number, cabinetId?: string): void {
-    const tags = { method, path, status: status.toString() };
+    const tags: any = { method, path, status: status.toString() };
     if (cabinetId) tags.cabinetId = cabinetId;
 
     this.recordMetric('api.request.count', 1, tags);
@@ -195,7 +195,7 @@ class MetricsCollector {
   }
 
   public recordAuthEvent(event: string, success: boolean, userId?: string): void {
-    const tags = { event, success: success.toString() };
+    const tags: any = { event, success: success.toString() };
     if (userId) tags.userId = userId;
 
     this.recordMetric(`auth.${event}.count`, 1, tags);

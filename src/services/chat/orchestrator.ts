@@ -141,7 +141,7 @@ export class ChatOrchestrator {
 
       // 3. Confidence check
       if (nluResult.confidence < this.CONFIDENCE_THRESHOLD) {
-        return await this.handleLowConfidence(message, context, nluResult);
+        return await this.handleLowConfidence(message, context, nluResult as any);
       }
 
       // 4. Update conversation context
@@ -151,7 +151,7 @@ export class ChatOrchestrator {
         timestamp: new Date()
       });
 
-      context.conversation.currentIntent = nluResult.intent;
+      context.conversation.currentIntent = nluResult.intent as any;
 
       // 5. Merge new slots with existing ones
       context.conversation.collectedSlots = {
@@ -160,7 +160,7 @@ export class ChatOrchestrator {
       };
 
       // 6. Route to intent handler
-      const response = await this.routeIntent(nluResult, context);
+      const response = await this.routeIntent(nluResult as any, context);
 
       // 7. Add response to conversation history
       context.conversation.messages.push({
@@ -173,10 +173,10 @@ export class ChatOrchestrator {
       return response;
 
     } catch (_error) {
-      console.error('Chat orchestration error:', error);
+      console.error('Chat orchestration error:', _error);
       
       // Log error for monitoring
-      await this.logError(context, error);
+      await this.logError(context, _error);
 
       return {
         message: "Désolé, je rencontre un problème technique. Un conseiller va vous aider.",
@@ -194,7 +194,10 @@ export class ChatOrchestrator {
     // Check required slots and permissions for each intent
     const validation = await this.validateIntentAndSlots(intent, slots, context);
     if (!validation.valid) {
-      return validation.response;
+      return validation.response || {
+        message: "Une erreur s'est produite. Veuillez réessayer ou contacter notre équipe.",
+        escalate: true
+      };
     }
 
     switch (intent) {
@@ -328,7 +331,7 @@ export class ChatOrchestrator {
       };
 
     } catch (_error) {
-      console.error('Availability check error:', error);
+      console.error('Availability check error:', _error);
       return {
         message: "Je ne peux pas vérifier les disponibilités actuellement. Un conseiller va vous aider.",
         escalate: true
@@ -389,9 +392,9 @@ export class ChatOrchestrator {
       };
 
     } catch (_error) {
-      console.error('Appointment booking error:', error);
+      console.error('Appointment booking error:', _error);
 
-      if (error.message?.includes('conflict')) {
+      if (_error instanceof Error && _error.message?.includes('conflict')) {
         return {
           message: "Ce créneau n'est plus disponible. Voulez-vous choisir un autre horaire ?",
           requiresInput: true,
@@ -463,7 +466,7 @@ export class ChatOrchestrator {
       };
 
     } catch (_error) {
-      console.error('Appointment reschedule error:', error);
+      console.error('Appointment reschedule error:', _error);
       return {
         message: "Je ne peux pas reporter votre rendez-vous. Un conseiller va vous aider.",
         escalate: true
@@ -508,7 +511,7 @@ export class ChatOrchestrator {
       };
 
     } catch (_error) {
-      console.error('Appointment cancellation error:', error);
+      console.error('Appointment cancellation error:', _error);
       return {
         message: "Je ne peux pas annuler votre rendez-vous. Un conseiller va vous aider.",
         escalate: true
@@ -520,7 +523,8 @@ export class ChatOrchestrator {
     try {
       const practitioners = await this.cabinetTools.getPractitioners({
         tenantId: context.tenant.id,
-        specialty: slots.serviceType
+        specialty: slots.serviceType,
+        isActive: true
       });
 
       if (practitioners.length === 0) {
@@ -542,7 +546,7 @@ export class ChatOrchestrator {
       };
 
     } catch (_error) {
-      console.error('Practitioners list error:', error);
+      console.error('Practitioners list error:', _error);
       return {
         message: "Je ne peux pas afficher la liste des praticiens. Un conseiller va vous aider.",
         escalate: true

@@ -4,12 +4,12 @@
  */
 
 import { memoryDb } from './memory-db';
-import { DatabaseConnection } from './postgresql-connection';
+import { PostgreSQLManager } from './postgresql-connection';
 
 export class UnifiedDatabase {
   private static instance: UnifiedDatabase;
   private useInMemory: boolean = true; // Default to in-memory for now
-  private pgConnection: DatabaseConnection | null = null;
+  private pgConnection: PostgreSQLManager | null = null;
   
   private constructor() {
     this.initializeConnection();
@@ -26,7 +26,7 @@ export class UnifiedDatabase {
     // Try PostgreSQL first
     try {
       if (process.env.DB_HOST && process.env.DB_NAME) {
-        this.pgConnection = DatabaseConnection.getInstance();
+        this.pgConnection = PostgreSQLManager.getInstance();
         const isConnected = await this.pgConnection.testConnection();
         if (isConnected) {
           this.useInMemory = false;
@@ -320,6 +320,17 @@ export class UnifiedDatabase {
       'SELECT * FROM services WHERE cabinet_id = $1 AND is_active = true ORDER BY name',
       [cabinetId]
     );
+  }
+  
+  // Raw query execution (for complex queries not covered by specific methods)
+  async query(text: string, params?: any[]): Promise<any> {
+    if (this.useInMemory) {
+      // For in-memory database, we don't support raw queries
+      // You should use the specific methods instead
+      throw new Error('Raw queries not supported in in-memory mode. Use specific methods instead.');
+    }
+    
+    return await this.pgConnection!.query(text, params);
   }
   
   // Statistics

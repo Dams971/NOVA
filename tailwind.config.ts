@@ -6,7 +6,7 @@ const config: Config = {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
-  darkMode: ['class'],
+  darkMode: 'class',
   theme: {
     extend: {
       // ==================== DESIGN TOKENS INTEGRATION ====================
@@ -477,7 +477,7 @@ const config: Config = {
     require('@tailwindcss/container-queries'),
     require('@tailwindcss/forms'),
     // Custom plugin for accessibility and medical utilities
-    function({ addUtilities, theme }) {
+    function({ addUtilities, theme }: any) {
       const newUtilities = {
         '.touch-target': {
           minHeight: theme('minHeight.touch'),

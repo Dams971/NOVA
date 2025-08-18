@@ -9,7 +9,9 @@ import {
   MetricType,
   TimeGranularity,
   ExportOptions,
-  ReportTemplate
+  ReportTemplate,
+  BenchmarkData,
+  AnomalyDetection
 } from '../models/analytics';
 
 export interface AnalyticsServiceResult<T> {
@@ -50,10 +52,10 @@ export class AnalyticsService {
         data: data.data
       };
     } catch (_error) {
-      console.error('Error fetching cabinet analytics:', error);
+      console.error('Error fetching cabinet analytics:', _error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error occurred'
+        error: _error instanceof Error ? _error.message : 'Unknown error occurred'
       };
     }
   }
@@ -81,10 +83,10 @@ export class AnalyticsService {
         data: data.data
       };
     } catch (_error) {
-      console.error('Error fetching performance metrics:', error);
+      console.error('Error fetching performance metrics:', _error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error occurred'
+        error: _error instanceof Error ? _error.message : 'Unknown error occurred'
       };
     }
   }
@@ -119,10 +121,10 @@ export class AnalyticsService {
         data: blob
       };
     } catch (_error) {
-      console.error('Error exporting report:', error);
+      console.error('Error exporting report:', _error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error occurred'
+        error: _error instanceof Error ? _error.message : 'Unknown error occurred'
       };
     }
   }
@@ -141,10 +143,10 @@ export class AnalyticsService {
         data: data.data
       };
     } catch (_error) {
-      console.error('Error fetching report templates:', error);
+      console.error('Error fetching report templates:', _error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error occurred'
+        error: _error instanceof Error ? _error.message : 'Unknown error occurred'
       };
     }
   }
@@ -285,10 +287,10 @@ export class AnalyticsService {
         data: data.data
       };
     } catch (_error) {
-      console.error('Error fetching comparative analytics:', error);
+      console.error('Error fetching comparative analytics:', _error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error occurred'
+        error: _error instanceof Error ? _error.message : 'Unknown error occurred'
       };
     }
   }
@@ -316,10 +318,10 @@ export class AnalyticsService {
         data: data.data
       };
     } catch (_error) {
-      console.error('Error fetching benchmark data:', error);
+      console.error('Error fetching benchmark data:', _error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error occurred'
+        error: _error instanceof Error ? _error.message : 'Unknown error occurred'
       };
     }
   }
@@ -349,10 +351,10 @@ export class AnalyticsService {
         data: data.data
       };
     } catch (_error) {
-      console.error('Error detecting anomalies:', error);
+      console.error('Error detecting anomalies:', _error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error occurred'
+        error: _error instanceof Error ? _error.message : 'Unknown error occurred'
       };
     }
   }

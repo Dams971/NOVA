@@ -1,6 +1,6 @@
-import { Connection } from 'mysql2/promise';
 import { v4 as uuidv4 } from 'uuid';
-import DatabaseManager from '../database/connection';
+import { db } from '../database/postgresql-connection';
+import { PoolClient } from 'pg';
 import { Appointment, AppointmentStatus, CreateAppointmentRequest } from '../models/appointment';
 
 export interface ConflictCheckResult {
@@ -18,7 +18,7 @@ export interface BookingResult {
   success: boolean;
   appointment?: Appointment;
   error?: string;
-  conflicts?: ConflictCheckResult['conflicts'];
+  conflicts?: any[];
 }
 
 /**
@@ -26,32 +26,35 @@ export interface BookingResult {
  * Implements race-condition protection for double-booking prevention
  */
 export class AppointmentRepository {
-  private dbManager: DatabaseManager;
-
   constructor() {
-    this.dbManager = DatabaseManager.getInstance();
   }
 
   /**
    * Create appointment with race-condition protection
-   * Uses database-level locking and conflict detection
+   * Uses row-level locking to prevent double-booking
    */
   async createAppointmentSafe(
     tenantId: string,
     data: CreateAppointmentRequest,
     userId: string
   ): Promise<BookingResult> {
-    const connection = await this.dbManager.getCabinetConnection(tenantId);
-    
     try {
-      return await connection.transaction(async (tx) => {
+      return await db.transaction(async (tx: PoolClient) => {
+        // Validate required fields
+        if (!data.practitionerId) {
+          return {
+            success: false,
+            error: 'Practitioner ID is required'
+          };
+        }
+
         // 1. Lock practitioner to prevent concurrent bookings
-        await tx.execute(
-          'SELECT id FROM practitioners WHERE id = ? FOR UPDATE',
+        await tx.query(
+          'SELECT id FROM practitioners WHERE id = $1 FOR UPDATE',
           [data.practitionerId]
         );
 
-        // 2. Check for conflicts with existing appointments
+        // 2. Check for conflicts with row-level locking
         const conflictResult = await this.checkConflictsInTransaction(
           tx,
           data.practitionerId,
@@ -85,11 +88,11 @@ export class AppointmentRepository {
         };
       });
     } catch (_error) {
-      console.error('Appointment creation error:', error);
+      console.error('Appointment creation error:', _error);
       
-      if (error instanceof Error) {
-        // Handle specific MySQL errors
-        if (error.message.includes('Duplicate entry')) {
+      if (_error instanceof Error) {
+        // Handle specific database errors
+        if (_error.message.includes('duplicate key')) {
           return {
             success: false,
             error: 'Appointment slot conflict detected'
@@ -107,36 +110,39 @@ export class AppointmentRepository {
   /**
    * Reschedule appointment with conflict checking
    */
-  async rescheduleAppointmentSafe(
+  async rescheduleAppointment(
     tenantId: string,
     appointmentId: string,
     newStartUtc: Date,
     newEndUtc: Date,
     userId: string
   ): Promise<BookingResult> {
-    const connection = await this.dbManager.getCabinetConnection(tenantId);
-    
-    try {
-      return await connection.transaction(async (tx) => {
-        // 1. Get current appointment and lock practitioner
-        const [appointmentRows] = await tx.execute(`
-          SELECT a.*, p.id as practitioner_id
-          FROM appointments a
-          JOIN practitioners p ON a.practitioner_id = p.id
-          WHERE a.id = ?
+    return await db.transaction(async (tx: PoolClient) => {
+      try {
+        // 1. Lock and get current appointment
+        const appointmentResult = await tx.query(`
+          SELECT * FROM appointments 
+          WHERE id = $1 
           FOR UPDATE
         `, [appointmentId]);
 
-        if (!Array.isArray(appointmentRows) || appointmentRows.length === 0) {
+        const currentAppointment = appointmentResult.rows[0];
+        
+        if (!currentAppointment) {
           return {
             success: false,
             error: 'Appointment not found'
           };
         }
 
-        const currentAppointment = appointmentRows[0] as any;
+        if (currentAppointment.status === 'completed' || currentAppointment.status === 'no_show') {
+          return {
+            success: false,
+            error: 'Cannot reschedule completed appointments'
+          };
+        }
 
-        // 2. Check for conflicts (excluding current appointment)
+        // 2. Check conflicts for new time slot
         const conflictResult = await this.checkConflictsInTransaction(
           tx,
           currentAppointment.practitioner_id,
@@ -154,27 +160,27 @@ export class AppointmentRepository {
         }
 
         // 3. Update appointment
-        await tx.execute(`
+        await tx.query(`
           UPDATE appointments 
           SET 
-            start_utc = ?, 
-            end_utc = ?, 
-            scheduled_at = CONVERT_TZ(?, 'UTC', timezone),
-            duration_minutes = TIMESTAMPDIFF(MINUTE, ?, ?),
-            updated_by = ?,
-            updated_at = CURRENT_TIMESTAMP
-          WHERE id = ?
+            start_utc = $1,
+            end_utc = $2,
+            scheduled_at = $3 AT TIME ZONE $4,
+            duration_minutes = $5,
+            updated_at = CURRENT_TIMESTAMP,
+            updated_by = $6
+          WHERE id = $7
         `, [
           newStartUtc,
           newEndUtc,
           newStartUtc,
-          newStartUtc,
-          newEndUtc,
+          currentAppointment.timezone || 'UTC',
+          Math.floor((newEndUtc.getTime() - newStartUtc.getTime()) / (1000 * 60)),
           userId,
           appointmentId
         ]);
 
-        // 4. Cancel old reminders and schedule new ones
+        // 4. Reschedule reminders
         await this.rescheduleReminders(tx, appointmentId, newStartUtc);
 
         // 5. Fetch updated appointment
@@ -184,32 +190,32 @@ export class AppointmentRepository {
           success: true,
           appointment: updatedAppointment || undefined
         };
-      });
-    } catch (_error) {
-      console.error('Appointment reschedule error:', error);
-      return {
-        success: false,
-        error: 'Failed to reschedule appointment'
-      };
-    }
+      } catch (_error) {
+        console.error('Appointment reschedule error:', _error);
+        return {
+          success: false,
+          error: 'Failed to reschedule appointment'
+        };
+      }
+    });
   }
 
   /**
-   * Check for appointment conflicts within a transaction
+   * Check for appointment conflicts (internal transaction version)
    */
   private async checkConflictsInTransaction(
-    tx: Connection,
+    tx: PoolClient,
     practitionerId: string,
     startUtc: Date,
     endUtc: Date,
     excludeAppointmentId?: string
   ): Promise<ConflictCheckResult> {
-    const excludeClause = excludeAppointmentId ? 'AND id != ?' : '';
+    const excludeClause = excludeAppointmentId ? 'AND id != $4' : '';
     const params = excludeAppointmentId 
       ? [practitionerId, startUtc, endUtc, excludeAppointmentId]
       : [practitionerId, startUtc, endUtc];
 
-    const [rows] = await tx.execute(`
+    const result = await tx.query(`
       SELECT 
         id, 
         start_utc, 
@@ -217,20 +223,20 @@ export class AppointmentRepository {
         patient_id, 
         status
       FROM appointments
-      WHERE practitioner_id = ? 
+      WHERE practitioner_id = $1 
         AND status NOT IN ('cancelled', 'no_show')
-        AND NOT (end_utc <= ? OR start_utc >= ?)
+        AND NOT (end_utc <= $2 OR start_utc >= $3)
         ${excludeClause}
     `, params);
 
-    const conflicts = Array.isArray(rows) ? rows : [];
+    const conflicts = result.rows || [];
 
     return {
       hasConflict: conflicts.length > 0,
       conflicts: conflicts.map((row: any) => ({
         id: row.id,
-        start_utc: row.start_utc,
-        end_utc: row.end_utc,
+        start_utc: row.start_utc.toISOString(),
+        end_utc: row.end_utc.toISOString(),
         patient_id: row.patient_id,
         status: row.status
       }))
@@ -238,10 +244,10 @@ export class AppointmentRepository {
   }
 
   /**
-   * Insert appointment within transaction
+   * Insert appointment (internal transaction version)
    */
   private async insertAppointmentInTransaction(
-    tx: Connection,
+    tx: PoolClient,
     appointmentId: string,
     data: CreateAppointmentRequest,
     userId: string
@@ -250,51 +256,43 @@ export class AppointmentRepository {
       (data.endUtc.getTime() - data.startUtc.getTime()) / (1000 * 60)
     );
 
-    await tx.execute(`
+    await tx.query(`
       INSERT INTO appointments (
         id, patient_id, practitioner_id, service_type, 
         scheduled_at, start_utc, end_utc, timezone,
         duration_minutes, status, notes, 
         created_by, created_at
-      ) VALUES (?, ?, ?, ?, 
-        CONVERT_TZ(?, 'UTC', ?), ?, ?, ?,
-        ?, 'scheduled', ?, 
-        ?, CURRENT_TIMESTAMP)
+      ) VALUES ($1, $2, $3, $4, 
+        $5 AT TIME ZONE $6, $7, $8, $9,
+        $10, 'scheduled', $11, 
+        $12, CURRENT_TIMESTAMP)
     `, [
       appointmentId,
       data.patientId,
       data.practitionerId,
       data.serviceType,
       data.startUtc,
-      data.timezone || 'Europe/Paris',
+      data.timezone || 'UTC',
       data.startUtc,
       data.endUtc,
-      data.timezone || 'Europe/Paris',
+      data.timezone || 'UTC',
       durationMinutes,
       data.notes || null,
       userId
     ]);
 
-    // Return the created appointment
-    const [rows] = await tx.execute(`
-      SELECT 
-        a.*,
-        CONVERT_TZ(a.start_utc, 'UTC', a.timezone) as local_start,
-        CONVERT_TZ(a.end_utc, 'UTC', a.timezone) as local_end
-      FROM appointments a
-      WHERE a.id = ?
+    const result = await tx.query(`
+      SELECT * FROM appointments WHERE id = $1
     `, [appointmentId]);
 
-    const appointmentRow = (rows as any[])[0];
-    
-    return this.mapRowToAppointment(appointmentRow);
+    return this.mapRowToAppointment(result.rows[0]);
   }
 
   /**
-   * Schedule automatic reminders for appointment
+   * Schedule appointment reminders (internal transaction version)
    */
   private async scheduleReminders(
-    tx: Connection,
+    tx: PoolClient,
     appointmentId: string,
     startUtc: Date
   ): Promise<void> {
@@ -305,37 +303,37 @@ export class AppointmentRepository {
     ];
 
     for (const reminder of reminderTimes) {
-      const reminderTime = new Date(startUtc.getTime() - (reminder.hours * 60 * 60 * 1000));
+      const sendAt = new Date(startUtc.getTime() - (reminder.hours * 60 * 60 * 1000));
       
-      // Only schedule future reminders
-      if (reminderTime > new Date()) {
-        await tx.execute(`
+      if (sendAt > new Date()) {
+        await tx.query(`
           INSERT INTO appointment_reminders (
-            id, appointment_id, reminder_type, scheduled_for, status
-          ) VALUES (?, ?, ?, ?, 'pending')
+            id, appointment_id, reminder_type, 
+            send_at, status, created_at
+          ) VALUES ($1, $2, $3, $4, 'pending', CURRENT_TIMESTAMP)
         `, [
           uuidv4(),
           appointmentId,
           reminder.type,
-          reminderTime
+          sendAt
         ]);
       }
     }
   }
 
   /**
-   * Reschedule reminders for appointment
+   * Reschedule appointment reminders (internal transaction version)
    */
   private async rescheduleReminders(
-    tx: Connection,
+    tx: PoolClient,
     appointmentId: string,
     newStartUtc: Date
   ): Promise<void> {
     // Cancel existing pending reminders
-    await tx.execute(`
+    await tx.query(`
       UPDATE appointment_reminders 
       SET status = 'cancelled' 
-      WHERE appointment_id = ? AND status = 'pending'
+      WHERE appointment_id = $1 AND status = 'pending'
     `, [appointmentId]);
 
     // Schedule new reminders
@@ -346,56 +344,81 @@ export class AppointmentRepository {
    * Get appointment by ID
    */
   async getAppointmentById(tenantId: string, appointmentId: string): Promise<Appointment | null> {
-    const connection = await this.dbManager.getCabinetConnection(tenantId);
-    
     try {
-      const [rows] = await connection.execute(`
+      const result = await db.query(`
         SELECT 
-          a.*,
-          CONVERT_TZ(a.start_utc, 'UTC', a.timezone) as local_start,
-          CONVERT_TZ(a.end_utc, 'UTC', a.timezone) as local_end,
+          a.*, 
           p.first_name as patient_first_name,
           p.last_name as patient_last_name,
           pr.first_name as practitioner_first_name,
           pr.last_name as practitioner_last_name
         FROM appointments a
-        LEFT JOIN patients p ON a.patient_id = p.id
-        LEFT JOIN practitioners pr ON a.practitioner_id = pr.id
-        WHERE a.id = ?
+        LEFT JOIN patients pat ON a.patient_id = pat.id
+        LEFT JOIN users p ON pat.user_id = p.id
+        LEFT JOIN practitioners prac ON a.practitioner_id = prac.id
+        LEFT JOIN users pr ON prac.user_id = pr.id
+        WHERE a.id = $1
       `, [appointmentId]);
 
-      if (!Array.isArray(rows) || rows.length === 0) {
+      if (result.rows.length === 0) {
         return null;
       }
 
-      return this.mapRowToAppointment(rows[0] as any);
-    } finally {
-      connection.release();
+      return this.mapRowToAppointment(result.rows[0]);
+    } catch (_error) {
+      console.error('Get appointment error:', _error);
+      return null;
     }
   }
 
   /**
-   * Check availability for a time slot
+   * Check appointment conflicts (public version)
    */
-  async checkAvailability(
+  async checkConflicts(
     tenantId: string,
     practitionerId: string,
     startUtc: Date,
     endUtc: Date,
     excludeAppointmentId?: string
   ): Promise<ConflictCheckResult> {
-    const connection = await this.dbManager.getCabinetConnection(tenantId);
+    const excludeClause = excludeAppointmentId ? 'AND id != $4' : '';
+    const params = excludeAppointmentId 
+      ? [practitionerId, startUtc, endUtc, excludeAppointmentId]
+      : [practitionerId, startUtc, endUtc];
     
     try {
-      return await this.checkConflictsInTransaction(
-        connection,
-        practitionerId,
-        startUtc,
-        endUtc,
-        excludeAppointmentId
-      );
-    } finally {
-      connection.release();
+      const result = await db.query(`
+        SELECT 
+          id, 
+          start_utc, 
+          end_utc, 
+          patient_id, 
+          status
+        FROM appointments
+        WHERE practitioner_id = $1 
+          AND status NOT IN ('cancelled', 'no_show')
+          AND NOT (end_utc <= $2 OR start_utc >= $3)
+          ${excludeClause}
+      `, params);
+
+      const conflicts = result.rows || [];
+
+      return {
+        hasConflict: conflicts.length > 0,
+        conflicts: conflicts.map((row: any) => ({
+          id: row.id,
+          start_utc: row.start_utc.toISOString(),
+          end_utc: row.end_utc.toISOString(),
+          patient_id: row.patient_id,
+          status: row.status
+        }))
+      };
+    } catch (_error) {
+      console.error('Check conflicts error:', _error);
+      return {
+        hasConflict: false,
+        conflicts: []
+      };
     }
   }
 
@@ -408,64 +431,27 @@ export class AppointmentRepository {
     startDate: Date,
     endDate: Date
   ): Promise<Appointment[]> {
-    const connection = await this.dbManager.getCabinetConnection(tenantId);
-    
     try {
-      const [rows] = await connection.execute(`
+      const result = await db.query(`
         SELECT 
           a.*,
-          CONVERT_TZ(a.start_utc, 'UTC', a.timezone) as local_start,
-          CONVERT_TZ(a.end_utc, 'UTC', a.timezone) as local_end,
           p.first_name as patient_first_name,
           p.last_name as patient_last_name
         FROM appointments a
-        LEFT JOIN patients p ON a.patient_id = p.id
-        WHERE a.practitioner_id = ?
-          AND a.start_utc >= ?
-          AND a.start_utc < ?
-          AND a.status NOT IN ('cancelled', 'no_show')
-        ORDER BY a.start_utc
+        LEFT JOIN patients pat ON a.patient_id = pat.id
+        LEFT JOIN users p ON pat.user_id = p.id
+        WHERE a.practitioner_id = $1
+          AND a.scheduled_at >= $2
+          AND a.scheduled_at < $3
+          AND a.status NOT IN ('cancelled')
+        ORDER BY a.scheduled_at ASC
       `, [practitionerId, startDate, endDate]);
 
-      if (!Array.isArray(rows)) {
-        return [];
-      }
-
-      return rows.map(row => this.mapRowToAppointment(row as any));
-    } finally {
-      connection.release();
+      return result.rows.map((row: any) => this.mapRowToAppointment(row));
+    } catch (_error) {
+      console.error('Get practitioner schedule error:', _error);
+      return [];
     }
-  }
-
-  /**
-   * Map database row to Appointment object
-   */
-  private mapRowToAppointment(row: any): Appointment {
-    return {
-      id: row.id,
-      patientId: row.patient_id,
-      practitionerId: row.practitioner_id,
-      serviceType: row.service_type,
-      scheduledAt: row.scheduled_at,
-      duration: row.duration_minutes,
-      status: row.status as AppointmentStatus,
-      notes: row.notes,
-      createdAt: row.created_at,
-      updatedAt: row.updated_at,
-      // Additional fields from joins
-      patientName: row.patient_first_name && row.patient_last_name 
-        ? `${row.patient_first_name} ${row.patient_last_name}` 
-        : undefined,
-      practitionerName: row.practitioner_first_name && row.practitioner_last_name
-        ? `${row.practitioner_first_name} ${row.practitioner_last_name}`
-        : undefined,
-      // UTC and local times
-      startUtc: row.start_utc,
-      endUtc: row.end_utc,
-      timezone: row.timezone,
-      localStart: row.local_start,
-      localEnd: row.local_end
-    };
   }
 
   /**
@@ -476,40 +462,100 @@ export class AppointmentRepository {
     appointmentId: string,
     reason: string,
     userId: string
-  ): Promise<boolean> {
-    const connection = await this.dbManager.getCabinetConnection(tenantId);
-    
-    try {
-      return await connection.transaction(async (tx) => {
-        // Update appointment status
-        const [result] = await tx.execute(`
+  ): Promise<BookingResult> {
+    return await db.transaction(async (tx: PoolClient) => {
+      try {
+        // 1. Check if appointment exists and can be cancelled
+        const appointmentResult = await tx.query(`
+          SELECT * FROM appointments 
+          WHERE id = $1 
+          FOR UPDATE
+        `, [appointmentId]);
+
+        const appointment = appointmentResult.rows[0];
+        
+        if (!appointment) {
+          return {
+            success: false,
+            error: 'Appointment not found'
+          };
+        }
+
+        if (appointment.status === 'completed' || appointment.status === 'cancelled') {
+          return {
+            success: false,
+            error: `Cannot cancel ${appointment.status} appointment`
+          };
+        }
+
+        // 2. Update appointment status
+        await tx.query(`
           UPDATE appointments 
           SET 
             status = 'cancelled',
-            notes = CONCAT(IFNULL(notes, ''), '\nCancellation reason: ', ?),
-            updated_by = ?,
-            updated_at = CURRENT_TIMESTAMP
-          WHERE id = ? AND status NOT IN ('completed', 'cancelled')
+            cancellation_reason = $1,
+            cancelled_at = CURRENT_TIMESTAMP,
+            cancelled_by = $2,
+            updated_at = CURRENT_TIMESTAMP,
+            updated_by = $2
+          WHERE id = $3
         `, [reason, userId, appointmentId]);
 
-        const updateResult = result as any;
-        
-        if (updateResult.affectedRows === 0) {
-          return false;
-        }
-
-        // Cancel pending reminders
-        await tx.execute(`
+        // 3. Cancel pending reminders
+        await tx.query(`
           UPDATE appointment_reminders 
           SET status = 'cancelled' 
-          WHERE appointment_id = ? AND status = 'pending'
+          WHERE appointment_id = $1 AND status = 'pending'
         `, [appointmentId]);
 
-        return true;
-      });
-    } catch (_error) {
-      console.error('Appointment cancellation error:', error);
-      return false;
-    }
+        // 4. Fetch updated appointment
+        const updatedAppointment = await this.getAppointmentById(tenantId, appointmentId);
+        
+        return {
+          success: true,
+          appointment: updatedAppointment || undefined
+        };
+      } catch (_error) {
+        console.error('Appointment cancellation error:', _error);
+        return {
+          success: false,
+          error: 'Failed to cancel appointment'
+        };
+      }
+    });
+  }
+
+  /**
+   * Map database row to Appointment model
+   */
+  private mapRowToAppointment(row: any): Appointment {
+    return {
+      id: row.id,
+      patientId: row.patient_id,
+      practitionerId: row.practitioner_id,
+      serviceType: row.service_type,
+      scheduledAt: row.scheduled_at,
+      startUtc: row.start_utc,
+      endUtc: row.end_utc,
+      timezone: row.timezone,
+      durationMinutes: row.duration_minutes,
+      status: row.status,
+      notes: row.notes,
+      patientName: row.patient_first_name && row.patient_last_name 
+        ? `${row.patient_first_name} ${row.patient_last_name}` 
+        : undefined,
+      practitionerName: row.practitioner_first_name && row.practitioner_last_name
+        ? `${row.practitioner_first_name} ${row.practitioner_last_name}`
+        : undefined,
+      createdAt: row.created_at,
+      updatedAt: row.updated_at,
+      createdBy: row.created_by,
+      updatedBy: row.updated_by,
+      cancellationReason: row.cancellation_reason,
+      cancelledAt: row.cancelled_at,
+      cancelledBy: row.cancelled_by
+    };
   }
 }
+
+export default AppointmentRepository;

@@ -10,7 +10,9 @@
 import { motion } from 'framer-motion';
 import { AlertTriangle, RefreshCw, MessageCircle, Phone } from 'lucide-react';
 import React, { Component, ReactNode } from 'react';
-import { logger } from '@/lib/logging/logger';
+import Logger from '@/lib/logging/logger';
+
+const logger = Logger.getInstance();
 
 interface Props {
   children: ReactNode;

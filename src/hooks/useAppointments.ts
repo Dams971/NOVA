@@ -121,10 +121,11 @@ export function useAppointments(options: UseAppointmentsOptions = {}) {
   const [lastFetch, setLastFetch] = useState<Date | null>(null);
   
   const { autoRefresh = false, refreshInterval = 30000 } = options;
-  const refreshTimer = useRef<NodeJS.Timeout>();
+  const refreshTimer = useRef<NodeJS.Timeout | null>(null);
 
   // WebSocket pour mises à jour temps réel
-  const { lastMessage } = useWebSocket({ autoConnect: true });
+  const { messages } = useWebSocket({ autoConnect: true });
+  const lastMessage = messages[messages.length - 1];
 
   /**
    * Récupère la liste des rendez-vous
@@ -359,9 +360,9 @@ export function useAppointments(options: UseAppointmentsOptions = {}) {
 
   // WebSocket updates
   useEffect(() => {
-    if (lastMessage) {
+    if (lastMessage && lastMessage.message) {
       try {
-        const message = JSON.parse(lastMessage);
+        const message = JSON.parse(lastMessage.message);
         if (message.type === 'appointment_updated' || message.type === 'appointment_created') {
           fetchAppointments();
         }

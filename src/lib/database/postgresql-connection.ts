@@ -26,7 +26,7 @@ export class PostgreSQLManager {
   private constructor() {
     this.config = {
       host: env.DB_HOST || 'localhost',
-      port: parseInt(env.DB_PORT || '5432'),
+      port: parseInt(String(env.DB_PORT || '5432')),
       user: env.DB_USER || 'nova_user',
       password: env.DB_PASSWORD || 'nova_password',
       database: env.DB_NAME || 'nova_db',
@@ -149,7 +149,7 @@ export class PostgreSQLManager {
       return result;
     } catch (_error) {
       await this.rollbackTransaction(client);
-      throw error;
+      throw _error;
     }
   }
 
@@ -161,7 +161,7 @@ export class PostgreSQLManager {
       const result = await this.query('SELECT 1 as test');
       return result.rows[0]?.test === 1;
     } catch (_error) {
-      console.error('PostgreSQL connection test failed:', error);
+      console.error('PostgreSQL connection test failed:', _error);
       return false;
     }
   }
@@ -187,7 +187,7 @@ export class PostgreSQLManager {
         await pool.end();
         console.warn(`Closed PostgreSQL pool: ${key}`);
       } catch (_error) {
-        console.error(`Error closing PostgreSQL pool ${key}:`, error);
+        console.error(`Error closing PostgreSQL pool ${key}:`, _error);
       }
     });
 

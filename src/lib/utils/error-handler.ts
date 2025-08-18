@@ -39,9 +39,9 @@ export const getErrorMessage = (error: unknown): string => {
   }
   
   try {
-    return JSON.stringify(_error);
+    return JSON.stringify(error);
   } catch {
-    return String(_error);
+    return String(error);
   }
 };
 
@@ -78,9 +78,9 @@ export const isDatabaseError = (error: unknown): error is {
   constraint?: string;
 } => {
   return (
-    isErrorWithMessage(_error) &&
+    isErrorWithMessage(error) &&
     (
-      isErrorWithCode(_error) ||
+      isErrorWithCode(error) ||
       'constraint' in (error as Record<string, unknown>)
     )
   );
@@ -90,7 +90,7 @@ export const isDatabaseError = (error: unknown): error is {
  * Safely extracts error code from unknown error types
  */
 export const getErrorCode = (error: unknown): string | undefined => {
-  if (isErrorWithCode(_error)) {
+  if (isErrorWithCode(error)) {
     return error.code;
   }
   
@@ -119,8 +119,8 @@ export const createErrorResponse = (
   return {
     success: false,
     message,
-    error: error ? getErrorMessage(_error) : undefined,
-    code: code || getErrorCode(_error),
+    error: error ? getErrorMessage(error) : undefined,
+    code: code || getErrorCode(error),
     context,
   };
 };
@@ -152,7 +152,7 @@ export const createAppError = (
  * Checks if error message contains specific patterns
  */
 export const errorContains = (error: unknown, patterns: string[]): boolean => {
-  const message = getErrorMessage(_error).toLowerCase();
+  const message = getErrorMessage(error).toLowerCase();
   return patterns.some(pattern => message.includes(pattern.toLowerCase()));
 };
 
@@ -160,40 +160,40 @@ export const errorContains = (error: unknown, patterns: string[]): boolean => {
  * Database-specific error handling
  */
 export const handleDatabaseError = (error: unknown): ErrorResponse => {
-  const message = getErrorMessage(_error);
+  const message = getErrorMessage(error);
   
   // Check for common database constraint violations
-  if (errorContains(_error, ['unique', 'duplicate', 'already exists'])) {
+  if (errorContains(error, ['unique', 'duplicate', 'already exists'])) {
     return createErrorResponse(
-      'This record already exists', _error,
+      'This record already exists', error,
       'DUPLICATE_RECORD'
     );
   }
   
-  if (errorContains(_error, ['foreign key', 'constraint', 'violates'])) {
+  if (errorContains(error, ['foreign key', 'constraint', 'violates'])) {
     return createErrorResponse(
-      'Related record not found', _error,
+      'Related record not found', error,
       'CONSTRAINT_VIOLATION'
     );
   }
   
-  if (errorContains(_error, ['overlapping', 'conflict'])) {
+  if (errorContains(error, ['overlapping', 'conflict'])) {
     return createErrorResponse(
-      'Schedule conflict detected', _error,
+      'Schedule conflict detected', error,
       'SCHEDULE_CONFLICT'
     );
   }
   
-  if (errorContains(_error, ['timeout', 'connection'])) {
+  if (errorContains(error, ['timeout', 'connection'])) {
     return createErrorResponse(
-      'Database connection timeout', _error,
+      'Database connection timeout', error,
       'DATABASE_TIMEOUT'
     );
   }
   
   // Generic database error
   return createErrorResponse(
-    'Database operation failed', _error,
+    'Database operation failed', error,
     'DATABASE_ERROR'
   );
 };
@@ -202,39 +202,39 @@ export const handleDatabaseError = (error: unknown): ErrorResponse => {
  * Authentication-specific error handling
  */
 export const handleAuthError = (error: unknown): ErrorResponse => {
-  const message = getErrorMessage(_error);
+  const message = getErrorMessage(error);
   
-  if (errorContains(_error, ['invalid email', 'email format'])) {
+  if (errorContains(error, ['invalid email', 'email format'])) {
     return createErrorResponse(
-      'Invalid email format', _error,
+      'Invalid email format', error,
       'INVALID_EMAIL'
     );
   }
   
-  if (errorContains(_error, ['rate limit', 'too many'])) {
+  if (errorContains(error, ['rate limit', 'too many'])) {
     return createErrorResponse(
-      'Too many requests. Please try again later.', _error,
+      'Too many requests. Please try again later.', error,
       'RATE_LIMIT_EXCEEDED'
     );
   }
   
-  if (errorContains(_error, ['user not found', 'not exist'])) {
+  if (errorContains(error, ['user not found', 'not exist'])) {
     return createErrorResponse(
-      'User not found', _error,
+      'User not found', error,
       'USER_NOT_FOUND'
     );
   }
   
-  if (errorContains(_error, ['unauthorized', 'permission denied'])) {
+  if (errorContains(error, ['unauthorized', 'permission denied'])) {
     return createErrorResponse(
-      'Unauthorized access', _error,
+      'Unauthorized access', error,
       'UNAUTHORIZED'
     );
   }
   
   // Generic auth error
   return createErrorResponse(
-    'Authentication failed', _error,
+    'Authentication failed', error,
     'AUTH_ERROR'
   );
 };
@@ -243,32 +243,32 @@ export const handleAuthError = (error: unknown): ErrorResponse => {
  * Validation-specific error handling
  */
 export const handleValidationError = (error: unknown): ErrorResponse => {
-  const message = getErrorMessage(_error);
+  const message = getErrorMessage(error);
   
-  if (errorContains(_error, ['required', 'missing'])) {
+  if (errorContains(error, ['required', 'missing'])) {
     return createErrorResponse(
-      'Required fields are missing', _error,
+      'Required fields are missing', error,
       'MISSING_REQUIRED_FIELDS'
     );
   }
   
-  if (errorContains(_error, ['invalid format', 'format'])) {
+  if (errorContains(error, ['invalid format', 'format'])) {
     return createErrorResponse(
-      'Invalid data format', _error,
+      'Invalid data format', error,
       'INVALID_FORMAT'
     );
   }
   
-  if (errorContains(_error, ['phone', 'telephone'])) {
+  if (errorContains(error, ['phone', 'telephone'])) {
     return createErrorResponse(
-      'Invalid phone number format', _error,
+      'Invalid phone number format', error,
       'INVALID_PHONE'
     );
   }
   
   // Generic validation error
   return createErrorResponse(
-    'Validation failed', _error,
+    'Validation failed', error,
     'VALIDATION_ERROR'
   );
 };
@@ -277,34 +277,34 @@ export const handleValidationError = (error: unknown): ErrorResponse => {
  * Comprehensive error handler that categorizes errors and provides appropriate responses
  */
 export const handleError = (error: unknown, context?: string): ErrorResponse => {
-  const message = getErrorMessage(_error);
+  const message = getErrorMessage(error);
   
   // Database errors
-  if (isDatabaseError(_error) || errorContains(_error, ['database', 'sql', 'constraint'])) {
-    return handleDatabaseError(_error);
+  if (isDatabaseError(error) || errorContains(error, ['database', 'sql', 'constraint'])) {
+    return handleDatabaseError(error);
   }
   
   // Authentication errors
-  if (errorContains(_error, ['auth', 'login', 'token', 'session'])) {
-    return handleAuthError(_error);
+  if (errorContains(error, ['auth', 'login', 'token', 'session'])) {
+    return handleAuthError(error);
   }
   
   // Validation errors
-  if (errorContains(_error, ['validation', 'invalid', 'required', 'format'])) {
-    return handleValidationError(_error);
+  if (errorContains(error, ['validation', 'invalid', 'required', 'format'])) {
+    return handleValidationError(error);
   }
   
   // Network errors
-  if (errorContains(_error, ['network', 'fetch', 'connection', 'timeout'])) {
+  if (errorContains(error, ['network', 'fetch', 'connection', 'timeout'])) {
     return createErrorResponse(
-      'Network connection error', _error,
+      'Network connection error', error,
       'NETWORK_ERROR'
     );
   }
   
   // Generic error
   return createErrorResponse(
-    'An unexpected error occurred', _error,
+    'An unexpected error occurred', error,
     'INTERNAL_ERROR',
     context ? { context } : undefined
   );
@@ -318,9 +318,9 @@ export const logError = (
   context?: string,
   additional?: Record<string, unknown>
 ): void => {
-  const errorInfo = {
-    message: getErrorMessage(_error),
-    code: getErrorCode(_error),
+  const errorInfo: Record<string, unknown> = {
+    message: getErrorMessage(error),
+    code: getErrorCode(error),
     context,
     timestamp: new Date().toISOString(),
     ...additional,

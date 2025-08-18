@@ -177,7 +177,7 @@ export class EmailExtractorV3 {
     // Standard email pattern with enhanced validation
     standard: /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g,
     // Emails in quotes or parentheses
-    quoted: /["'([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,})["')]/g,
+    quoted: /["'\(]([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,})["'\)]/g,
     // Labeled email patterns
     labeled: /(?:email|mail|e-mail)\s*[:=]\s*([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,})/gi
   };
@@ -407,7 +407,7 @@ export class DialogManagerV3 {
         };
       }
     } catch (_error) {
-      console.error('Auth status check failed:', error);
+      console.error('Auth status check failed:', _error);
       return {
         hasAccount: false,
         shouldSignIn: false,
@@ -430,7 +430,7 @@ export class DialogManagerV3 {
       if (result.otp_sent) {
         state.authState.authMethod = 'email_otp';
         state.authState.lastOTPSent = new Date();
-        state.conversationStage = 'sign_in';
+        state.conversationStage = 'info_collection';
         
         return { success: true, otpSent: true };
       } else {
@@ -555,7 +555,18 @@ export class DialogManagerV3 {
     state: DialogStateV3
   ): Promise<{ success: boolean; error?: string }> {
     try {
-      const result = await this.emailService.sendAppointmentSummary(email, appointmentData);
+      // Convert appointment data to the expected format
+      const emailData = {
+        patient_name: appointmentData.patient_name || '',
+        appointment_date: appointmentData.start_iso ? new Date(appointmentData.start_iso).toLocaleDateString('fr-FR') : '',
+        appointment_time: appointmentData.start_iso ? new Date(appointmentData.start_iso).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) : '',
+        care_type: appointmentData.reason,
+        practitioner: undefined,
+        conversation_summary: undefined,
+        cancellation_link: undefined
+      };
+      
+      const result = await this.emailService.sendAppointmentSummary(email, emailData);
       
       if (result.success) {
         state.emailState.summaryRequested = true;
@@ -672,8 +683,11 @@ export class DialogManagerV3 {
     // Extract information from current message
     const extracted = this.extractInformation(message, state);
     
-    // Handle OTP verification in sign-in stage
-    if (state.conversationStage === 'sign_in' && message.match(/^\d{6}$/)) {
+    // Handle OTP verification during authentication
+    if (state.conversationStage === 'info_collection' && 
+        state.authState.authMethod === 'email_otp' && 
+        state.authState.lastOTPSent && 
+        message.match(/^\d{6}$/)) {
       if (!state.extractedInfo.confirmedEmail) {
         return {
           response: {
@@ -773,7 +787,7 @@ export class DialogManagerV3 {
           };
         }
       } else if (authStatus.shouldSignUp) {
-        state.conversationStage = "sign_up";
+        state.conversationStage = "info_collection";
         return {
           response: {
             action: "SIGN_UP",
@@ -819,7 +833,7 @@ export class DialogManagerV3 {
     // If all info collected and no validation errors
     if (missingFields.length === 0 && validationErrors.length === 0) {
       // Create account if needed (sign up flow)
-      if (state.conversationStage === 'sign_up') {
+      if (state.conversationStage === 'info_collection' && state.authState.authMethod === 'email_otp' && !state.authState.isAuthenticated) {
         const accountResult = await this.createPatientAccount(
           state.extractedInfo.confirmedName!,
           state.extractedInfo.confirmedEmail!,

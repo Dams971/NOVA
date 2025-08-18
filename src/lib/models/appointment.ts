@@ -23,19 +23,30 @@ export enum ServiceType {
 
 export interface Appointment {
   id: string;
-  cabinetId: string;
+  cabinetId?: string;
   patientId: string;
   practitionerId?: string;
   serviceType: ServiceType;
-  title: string;
+  title?: string;
   description?: string;
   scheduledAt: Date;
-  duration: number; // in minutes
+  startUtc?: Date;
+  endUtc?: Date;
+  timezone?: string;
+  duration?: number; // in minutes
+  durationMinutes?: number;
   status: AppointmentStatus;
   notes?: string;
   price?: number;
-  createdAt: Date;
-  updatedAt: Date;
+  patientName?: string;
+  practitionerName?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  createdBy?: string;
+  updatedBy?: string;
+  cancellationReason?: string;
+  cancelledAt?: Date;
+  cancelledBy?: string;
 }
 
 export interface CreateAppointmentRequest {
@@ -46,6 +57,9 @@ export interface CreateAppointmentRequest {
   title: string;
   description?: string;
   scheduledAt: Date;
+  startUtc: Date;
+  endUtc: Date;
+  timezone?: string;
   duration?: number;
   notes?: string;
   price?: number;

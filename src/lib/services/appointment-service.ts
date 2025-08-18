@@ -4,6 +4,7 @@ import {
   UpdateAppointmentRequest,
   AppointmentFilters,
   AppointmentStatus,
+  ServiceType,
   createAppointment
 } from '@/lib/models/appointment';
 import { Patient } from '@/lib/models/patient';
@@ -110,7 +111,7 @@ export class AppointmentService {
         cabinetId: 'cabinet-1',
         patientId: 'patient-1',
         practitionerId: 'practitioner-1',
-        serviceType: 'consultation',
+        serviceType: ServiceType.CONSULTATION,
         title: 'Consultation - Marie Dubois',
         scheduledAt: new Date(now.getTime() + 24 * 60 * 60 * 1000), // Tomorrow
         duration: 30,
@@ -123,7 +124,7 @@ export class AppointmentService {
         cabinetId: 'cabinet-1',
         patientId: 'patient-2',
         practitionerId: 'practitioner-1',
-        serviceType: 'cleaning',
+        serviceType: ServiceType.CLEANING,
         title: 'Nettoyage - Jean Martin',
         scheduledAt: new Date(now.getTime() + 2 * 24 * 60 * 60 * 1000), // Day after tomorrow
         duration: 45,
@@ -208,8 +209,9 @@ export class AppointmentService {
       const result = await this.getAppointments(sanitizedFilters);
 
       if (result.success && result.data) {
-        // Additional filtering for non-admin users
-        const filteredAppointments = this.accessControl.filterAppointmentsByCabinet(userContext, result.data);
+        // Filter out appointments without cabinetId and then apply access control
+        const appointmentsWithCabinet = result.data.filter(apt => apt.cabinetId !== undefined) as Array<Appointment & { cabinetId: string }>;
+        const filteredAppointments = this.accessControl.filterAppointmentsByCabinet(userContext, appointmentsWithCabinet);
         return { success: true, data: filteredAppointments };
       }
 
@@ -312,18 +314,21 @@ export class AppointmentService {
       // If updating time, check availability
       if (data.scheduledAt || data.duration) {
         const newScheduledAt = data.scheduledAt || appointment.scheduledAt;
-        const newDuration = data.duration || appointment.duration;
+        const newDuration = data.duration || appointment.duration || appointment.durationMinutes || 30;
 
-        const conflictCheck = await this.checkTimeSlotAvailability(
-          appointment.cabinetId,
-          newScheduledAt,
-          newDuration,
-          data.practitionerId || appointment.practitionerId,
-          id // Exclude current appointment from conflict check
-        );
+        // Skip availability check if cabinetId is not defined
+        if (appointment.cabinetId) {
+          const conflictCheck = await this.checkTimeSlotAvailability(
+            appointment.cabinetId,
+            newScheduledAt,
+            newDuration,
+            data.practitionerId || appointment.practitionerId,
+            id // Exclude current appointment from conflict check
+          );
 
-        if (!conflictCheck.success || !conflictCheck.data) {
-          return { success: false, error: 'Time slot not available' };
+          if (!conflictCheck.success || !conflictCheck.data) {
+            return { success: false, error: 'Time slot not available' };
+          }
         }
       }
 
@@ -355,6 +360,10 @@ export class AppointmentService {
       }
 
       // Validate update permission for the appointment's cabinet
+      if (!appointment.cabinetId) {
+        return { success: false, error: 'Appointment cabinet not defined' };
+      }
+      
       const validation = this.accessControl.validateAppointmentOperation(userContext, appointment.cabinetId, 'update');
       if (!validation.allowed) {
         this.accessControl.logAccess(userContext, 'appointments', 'update', appointment.cabinetId, false);
@@ -417,6 +426,10 @@ export class AppointmentService {
       }
 
       // Validate delete permission for the appointment's cabinet
+      if (!appointment.cabinetId) {
+        return { success: false, error: 'Appointment cabinet not defined' };
+      }
+      
       const validation = this.accessControl.validateAppointmentOperation(userContext, appointment.cabinetId, 'delete');
       if (!validation.allowed) {
         this.accessControl.logAccess(userContext, 'appointments', 'delete', appointment.cabinetId, false);
@@ -453,7 +466,7 @@ export class AppointmentService {
           id: appointment.id,
           title: `${appointment.title}`,
           start: appointment.scheduledAt,
-          end: new Date(appointment.scheduledAt.getTime() + appointment.duration * 60 * 1000),
+          end: new Date(appointment.scheduledAt.getTime() + (appointment.duration || appointment.durationMinutes || 30) * 60 * 1000),
           status: appointment.status,
           patientName,
           serviceType: appointment.serviceType,
@@ -522,7 +535,7 @@ export class AppointmentService {
 
         // Check practitioner conflict if specified
         if (practitionerId && appointment.practitionerId === practitionerId) {
-          const appointmentEnd = new Date(appointment.scheduledAt.getTime() + appointment.duration * 60 * 1000);
+          const appointmentEnd = new Date(appointment.scheduledAt.getTime() + (appointment.duration || appointment.durationMinutes || 30) * 60 * 1000);
           
           // Check for time overlap
           return (startTime < appointmentEnd && endTime > appointment.scheduledAt);

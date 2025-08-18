@@ -211,7 +211,7 @@ export default function MedicalHistorySection({ patient, onMedicalRecordAdd }: M
               <button
                 key={option.value}
                 type="button"
-                onClick={() => setFilterType(option.value as 'all' | 'consultation' | 'prescription' | 'exam' | 'vaccination')}
+                onClick={() => setFilterType(option.value as MedicalRecord['type'] | 'all')}
                 className={`flex items-center justify-center p-3 rounded-lg text-sm font-medium transition-colors ${
                   filterType === option.value
                     ? 'bg-blue-100 text-blue-700 border-2 border-blue-300'

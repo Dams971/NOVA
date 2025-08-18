@@ -107,12 +107,12 @@ export default function KPIWidget({ widget, kpis }: KPIWidgetProps) {
       case 'totalPatients':
         return 'text-green-600 bg-green-100';
       case 'noShowRate':
-        const rate = parseFloat(value);
+        const rate = value;
         if (rate > 15) return 'text-red-600 bg-red-100';
         if (rate > 10) return 'text-yellow-600 bg-yellow-100';
         return 'text-green-600 bg-green-100';
       case 'appointmentUtilization':
-        const utilization = parseFloat(value);
+        const utilization = value;
         if (utilization > 80) return 'text-green-600 bg-green-100';
         if (utilization > 60) return 'text-yellow-600 bg-yellow-100';
         return 'text-red-600 bg-red-100';
@@ -133,7 +133,8 @@ export default function KPIWidget({ widget, kpis }: KPIWidgetProps) {
   }
 
   const { value, trend } = getKPIValue(widget.config.metric);
-  const iconColorClass = getIconColor(widget.config.metric, value);
+  const numericValue = typeof value === 'string' ? parseFloat(value) : value;
+  const iconColorClass = getIconColor(widget.config.metric, numericValue);
 
   return (
     <div className="h-full">

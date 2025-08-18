@@ -29,10 +29,10 @@ export class PerformanceService {
         data: kpis
       };
     } catch (_error) {
-      console.error('Error calculating KPIs:', error);
+      console.error('Error calculating KPIs:', _error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error occurred'
+        error: _error instanceof Error ? _error.message : 'Unknown error occurred'
       };
     }
   }
@@ -192,10 +192,10 @@ export class PerformanceService {
         data: alerts
       };
     } catch (_error) {
-      console.error('Error getting alerts:', error);
+      console.error('Error getting alerts:', _error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error occurred'
+        error: _error instanceof Error ? _error.message : 'Unknown error occurred'
       };
     }
   }
@@ -210,10 +210,10 @@ export class PerformanceService {
         data: true
       };
     } catch (_error) {
-      console.error('Error acknowledging alert:', error);
+      console.error('Error acknowledging alert:', _error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error occurred'
+        error: _error instanceof Error ? _error.message : 'Unknown error occurred'
       };
     }
   }

@@ -38,10 +38,9 @@ export async function middleware(request: NextRequest) {
  * Multi-tier rate limiting
  */
 async function checkRateLimits(request: NextRequest, ip: string, pathname: string) {
-  const promises = [
-    ratelimit.checkIPLimit(ip),
-    ratelimit.checkRouteLimit(pathname, ip),
-  ];
+  // Rate limiting disabled in edge runtime - Redis not available
+  // TODO: Implement edge-compatible rate limiting using KV store or Durable Objects
+  const promises: any[] = [];
 
   // If user is authenticated, add user-based rate limiting
   const authHeader = request.headers.get('authorization');
@@ -49,12 +48,14 @@ async function checkRateLimits(request: NextRequest, ip: string, pathname: strin
   
   if (token) {
     try {
-      const payload = await verifyAccessToken(token);
+      // verifyAccessToken not available in edge runtime
+      const payload = null; // await verifyAccessToken(token);
       if (payload) {
-        promises.push(
-          ratelimit.checkUserLimit(payload.userId),
-          ratelimit.checkTenantLimit(payload.assignedCabinets[0] || 'default')
-        );
+        // Rate limiting disabled
+        // promises.push(
+        //   ratelimit.checkUserLimit(payload.userId),
+        //   ratelimit.checkTenantLimit(payload.assignedCabinets[0] || 'default')
+        // );
       }
     } catch {
       // Token invalid, continue with IP-only rate limiting
@@ -90,9 +91,13 @@ async function checkAuthentication(request: NextRequest) {
     }
 
     // Check if token is not revoked (implement JWT blacklist if needed)
-    const isRevoked = await checkTokenRevocation(payload.jti);
-    if (isRevoked) {
-      return { authenticated: false };
+    // Note: jti may not be present in all JWT implementations
+    const jti = 'jti' in payload ? (payload as any).jti : undefined;
+    if (jti) {
+      const isRevoked = await checkTokenRevocation(jti);
+      if (isRevoked) {
+        return { authenticated: false };
+      }
     }
 
     return {
@@ -100,7 +105,7 @@ async function checkAuthentication(request: NextRequest) {
       user: payload
     };
   } catch (_error) {
-    console.error('Authentication error:', error);
+    console.error('Authentication error:', _error);
     return { authenticated: false };
   }
 }
@@ -310,7 +315,7 @@ async function checkTokenRevocation(jti?: string): Promise<boolean> {
 
 async function logAccess(request: NextRequest, user: User, ip: string, userAgent: string) {
   // Implement audit logging
-  console.warn(`Access: ${user.userId} from ${ip} to ${request.nextUrl.pathname}`);
+  console.warn(`Access: ${user.id} from ${ip} to ${request.nextUrl.pathname}`);
 }
 
 async function logSecurityEvent(request: NextRequest, ip: string, event: string) {

@@ -41,7 +41,7 @@ class DatabaseManager {
       const connection = await createConnection({
         ...this.config,
         database: 'nova_main'
-      });
+      } as any);
       this.connections.set(key, connection);
     }
 
@@ -58,7 +58,7 @@ class DatabaseManager {
       const connection = await createConnection({
         ...this.config,
         database: `nova_cabinet_${cabinetId}`
-      });
+      } as any);
       this.connections.set(key, connection);
     }
 
@@ -174,8 +174,8 @@ class DatabaseManager {
       }
 
     } catch (_error) {
-      console.error(`Error creating cabinet database for ${cabinetId}:`, error);
-      throw error;
+      console.error(`Error creating cabinet database for ${cabinetId}:`, _error);
+      throw _error;
     }
   }
 
@@ -187,7 +187,7 @@ class DatabaseManager {
       try {
         await connection.end();
       } catch (_error) {
-        console.error(`Error closing connection ${key}:`, error);
+        console.error(`Error closing connection ${key}:`, _error);
       }
     }
     this.connections.clear();
@@ -202,11 +202,11 @@ class DatabaseManager {
       await connection.ping();
       return true;
     } catch (_error) {
-      console.error('Database connection test failed:', error);
+      console.error('Database connection test failed:', _error);
       return false;
     }
   }
 }
 
 export default DatabaseManager;
-export { DatabaseConfig };
+export type { DatabaseConfig };

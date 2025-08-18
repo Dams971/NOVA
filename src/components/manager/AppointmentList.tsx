@@ -169,7 +169,7 @@ export default function AppointmentList({
       : '';
     
     return (
-      appointment.title.toLowerCase().includes(searchLower) ||
+      (appointment.title?.toLowerCase() || '').includes(searchLower) ||
       patientName.includes(searchLower) ||
       appointment.serviceType.toLowerCase().includes(searchLower) ||
       (appointment.patient?.phone && appointment.patient.phone.includes(searchTerm))
@@ -197,9 +197,9 @@ export default function AppointmentList({
   const handleAppointmentClick = (appointment: AppointmentWithPatient) => {
     const calendarEvent: CalendarEvent = {
       id: appointment.id,
-      title: appointment.title,
+      title: appointment.title || 'Rendez-vous',
       start: appointment.scheduledAt,
-      end: new Date(appointment.scheduledAt.getTime() + appointment.duration * 60 * 1000),
+      end: new Date(appointment.scheduledAt.getTime() + (appointment.duration || appointment.durationMinutes || 30) * 60 * 1000),
       status: appointment.status,
       patientName: appointment.patient 
         ? `${appointment.patient.firstName} ${appointment.patient.lastName}`
@@ -295,7 +295,7 @@ export default function AppointmentList({
                 <div className="flex-1">
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="text-lg font-medium text-gray-900">
-                      {appointment.title}
+                      {appointment.title || 'Rendez-vous'}
                     </h3>
                     <div className="flex items-center space-x-2">
                       {getStatusBadge(appointment.status)}

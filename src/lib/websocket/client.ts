@@ -1,5 +1,20 @@
 import { EventEmitter } from 'events';
-import { WebSocketMessage } from '@/types/websocket';
+
+// Local WebSocket message type for the chat client
+interface ClientWebSocketMessage {
+  type: 'welcome' | 'message' | 'error' | 'typing' | 'status' | 'ping' | 'pong' | 'appointment_created' | 'appointment_updated';
+  sessionId?: string;
+  id?: string;
+  userId?: string;
+  message?: string;
+  timestamp?: number | string;
+  isBot?: boolean;
+  isTyping?: boolean;
+  suggestedReplies?: string[];
+  metadata?: any;
+  data?: any;
+  appointment?: any;
+}
 
 export interface ChatMessage {
   id: string;
@@ -24,7 +39,7 @@ export class WebSocketClient extends EventEmitter {
   private reconnectAttempts = 0;
   private isConnected = false;
   private sessionId: string | null = null;
-  private messageQueue: WebSocketMessage[] = [];
+  private messageQueue: ClientWebSocketMessage[] = [];
 
   constructor(config: WebSocketConfig = {}) {
     super();
@@ -51,7 +66,9 @@ export class WebSocketClient extends EventEmitter {
           // Process queued messages
           while (this.messageQueue.length > 0) {
             const msg = this.messageQueue.shift();
-            this.send(msg);
+            if (msg) {
+              this.send(msg);
+            }
           }
           
           resolve();
@@ -62,7 +79,7 @@ export class WebSocketClient extends EventEmitter {
             const data = JSON.parse(event.data);
             this.handleMessage(data);
           } catch (_error) {
-            console.error('Failed to parse WebSocket message:', error);
+            console.error('Failed to parse WebSocket message:', _error);
           }
         };
 
@@ -98,20 +115,20 @@ export class WebSocketClient extends EventEmitter {
     }, this.config.reconnectInterval);
   }
 
-  private handleMessage(data: WebSocketMessage): void {
+  private handleMessage(data: ClientWebSocketMessage): void {
     switch (data.type) {
       case 'welcome':
-        this.sessionId = data.sessionId;
+        this.sessionId = data.sessionId || '';
         this.emit('welcome', data);
         break;
         
       case 'message':
         const message: ChatMessage = {
-          id: data.id,
+          id: data.id || '',
           userId: data.userId,
-          message: data.message,
-          timestamp: new Date(data.timestamp),
-          isBot: data.isBot,
+          message: data.message || '',
+          timestamp: new Date(data.timestamp || Date.now()),
+          isBot: data.isBot || false,
           suggestedReplies: data.suggestedReplies,
           metadata: data.metadata
         };
@@ -139,7 +156,7 @@ export class WebSocketClient extends EventEmitter {
     }
   }
 
-  send(data: WebSocketMessage): void {
+  send(data: ClientWebSocketMessage): void {
     if (!this.isConnected) {
       this.messageQueue.push(data);
       return;
@@ -156,7 +173,7 @@ export class WebSocketClient extends EventEmitter {
     this.send({
       type: 'message',
       message,
-      sessionId: this.sessionId,
+      sessionId: this.sessionId || undefined,
       timestamp: new Date().toISOString()
     });
   }
@@ -165,7 +182,7 @@ export class WebSocketClient extends EventEmitter {
     this.send({
       type: 'typing',
       isTyping,
-      sessionId: this.sessionId
+      sessionId: this.sessionId || undefined
     });
   }
 

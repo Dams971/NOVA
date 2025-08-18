@@ -7,7 +7,7 @@ export interface DatabaseConfig {
   user: string;
   password: string;
   database: string;
-  ssl?: boolean;
+  ssl?: any;
   connectionLimit?: number;
   acquireTimeout?: number;
   timeout?: number;
@@ -42,7 +42,7 @@ let pool: mysql.Pool | null = null;
 export const getPool = (): mysql.Pool => {
   if (!pool) {
     const config = getDatabaseConfig();
-    pool = mysql.createPool(config);
+    pool = mysql.createPool(config as any);
   }
   return pool;
 };
@@ -56,7 +56,7 @@ export const testConnection = async (): Promise<boolean> => {
     console.warn('✅ Database connection successful');
     return true;
   } catch (_error) {
-    console.error('❌ Database connection failed:', error);
+    console.error('❌ Database connection failed:', _error);
     return false;
   }
 };

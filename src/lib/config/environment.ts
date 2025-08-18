@@ -235,8 +235,10 @@ class EnvironmentManager {
         errors.push('JWT_REFRESH_SECRET must be set in production');
       }
       
-      if (!this.config.database.password) {
-        errors.push('DB_PASSWORD must be set in production');
+      // Only require DB_PASSWORD if not using Supabase
+      const hasSupabase = process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+      if (!hasSupabase && !this.config.database.password) {
+        errors.push('DB_PASSWORD must be set in production (or use Supabase)');
       }
     }
 

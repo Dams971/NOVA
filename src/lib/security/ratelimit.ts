@@ -27,9 +27,8 @@ class RateLimiter {
 
   constructor() {
     this.redis = new Redis(env.REDIS_URL, {
-      retryDelayOnFailover: 100,
       enableReadyCheck: false,
-      maxRetriesPerRequest: null,
+      maxRetriesPerRequest: null as any,
     });
 
     this.defaultConfig = {
@@ -93,7 +92,7 @@ class RateLimiter {
         totalHits: current + tokens,
       };
     } catch (_error) {
-      console.error('Rate limiter error:', error);
+      console.error('Rate limiter error:', _error);
       // Fail open for Redis errors
       return {
         allowed: true,
@@ -229,7 +228,7 @@ class RateLimiter {
         await this.redis.del(...keys);
       }
     } catch (_error) {
-      console.error('Rate limiter reset error:', error);
+      console.error('Rate limiter reset error:', _error);
     }
   }
 
@@ -254,7 +253,7 @@ class RateLimiter {
       
       return { current, resetTime };
     } catch (_error) {
-      console.error('Rate limiter usage check error:', error);
+      console.error('Rate limiter usage check error:', _error);
       return { current: 0, resetTime: new Date() };
     }
   }
@@ -267,7 +266,7 @@ class RateLimiter {
       await this.redis.ping();
       return true;
     } catch (_error) {
-      console.error('Rate limiter health check failed:', error);
+      console.error('Rate limiter health check failed:', _error);
       return false;
     }
   }
@@ -283,5 +282,4 @@ class RateLimiter {
 // Export singleton instance
 export const ratelimit = new RateLimiter();
 
-// Export types
-export type { RateLimitConfig, RateLimitResult };
+// RateLimitConfig and RateLimitResult are already exported above

@@ -159,10 +159,10 @@ export default function AppointmentForm({
         patientId: appointment.patientId,
         practitionerId: appointment.practitionerId || '',
         serviceType: appointment.serviceType,
-        title: appointment.title,
+        title: appointment.title || '',
         description: appointment.description || '',
         scheduledAt: format(appointment.scheduledAt, "yyyy-MM-dd'T'HH:mm"),
-        duration: appointment.duration,
+        duration: appointment.duration || appointment.durationMinutes || 30,
         status: appointment.status,
         notes: appointment.notes || '',
         price: appointment.price || 0,
@@ -282,6 +282,9 @@ export default function AppointmentForm({
         break;
       }
 
+      const appointmentDate = new Date(currentDate);
+      const endTime = new Date(appointmentDate.getTime() + (data.duration * 60 * 1000));
+      
       appointments.push({
         cabinetId,
         patientId: data.patientId,
@@ -289,7 +292,10 @@ export default function AppointmentForm({
         serviceType: data.serviceType,
         title: `${data.title} (${i + 1}/${maxOccurrences})`,
         description: data.description || undefined,
-        scheduledAt: new Date(currentDate),
+        scheduledAt: appointmentDate,
+        startUtc: appointmentDate,
+        endUtc: endTime,
+        timezone: 'UTC',
         duration: data.duration,
         notes: data.notes || undefined,
         price: data.price || undefined
@@ -411,6 +417,8 @@ export default function AppointmentForm({
           }
         } else {
           // Create single appointment
+          const endTime = new Date(scheduledAt.getTime() + (formData.duration * 60 * 1000));
+          
           const createData: CreateAppointmentRequest = {
             cabinetId,
             patientId: formData.patientId,
@@ -419,6 +427,9 @@ export default function AppointmentForm({
             title: formData.title,
             description: formData.description || undefined,
             scheduledAt,
+            startUtc: scheduledAt,
+            endUtc: endTime,
+            timezone: 'UTC',
             duration: formData.duration,
             notes: formData.notes || undefined,
             price: formData.price || undefined

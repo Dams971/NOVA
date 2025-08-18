@@ -71,7 +71,7 @@ class JWTManager {
   public async verifyAccessToken(token: string): Promise<JWTPayload | null> {
     try {
       const { payload } = await jwtVerify(token, this.secretKey);
-      return payload as JWTPayload;
+      return payload as unknown as JWTPayload;
     } catch (error) {
       console.error('JWT verification failed:', error);
       return null;

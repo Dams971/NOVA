@@ -85,7 +85,7 @@ export default defineConfig({
     retry: process.env.CI ? 2 : 0,
     
     // Reporter configuration
-    reporter: [
+    reporters: [
       'default',
       'json',
       'html',

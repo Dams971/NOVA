@@ -1,5 +1,8 @@
 import { z } from 'zod';
+import { RowDataPacket } from 'mysql2';
+import { Connection } from 'mysql2/promise';
 import { db } from '@/lib/database/postgresql-connection';
+import DatabaseManager from '@/lib/database/connection';
 import { Problems } from '@/lib/http/problem';
 
 /**
@@ -179,7 +182,8 @@ export class CabinetTools {
     const validated = GetInfoSchema.parse(params);
     
     // Get cabinet info from main database
-    const mainConnection = await createConnection();
+    const dbManager = DatabaseManager.getInstance();
+    const mainConnection = await dbManager.getMainConnection();
     
     try {
       const [rows] = await mainConnection.execute<RowDataPacket[]>(
@@ -223,7 +227,7 @@ export class CabinetTools {
    * Get business hours and current status
    */
   async getBusinessHours(params: GetBusinessHoursParams): Promise<BusinessHours> {
-    const validated = GetBusinessHoursParams.parse(params);
+    const validated = GetBusinessHoursSchema.parse(params);
     
     const cabinetInfo = await this.getInfo({ tenantId: validated.tenantId });
     const businessHours = cabinetInfo.businessHours;
@@ -431,7 +435,8 @@ export class CabinetTools {
 
   private async getTenantConnection(tenantId: string): Promise<Connection> {
     // Get tenant database name from main database
-    const mainConnection = await createConnection();
+    const dbManager = DatabaseManager.getInstance();
+    const mainConnection = await dbManager.getMainConnection();
     
     try {
       const [rows] = await mainConnection.execute<RowDataPacket[]>(
@@ -444,7 +449,7 @@ export class CabinetTools {
       }
 
       const databaseName = rows[0].database_name;
-      return await createConnection(databaseName);
+      return await dbManager.getCabinetConnection(tenantId);
 
     } finally {
       await mainConnection.end();
@@ -474,7 +479,7 @@ export class CabinetTools {
       return `${dayAfter.toLocaleDateString('fr-FR')} matin`;
 
     } catch (_error) {
-      console.error('Error getting next availability:', error);
+      console.error('Error getting next availability:', _error);
       return undefined;
     }
   }

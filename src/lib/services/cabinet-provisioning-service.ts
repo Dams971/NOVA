@@ -171,7 +171,7 @@ export class CabinetProvisioningService {
         data: { cabinet, deployment }
       };
     } catch (_error) {
-      console.error('Cabinet provisioning failed:', error);
+      console.error('Cabinet provisioning failed:', _error);
       
       // Handle rollback if enabled
       if (options.enableRollback !== false) {
@@ -180,7 +180,7 @@ export class CabinetProvisioningService {
       
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown provisioning error'
+        error: _error instanceof Error ? _error.message : 'Unknown provisioning error'
       };
     }
   }
@@ -420,7 +420,7 @@ export class CabinetProvisioningService {
           try {
             await step.rollbackAction();
           } catch (_error) {
-            console.error(`Rollback failed for step ${step.id}:`, error);
+            console.error(`Rollback failed for step ${step.id}:`, _error);
             // Continue with other rollback actions
           }
         }
@@ -434,10 +434,10 @@ export class CabinetProvisioningService {
         data: true
       };
     } catch (_error) {
-      console.error('Rollback failed:', error);
+      console.error('Rollback failed:', _error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Rollback failed'
+        error: _error instanceof Error ? _error.message : 'Rollback failed'
       };
     }
   }

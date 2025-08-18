@@ -83,7 +83,7 @@ export class EmailService {
    */
   private initializeTransporter(): void {
     try {
-      this.transporter = nodemailer.createTransporter({
+      this.transporter = nodemailer.createTransport({
         host: env.SMTP_HOST,
         port: env.SMTP_PORT,
         secure: env.SMTP_SECURE, // true for 465, false for other ports
@@ -106,7 +106,7 @@ export class EmailService {
       });
 
     } catch (_error) {
-      console.error('Failed to initialize email transporter:', error);
+      console.error('Failed to initialize email transporter:', _error);
     }
   }
 
@@ -145,10 +145,10 @@ export class EmailService {
       };
 
     } catch (_error) {
-      console.error('Email send error:', error);
+      console.error('Email send error:', _error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Failed to send email'
+        error: _error instanceof Error ? _error.message : 'Failed to send email'
       };
     }
   }
@@ -172,10 +172,10 @@ export class EmailService {
       });
 
     } catch (_error) {
-      console.error('Failed to send appointment confirmation:', error);
+      console.error('Failed to send appointment confirmation:', _error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Failed to send confirmation'
+        error: _error instanceof Error ? _error.message : 'Failed to send confirmation'
       };
     }
   }
@@ -199,10 +199,10 @@ export class EmailService {
       });
 
     } catch (_error) {
-      console.error('Failed to send appointment reminder:', error);
+      console.error('Failed to send appointment reminder:', _error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Failed to send reminder'
+        error: _error instanceof Error ? _error.message : 'Failed to send reminder'
       };
     }
   }
@@ -226,10 +226,10 @@ export class EmailService {
       });
 
     } catch (_error) {
-      console.error('Failed to send appointment cancellation:', error);
+      console.error('Failed to send appointment cancellation:', _error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Failed to send cancellation'
+        error: _error instanceof Error ? _error.message : 'Failed to send cancellation'
       };
     }
   }
@@ -256,10 +256,10 @@ export class EmailService {
       });
 
     } catch (_error) {
-      console.error('Failed to send appointment reschedule:', error);
+      console.error('Failed to send appointment reschedule:', _error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Failed to send reschedule notification'
+        error: _error instanceof Error ? _error.message : 'Failed to send reschedule notification'
       };
     }
   }
@@ -801,7 +801,7 @@ ${newParams.cabinetName}
         });
       });
     } catch (_error) {
-      console.error('Email service health check failed:', error);
+      console.error('Email service health check failed:', _error);
       return false;
     }
   }

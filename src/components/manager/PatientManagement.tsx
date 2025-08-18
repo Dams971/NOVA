@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import React, { useState, useCallback, useEffect } from 'react';
 import { Patient, PatientFilters } from '@/lib/models/patient';
-// PatientService is used via API calls and hooks
+import { PatientService } from '@/lib/services/patient-service';
 import PatientDetail from './PatientDetail';
 import PatientFiltersPanel from './PatientFiltersPanel';
 import PatientForm from './PatientForm';

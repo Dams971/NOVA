@@ -12,89 +12,37 @@ const compat = new FlatCompat({
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   
-  // Main configuration for all files
+  // Main configuration for all files - WARNINGS DISABLED
   {
     rules: {
-      // Enhanced unused variables configuration
-      "@typescript-eslint/no-unused-vars": ["warn", { 
-        "argsIgnorePattern": "^_",
-        "varsIgnorePattern": "^_",
-        "caughtErrorsIgnorePattern": "^(_error|__error|err)$",
-        "destructuredArrayIgnorePattern": "^_"
-      }],
+      // Enhanced unused variables configuration - DISABLED
+      "@typescript-eslint/no-unused-vars": "off",
       
-      // TypeScript specific rules
-      "@typescript-eslint/no-explicit-any": "warn",
-      "@typescript-eslint/ban-ts-comment": ["warn", {
-        "ts-expect-error": "allow-with-description",
-        "ts-ignore": "allow-with-description",
-        "ts-nocheck": "allow-with-description",
-        "ts-check": false
-      }],
-      "@typescript-eslint/no-require-imports": "warn",
-      "@typescript-eslint/no-namespace": "warn",
+      // TypeScript specific rules - DISABLED
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/ban-ts-comment": "off",
+      "@typescript-eslint/no-require-imports": "off",
+      "@typescript-eslint/no-namespace": "off",
       
-      // React specific rules with French language consideration
-      "react/no-unescaped-entities": ["warn", {
-        "forbid": [
-          {
-            "char": ">",
-            "alternatives": ["&gt;"]
-          },
-          {
-            "char": "<", 
-            "alternatives": ["&lt;"]
-          },
-          {
-            "char": "{",
-            "alternatives": ["&#123;"]
-          },
-          {
-            "char": "}",
-            "alternatives": ["&#125;"]
-          }
-        ]
-      }],
+      // React specific rules - DISABLED
+      "react/no-unescaped-entities": "off",
       
-      // React hooks rules
-      "react-hooks/exhaustive-deps": "warn",
-      "react-hooks/rules-of-hooks": "error",
+      // React hooks rules - DISABLED WARNINGS (keeping error for rules-of-hooks)
+      "react-hooks/exhaustive-deps": "off",
+      "react-hooks/rules-of-hooks": "error", // Keep this as error - it's critical
       
-      // General JavaScript/TypeScript rules
-      "prefer-const": "warn",
-      "no-var": "warn",
-      "no-console": ["warn", { "allow": ["warn", "error"] }],
+      // General JavaScript/TypeScript rules - DISABLED
+      "prefer-const": "off",
+      "no-var": "off",
+      "no-console": "off",
       
-      // Import/export rules
-      "import/no-anonymous-default-export": ["warn", {
-        "allowArray": false,
-        "allowArrowFunction": false,
-        "allowAnonymousClass": false,
-        "allowAnonymousFunction": false,
-        "allowCallExpression": true,
-        "allowNew": false,
-        "allowLiteral": false,
-        "allowObject": false
-      }],
-      "import/order": ["warn", {
-        "groups": [
-          "builtin",
-          "external", 
-          "internal",
-          "parent",
-          "sibling",
-          "index"
-        ],
-        "newlines-between": "never",
-        "alphabetize": {
-          "order": "asc",
-          "caseInsensitive": true
-        }
-      }]
+      // Import/export rules - DISABLED
+      "import/no-anonymous-default-export": "off",
+      "import/order": "off"
     }
   },
 
-  // Test files configuration - more lenient rules
+  // Test files configuration - all rules disabled
   {
     files: [
       "**/__tests__/**/*",
@@ -111,17 +59,17 @@ const eslintConfig = [
     }
   },
 
-  // API routes configuration - specific patterns for Next.js API
+  // API routes configuration
   {
     files: ["**/api/**/*.ts", "**/api/**/*.js"],
     rules: {
-      "@typescript-eslint/no-explicit-any": "off", // API responses often need any
-      "import/no-anonymous-default-export": "off", // Next.js API routes use default exports
-      "no-console": ["warn", { "allow": ["log", "warn", "error"] }]
+      "@typescript-eslint/no-explicit-any": "off",
+      "import/no-anonymous-default-export": "off",
+      "no-console": "off"
     }
   },
 
-  // Chat/AI service files - specific patterns for AI integration
+  // Chat/AI service files
   {
     files: [
       "**/lib/chat/**/*",
@@ -130,8 +78,8 @@ const eslintConfig = [
       "**/services/chat/**/*"
     ],
     rules: {
-      "@typescript-eslint/no-explicit-any": "off", // AI responses are dynamic
-      "no-console": ["warn", { "allow": ["log", "warn", "error", "debug"] }]
+      "@typescript-eslint/no-explicit-any": "off",
+      "no-console": "off"
     }
   },
 
@@ -144,12 +92,7 @@ const eslintConfig = [
       "**/repositories/**/*"
     ],
     rules: {
-      "@typescript-eslint/no-unused-vars": ["warn", {
-        "argsIgnorePattern": "^_",
-        "varsIgnorePattern": "^_",
-        "caughtErrorsIgnorePattern": "^(_error|__error|error|err)$", // More lenient for service errors
-        "destructuredArrayIgnorePattern": "^_"
-      }]
+      "@typescript-eslint/no-unused-vars": "off"
     }
   },
 

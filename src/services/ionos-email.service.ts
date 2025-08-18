@@ -5,7 +5,7 @@
  * Sends appointment confirmations and OTP emails
  */
 
-import nodemailer from 'nodemailer';
+import nodemailer, { Transporter } from 'nodemailer';
 import { supabase } from '@/lib/supabase/client';
 
 // Email configuration from environment
@@ -20,7 +20,7 @@ const emailConfig = {
 
 // Create reusable transporter
 const createTransporter = () => {
-  return nodemailer.createTransporter({
+  return nodemailer.createTransport({
     host: emailConfig.host,
     port: emailConfig.port,
     secure: emailConfig.secure,
@@ -46,7 +46,7 @@ export interface AppointmentEmailData {
 }
 
 export class IONOSEmailService {
-  private transporter: unknown;
+  private transporter: Transporter | null = null;
 
   constructor() {
     if (typeof window === 'undefined') {
@@ -79,6 +79,9 @@ export class IONOSEmailService {
       };
 
       // Send email
+      if (!this.transporter) {
+        throw new Error('Email transporter not initialized');
+      }
       const info = await this.transporter.sendMail(mailOptions);
 
       // Log in database
@@ -189,9 +192,12 @@ Cité 109, Daboussy El Achour, Alger
         subject: 'Code de vérification envoyé - Cabinet NOVA',
         html,
         text,
-        priority: 'high'
+        priority: 'high' as const
       };
 
+      if (!this.transporter) {
+        throw new Error('Email transporter not initialized');
+      }
       await this.transporter.sendMail(mailOptions);
       return true;
     } catch (error) {
@@ -217,9 +223,12 @@ Cité 109, Daboussy El Achour, Alger
         subject: 'Code de vérification - Cabinet NOVA',
         html,
         text,
-        priority: 'high'
+        priority: 'high' as const
       };
 
+      if (!this.transporter) {
+        throw new Error('Email transporter not initialized');
+      }
       await this.transporter.sendMail(mailOptions);
       return true;
     } catch (error) {

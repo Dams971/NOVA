@@ -4,7 +4,7 @@ import React from 'react';
 
 interface VisuallyHiddenProps {
   children: React.ReactNode;
-  as?: keyof JSX.IntrinsicElements;
+  as?: keyof React.JSX.IntrinsicElements;
   className?: string;
 }
 
@@ -15,10 +15,12 @@ interface VisuallyHiddenProps {
  */
 export default function VisuallyHidden({ 
   children, 
-  as: Component = 'span',
+  as = 'span',
   className = '',
   ...props 
 }: VisuallyHiddenProps & React.HTMLAttributes<HTMLElement>) {
+  const Component = as as React.ElementType;
+  
   return (
     <Component
       className={`sr-only ${className}`}

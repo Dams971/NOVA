@@ -13,7 +13,7 @@ interface PatientFiltersPanelProps {
 export default function PatientFiltersPanel({ filters, onFiltersChange, onClose }: PatientFiltersPanelProps) {
   const [localFilters, setLocalFilters] = useState<PatientFilters>(filters);
 
-  const handleFilterChange = (key: keyof PatientFilters, value: string | number | boolean | undefined) => {
+  const handleFilterChange = (key: keyof PatientFilters, value: string | number | boolean | Date | undefined) => {
     const newFilters = { ...localFilters, [key]: value };
     setLocalFilters(newFilters);
   };

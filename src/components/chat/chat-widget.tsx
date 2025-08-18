@@ -189,7 +189,7 @@ export default function ChatWidget({
         websocketRef.current.close();
       }
     };
-  }, [minimized]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [minimized]);
 
   // Connect to WebSocket server
   const connectWebSocket = useCallback(() => {
@@ -240,7 +240,7 @@ export default function ChatWidget({
       console.error('Failed to connect WebSocket:', _error);
       setConnectionStatus('error');
     }
-  }, [sessionId, userId, tenantId, userRole, userEmail, minimized]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [sessionId, userId, tenantId, userRole, userEmail, minimized]);
 
   // Handle WebSocket messages
   const handleWebSocketMessage = useCallback((message: Record<string, unknown>) => {
@@ -274,7 +274,7 @@ export default function ChatWidget({
       default:
         console.warn('Unknown message type:', message.type);
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   // Handle chat response from server
   const handleChatResponse = useCallback((responseData: ChatResponse) => {

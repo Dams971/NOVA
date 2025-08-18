@@ -25,7 +25,7 @@ export default function FormField({
   className,
   helpText
 }: FormFieldProps) {
-  const fieldId = children.props.id || `field-${Math.random().toString(36).substr(2, 9)}`;
+  const fieldId = (children.props as any)?.id || `field-${Math.random().toString(36).substr(2, 9)}`;
   const errorId = error ? `${fieldId}-error` : undefined;
   const hintId = hint ? `${fieldId}-hint` : undefined;
   const helpId = helpText ? `${fieldId}-help` : undefined;
@@ -59,13 +59,13 @@ export default function FormField({
       )}
       
       {/* Form control with enhanced props */}
-      {React.cloneElement(children, {
+      {React.cloneElement(children as React.ReactElement<any>, {
         id: fieldId,
         'aria-invalid': !!error,
         'aria-describedby': describedBy || undefined,
         'aria-required': required,
         className: cn(
-          children.props.className,
+          (children.props as any)?.className,
           'touch-target',
           error && 'field-error',
           success && 'border-green-500 focus:ring-green-500'

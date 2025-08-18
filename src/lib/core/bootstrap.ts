@@ -135,7 +135,7 @@ class Bootstrap {
         process.exit(0);
 
       } catch (_error) {
-        this.logger.error('Error during graceful shutdown', error);
+        this.logger.error('Error during graceful shutdown', _error);
         process.exit(1);
       }
     };
@@ -182,13 +182,13 @@ class Bootstrap {
       this.logger.info(`Cabinet database created successfully: ${cabinetId}`);
       
     } catch (_error) {
-      this.logger.error(`Failed to create cabinet database: ${cabinetId}`, error);
+      this.logger.error(`Failed to create cabinet database: ${cabinetId}`, _error);
       
       // Record failure metric
       const metrics = MetricsCollector.getInstance();
       metrics.recordCabinetEvent('creation', cabinetId, false);
       
-      throw error;
+      throw _error;
     }
   }
 

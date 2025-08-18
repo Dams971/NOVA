@@ -193,8 +193,9 @@ export class NotificationService {
       let transitionsProcessed = 0;
 
       // Get all active appointments for the cabinet
-      const appointmentsResult = await appointmentService.getAppointments(cabinetId, {
-        status: [AppointmentStatus.SCHEDULED, AppointmentStatus.CONFIRMED, AppointmentStatus.IN_PROGRESS]
+      const appointmentsResult = await appointmentService.getAppointments({
+        cabinetId,
+        status: AppointmentStatus.SCHEDULED
       });
 
       if (!appointmentsResult.success || !appointmentsResult.data) {
@@ -242,8 +243,9 @@ export class NotificationService {
       let remindersCreated = 0;
 
       // Get upcoming appointments
-      const appointmentsResult = await appointmentService.getAppointments(cabinetId, {
-        status: [AppointmentStatus.SCHEDULED, AppointmentStatus.CONFIRMED],
+      const appointmentsResult = await appointmentService.getAppointments({
+        cabinetId,
+        status: AppointmentStatus.SCHEDULED,
         dateFrom: now,
         dateTo: new Date(now.getTime() + 2 * 60 * 60 * 1000) // Next 2 hours
       });

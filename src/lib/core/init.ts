@@ -17,8 +17,8 @@ export async function initializeNovaPlatform(): Promise<void> {
     }
     
   } catch (_error) {
-    console.error('Failed to initialize Nova Platform:', error);
-    throw error;
+    console.error('Failed to initialize Nova Platform:', _error);
+    throw _error;
   }
 }
 

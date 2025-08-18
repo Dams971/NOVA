@@ -25,7 +25,7 @@ export function AriaLiveRegion({
   className
 }: AriaLiveRegionProps) {
   const [displayMessage, setDisplayMessage] = useState('')
-  const timeoutRef = useRef<NodeJS.Timeout>()
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
     if (timeoutRef.current) {
@@ -240,7 +240,7 @@ export function EmergencyAnnouncer({
   className
 }: EmergencyAnnouncerProps) {
   const [currentMessage, setCurrentMessage] = useState('')
-  const intervalRef = useRef<NodeJS.Timeout>()
+  const intervalRef = useRef<NodeJS.Timeout | null>(null)
 
   const levelPrefixes = {
     critical: 'ALERTE CRITIQUE',
@@ -286,7 +286,7 @@ export function EmergencyAnnouncer({
 
 interface ScreenReaderOnlyProps {
   children: React.ReactNode
-  as?: keyof JSX.IntrinsicElements
+  as?: keyof React.JSX.IntrinsicElements
   className?: string
 }
 

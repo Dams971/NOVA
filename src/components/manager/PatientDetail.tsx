@@ -37,12 +37,6 @@ export default function PatientDetail({ patient, onEdit, onClose }: PatientDetai
   const _patientService = PatientService.getInstance();
   const communicationService = PatientCommunicationService.getInstance();
 
-  useEffect(() => {
-    if (activeTab === 'communication') {
-      loadCommunicationHistory();
-    }
-  }, [activeTab, patient.id, loadCommunicationHistory]);
-
   const loadCommunicationHistory = useCallback(async () => {
     setLoading(true);
     try {
@@ -51,11 +45,17 @@ export default function PatientDetail({ patient, onEdit, onClose }: PatientDetai
         setCommunicationHistory(result.data);
       }
     } catch (_error) {
-      console.error('Failed to load communication history:', error);
+      console.error('Failed to load communication history:', _error);
     } finally {
       setLoading(false);
     }
   }, [patient.id, communicationService]);
+
+  useEffect(() => {
+    if (activeTab === 'communication') {
+      loadCommunicationHistory();
+    }
+  }, [activeTab, patient.id, loadCommunicationHistory]);
 
   const getAge = (dateOfBirth: Date) => {
     const today = new Date();

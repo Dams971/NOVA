@@ -7,7 +7,7 @@
 
 import '@testing-library/jest-dom';
 import { cleanup } from '@testing-library/react';
-import { afterEach, beforeAll, vi } from 'vitest';
+import { afterEach, beforeAll, vi, expect } from 'vitest';
 import 'jest-axe/extend-expect';
 
 // Clean up after each test
@@ -86,13 +86,18 @@ beforeAll(() => {
 
   // Mock Web APIs
   global.fetch = vi.fn();
-  global.WebSocket = vi.fn().mockImplementation(() => ({
+  const WebSocketMock: any = vi.fn().mockImplementation(() => ({
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
     send: vi.fn(),
     close: vi.fn(),
     readyState: 1,
   }));
+  WebSocketMock.CONNECTING = 0;
+  WebSocketMock.OPEN = 1;
+  WebSocketMock.CLOSING = 2;
+  WebSocketMock.CLOSED = 3;
+  global.WebSocket = WebSocketMock;
 
   // Mock localStorage
   const localStorageMock = {
@@ -199,12 +204,12 @@ export const createTestCabinet = (overrides = {}) => ({
 
 // Accessibility test helpers
 export const checkAccessibility = async (container: HTMLElement) => {
-  const { toHaveNoViolations } = await import('jest-axe');
+  const { toHaveNoViolations } = await import('jest-axe' as any);
   expect.extend(toHaveNoViolations);
   
-  const { axe } = await import('jest-axe');
+  const { axe } = await import('jest-axe' as any);
   const results = await axe(container);
-  expect(results).toHaveNoViolations();
+  (expect(results) as any).toHaveNoViolations();
 };
 
 // Custom render function with providers

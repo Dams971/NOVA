@@ -4,6 +4,7 @@ import {
   UpdatePatientRequest, 
   PatientFilters,
   MedicalRecord,
+  Gender,
   createPatient 
 } from '@/lib/models/patient';
 import { CabinetAccessControl, UserContext } from './cabinet-access-control';
@@ -76,7 +77,7 @@ export class PatientService {
         email: 'marie.dubois@email.com',
         phone: '+33123456789',
         dateOfBirth: new Date('1985-03-15'),
-        gender: 'female',
+        gender: Gender.FEMALE,
         address: {
           street: '123 Rue de la Paix',
           city: 'Paris',
@@ -128,7 +129,7 @@ export class PatientService {
         email: 'pierre.martin@email.com',
         phone: '+33987654321',
         dateOfBirth: new Date('1978-11-22'),
-        gender: 'male',
+        gender: Gender.MALE,
         address: {
           street: '456 Avenue des Champs',
           city: 'Lyon',
@@ -165,7 +166,7 @@ export class PatientService {
         email: 'sophie.leroy@email.com',
         phone: '+33456789123',
         dateOfBirth: new Date('1992-07-08'),
-        gender: 'female',
+        gender: Gender.FEMALE,
         medicalHistory: [],
         preferences: {
           preferredLanguage: 'fr',
@@ -324,7 +325,16 @@ export class PatientService {
 
       const updatedPatient: Patient = {
         ...patient,
-        ...data,
+        firstName: data.firstName ?? patient.firstName,
+        lastName: data.lastName ?? patient.lastName,
+        email: data.email ?? patient.email,
+        phone: data.phone ?? patient.phone,
+        dateOfBirth: data.dateOfBirth ?? patient.dateOfBirth,
+        gender: data.gender ?? patient.gender,
+        address: data.address ?? patient.address,
+        emergencyContact: data.emergencyContact ?? patient.emergencyContact,
+        preferences: data.preferences ? { ...patient.preferences, ...data.preferences } : patient.preferences,
+        isActive: data.isActive ?? patient.isActive,
         updatedAt: new Date()
       };
 

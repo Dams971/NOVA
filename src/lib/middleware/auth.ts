@@ -96,7 +96,7 @@ export function withRateLimit(maxRequests: number = 100, windowMs: number = 6000
 
   return function(handler: (req: AuthenticatedRequest) => Promise<NextResponse>) {
     return async (req: AuthenticatedRequest): Promise<NextResponse> => {
-      const clientId = req.auth?.user.userId || req.ip || 'anonymous';
+      const clientId = req.auth?.user.userId || (req as any).ip || 'anonymous';
       const now = Date.now();
       const windowStart = now - windowMs;
 

@@ -47,7 +47,7 @@ const toolsV2 = [
     name: "rdv_json",
     description: "Produire un JSON strict pour gérer les rendez-vous avec état de session.",
     input_schema: {
-      type: "object",
+      type: "object" as const,
       properties: {
         action: {
           type: "string",
@@ -331,11 +331,11 @@ export class AppointmentAssistantV2 {
         c.type === "tool_use" && c.name === "rdv_json"
       );
       
-      if (!toolUse?.input) {
+      if (!toolUse || !('input' in toolUse)) {
         throw new Error("Réponse sans JSON tool_use valide");
       }
       
-      const response = toolUse.input as AppointmentResponseV2;
+      const response = (toolUse as any).input as AppointmentResponseV2;
       
       // Validate required constants
       if (response.clinic_address !== "Cité 109, Daboussy El Achour, Alger") {
@@ -389,7 +389,7 @@ export class AppointmentAssistantV2 {
       return response;
       
     } catch (_error) {
-      console.error("Erreur dans processAppointmentWithSession:", error);
+      console.error("Erreur dans processAppointmentWithSession:", _error);
       
       // Return structured error
       return {

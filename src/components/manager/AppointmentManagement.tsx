@@ -76,13 +76,15 @@ export default function AppointmentManagement({ cabinetId }: AppointmentManageme
       if (!appointment.success || !appointment.data) {
         addNotification({
           type: 'error',
+          category: 'appointment',
           title: 'Erreur',
-          message: 'Rendez-vous introuvable.'
+          message: 'Rendez-vous introuvable.',
+          priority: 'high'
         });
         return;
       }
 
-      const duration = appointment.data.duration;
+      const duration = appointment.data.duration || appointment.data.durationMinutes || 30;
       const availabilityCheck = await appointmentService.checkTimeSlotAvailability(
         cabinetId,
         newDateTime,
@@ -143,10 +145,12 @@ export default function AppointmentManagement({ cabinetId }: AppointmentManageme
     
     addNotification({
       type: 'success',
+      category: 'appointment',
       title: selectedAppointment ? 'Rendez-vous modifié' : 'Rendez-vous créé',
       message: selectedAppointment 
         ? 'Le rendez-vous a été modifié avec succès.'
-        : 'Le nouveau rendez-vous a été créé avec succès.'
+        : 'Le nouveau rendez-vous a été créé avec succès.',
+      priority: 'medium'
     });
   };
 
@@ -187,21 +191,27 @@ export default function AppointmentManagement({ cabinetId }: AppointmentManageme
       if (result.success) {
         addNotification({
           type: 'success',
+          category: 'status_change',
           title: 'Statut mis à jour',
-          message: `Le rendez-vous a été ${actionMessage}.`
+          message: `Le rendez-vous a été ${actionMessage}.`,
+          priority: 'medium'
         });
       } else {
         addNotification({
           type: 'error',
+          category: 'status_change',
           title: 'Erreur',
-          message: result.error || 'Impossible de mettre à jour le statut.'
+          message: result.error || 'Impossible de mettre à jour le statut.',
+          priority: 'high'
         });
       }
     } catch (_error) {
       addNotification({
         type: 'error',
+        category: 'system',
         title: 'Erreur',
-        message: 'Une erreur inattendue s\'est produite.'
+        message: 'Une erreur inattendue s\'est produite.',
+        priority: 'urgent'
       });
     }
   };
@@ -216,21 +226,27 @@ export default function AppointmentManagement({ cabinetId }: AppointmentManageme
       if (result.success) {
         addNotification({
           type: 'success',
+          category: 'appointment',
           title: 'Rendez-vous supprimé',
-          message: 'Le rendez-vous a été supprimé avec succès.'
+          message: 'Le rendez-vous a été supprimé avec succès.',
+          priority: 'medium'
         });
       } else {
         addNotification({
           type: 'error',
+          category: 'appointment',
           title: 'Erreur',
-          message: result.error || 'Impossible de supprimer le rendez-vous.'
+          message: result.error || 'Impossible de supprimer le rendez-vous.',
+          priority: 'high'
         });
       }
     } catch (_error) {
       addNotification({
         type: 'error',
+        category: 'system',
         title: 'Erreur',
-        message: 'Une erreur inattendue s\'est produite.'
+        message: 'Une erreur inattendue s\'est produite.',
+        priority: 'urgent'
       });
     }
   };

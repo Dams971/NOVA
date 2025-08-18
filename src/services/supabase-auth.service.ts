@@ -59,8 +59,8 @@ export class SupabaseAuthService {
         success: true,
         message: 'Un email de connexion a été envoyé. Vérifiez votre boîte mail.',
         requiresVerification: true,
-        user: data.user,
-        session: data.session
+        user: data.user ? (data.user as unknown as Record<string, unknown>) : undefined,
+        session: data.session ? (data.session as unknown as Record<string, unknown>) : undefined
       };
     } catch (error) {
       console.error('SignIn error:', error);
@@ -126,7 +126,7 @@ export class SupabaseAuthService {
       console.error('SignUp error:', error);
       return {
         success: false,
-        message: error.message || 'Erreur lors de l\'inscription'
+        message: (error as Error).message || 'Erreur lors de l\'inscription'
       };
     }
   }
@@ -263,7 +263,7 @@ export class SupabaseAuthService {
       return {
         success: true,
         message: 'Connexion réussie!',
-        user: data.user
+        user: data.user ? (data.user as unknown as Record<string, unknown>) : undefined
       };
     } catch (error) {
       return {

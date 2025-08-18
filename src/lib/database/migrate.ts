@@ -79,8 +79,8 @@ const executeMigration = async (migration: Migration) => {
     console.warn(`✅ Migration ${migration.id} executed successfully`);
   } catch (_error) {
     await connection.rollback();
-    console.error(`❌ Migration ${migration.id} failed:`, error);
-    throw error;
+    console.error(`❌ Migration ${migration.id} failed:`, _error);
+    throw _error;
   } finally {
     connection.release();
   }
@@ -127,8 +127,8 @@ export const runMigrations = async () => {
     
     console.warn('🎉 All migrations completed successfully!');
   } catch (_error) {
-    console.error('💥 Migration failed:', error);
-    throw error;
+    console.error('💥 Migration failed:', _error);
+    throw _error;
   }
 };
 

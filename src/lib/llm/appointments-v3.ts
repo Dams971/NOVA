@@ -97,7 +97,7 @@ const toolsV3 = [
     name: "rdv_json",
     description: "Structured RDV assistant response with enhanced features for welcome UI, out-of-scope detection, and human handoff",
     input_schema: {
-      type: "object",
+      type: "object" as const,
       properties: {
         action: {
           type: "string",
@@ -736,11 +736,11 @@ export class AppointmentAssistantV3 {
         c.type === "tool_use" && c.name === "rdv_json"
       );
       
-      if (!toolUse?.input) {
+      if (!toolUse || !('input' in toolUse)) {
         throw new Error("Réponse sans JSON tool_use valide");
       }
       
-      const response = toolUse.input as AppointmentResponseV3;
+      const response = (toolUse as any).input as AppointmentResponseV3;
       
       // Ensure required constants
       response.clinic_address = "Cité 109, Daboussy El Achour, Alger";
@@ -802,7 +802,7 @@ export class AppointmentAssistantV3 {
       return response;
       
     } catch (_error) {
-      console.error("Erreur dans processAppointmentV3:", error);
+      console.error("Erreur dans processAppointmentV3:", _error);
       
       // Return structured error response
       return {

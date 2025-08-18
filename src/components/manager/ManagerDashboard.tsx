@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { Cabinet } from '@/lib/models/cabinet';
-import { CabinetKPIs, PerformanceAlert, ManagerDashboardLayout } from '@/lib/models/performance';
+import { CabinetKPIs, PerformanceAlert, ManagerDashboardLayout, RealtimeUpdate } from '@/lib/models/performance';
 import { PerformanceService } from '@/lib/services/performance-service';
 import { cn } from '@/lib/utils';
 import AppointmentManagement from './AppointmentManagement';
@@ -28,15 +28,39 @@ export default function ManagerDashboard({ cabinet, userId }: ManagerDashboardPr
 
   const performanceService = PerformanceService.getInstance();
 
-  useEffect(() => {
-    loadDashboardData();
-    setupRealtimeUpdates();
-
-    return () => {
-      // Cleanup real-time subscriptions
-      performanceService.unsubscribeFromUpdates(cabinet.id, handleRealtimeUpdate);
+  const getDefaultDashboardLayout = useCallback((userId: string, cabinetId: string): ManagerDashboardLayout => {
+    return {
+      userId,
+      cabinetId,
+      widgets: [
+        {
+          id: 'appointments-kpi',
+          type: 'kpi',
+          title: 'Rendez-vous',
+          position: { x: 0, y: 0, width: 3, height: 2 },
+          config: { metric: 'totalAppointments', showTrend: true },
+          isVisible: true
+        },
+        {
+          id: 'revenue-chart',
+          type: 'chart',
+          title: 'Revenus',
+          position: { x: 3, y: 0, width: 3, height: 2 },
+          config: { chartType: 'line', timeRange: 'month' },
+          isVisible: true
+        },
+        {
+          id: 'alerts',
+          type: 'alert',
+          title: 'Alertes',
+          position: { x: 6, y: 0, width: 3, height: 2 },
+          config: { alertTypes: ['performance', 'appointment', 'operational'] },
+          isVisible: true
+        }
+      ],
+      updatedAt: new Date()
     };
-  }, [cabinet.id, selectedTimeRange, loadDashboardData, setupRealtimeUpdates, handleRealtimeUpdate, performanceService]);
+  }, []);
 
   const loadDashboardData = useCallback(async () => {
     setLoading(true);
@@ -76,13 +100,13 @@ export default function ManagerDashboard({ cabinet, userId }: ManagerDashboardPr
       setDashboardLayout(getDefaultDashboardLayout(userId, cabinet.id));
 
     } catch (_error) {
-      console.error('Error loading dashboard data:', error);
+      console.error('Error loading dashboard data:', _error);
     } finally {
       setLoading(false);
     }
   }, [cabinet.id, selectedTimeRange, performanceService, getDefaultDashboardLayout, userId]);
 
-  const handleRealtimeUpdate = useCallback((update: { type: string; [key: string]: unknown }) => {
+  const handleRealtimeUpdate = useCallback((update: RealtimeUpdate) => {
     console.warn('Real-time update received:', update);
     // In real implementation, update the relevant state based on update type
     if (update.type === 'kpi') {
@@ -114,63 +138,15 @@ export default function ManagerDashboard({ cabinet, userId }: ManagerDashboardPr
     console.warn('Dashboard layout updated:', newLayout);
   };
 
-  const getDefaultDashboardLayout = useCallback((userId: string, cabinetId: string): ManagerDashboardLayout => {
-    return {
-      userId,
-      cabinetId,
-      widgets: [
-        {
-          id: 'appointments-kpi',
-          type: 'kpi',
-          title: 'Rendez-vous',
-          position: { x: 0, y: 0, width: 3, height: 2 },
-          config: { metric: 'totalAppointments', showTrend: true },
-          isVisible: true
-        },
-        {
-          id: 'revenue-kpi',
-          type: 'kpi',
-          title: 'Chiffre d\'affaires',
-          position: { x: 3, y: 0, width: 3, height: 2 },
-          config: { metric: 'totalRevenue', showTrend: true },
-          isVisible: true
-        },
-        {
-          id: 'patients-kpi',
-          type: 'kpi',
-          title: 'Patients',
-          position: { x: 6, y: 0, width: 3, height: 2 },
-          config: { metric: 'totalPatients', showTrend: true },
-          isVisible: true
-        },
-        {
-          id: 'noshow-rate-kpi',
-          type: 'kpi',
-          title: 'Taux de no-show',
-          position: { x: 9, y: 0, width: 3, height: 2 },
-          config: { metric: 'noShowRate', showTrend: true },
-          isVisible: true
-        },
-        {
-          id: 'appointments-chart',
-          type: 'chart',
-          title: 'Évolution des rendez-vous',
-          position: { x: 0, y: 2, width: 6, height: 4 },
-          config: { chartType: 'line', timeRange: selectedTimeRange },
-          isVisible: true
-        },
-        {
-          id: 'revenue-chart',
-          type: 'chart',
-          title: 'Évolution du chiffre d\'affaires',
-          position: { x: 6, y: 2, width: 6, height: 4 },
-          config: { chartType: 'area', timeRange: selectedTimeRange },
-          isVisible: true
-        }
-      ],
-      updatedAt: new Date()
+  useEffect(() => {
+    loadDashboardData();
+    setupRealtimeUpdates();
+
+    return () => {
+      // Cleanup real-time subscriptions
+      performanceService.unsubscribeFromUpdates(cabinet.id, handleRealtimeUpdate);
     };
-  }, [selectedTimeRange]);
+  }, [cabinet.id, selectedTimeRange, loadDashboardData, setupRealtimeUpdates, handleRealtimeUpdate, performanceService]);
 
   if (loading) {
     return (

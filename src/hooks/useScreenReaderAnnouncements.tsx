@@ -24,7 +24,7 @@ interface Announcement {
 export function useScreenReaderAnnouncements() {
   const [currentAnnouncement, setCurrentAnnouncement] = useState<Announcement | null>(null);
   const [queue, setQueue] = useState<Announcement[]>([]);
-  const timeoutRef = useRef<NodeJS.Timeout>();
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const _lastAnnouncementRef = useRef<string>('');
   const announcementCountRef = useRef<Map<string, number>>(new Map());
 

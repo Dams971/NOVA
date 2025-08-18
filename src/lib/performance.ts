@@ -253,9 +253,8 @@ function observeINP() {
   try {
     observer.observe({ 
       type: 'event', 
-      buffered: true, 
-      durationThreshold: 16 // Only observe events longer than 16ms
-    });
+      buffered: true
+    } as any);
   } catch (e) {
     if (config.enableLogging) {
       console.warn('INP observer not supported:', e);

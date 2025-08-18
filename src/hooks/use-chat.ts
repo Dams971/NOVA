@@ -168,7 +168,6 @@ export function useChat({
       setConnectionStatus('error');
       onError?.(error instanceof Error ? error : new Error('Connection failed'));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [websocketUrl, sessionId, userId, tenantId, userRole, userEmail, onError]);
 
   // Disconnect from WebSocket
@@ -251,7 +250,7 @@ export function useChat({
     }
 
     if (responseData.data?.appointmentId && onAppointmentBooked) {
-      onAppointmentBooked(responseData.data as Appointment);
+      onAppointmentBooked(responseData.data as unknown as Appointment);
     }
   }, [sessionId, onEscalation, onAppointmentBooked]);
 
@@ -261,7 +260,6 @@ export function useChat({
     if (onEscalation) {
       onEscalation(sessionId);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionId, onEscalation]);
 
   // Add system message

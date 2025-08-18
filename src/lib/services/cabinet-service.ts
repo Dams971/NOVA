@@ -98,10 +98,10 @@ export class CabinetService {
         data: cabinet
       };
     } catch (_error) {
-      console.error('Error in getCabinetById:', error);
+      console.error('Error in getCabinetById:', _error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error occurred'
+        error: _error instanceof Error ? _error.message : 'Unknown error occurred'
       };
     }
   }
@@ -122,10 +122,10 @@ export class CabinetService {
         data: cabinet
       };
     } catch (_error) {
-      console.error('Error in getCabinetBySlug:', error);
+      console.error('Error in getCabinetBySlug:', _error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error occurred'
+        error: _error instanceof Error ? _error.message : 'Unknown error occurred'
       };
     }
   }
@@ -139,10 +139,10 @@ export class CabinetService {
         data: cabinets
       };
     } catch (_error) {
-      console.error('Error in getAllCabinets:', error);
+      console.error('Error in getAllCabinets:', _error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error occurred'
+        error: _error instanceof Error ? _error.message : 'Unknown error occurred'
       };
     }
   }
@@ -173,10 +173,10 @@ export class CabinetService {
         data: cabinet
       };
     } catch (_error) {
-      console.error('Error in updateCabinet:', error);
+      console.error('Error in updateCabinet:', _error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error occurred'
+        error: _error instanceof Error ? _error.message : 'Unknown error occurred'
       };
     }
   }
@@ -212,10 +212,10 @@ export class CabinetService {
         data: true
       };
     } catch (_error) {
-      console.error('Error in deleteCabinet:', error);
+      console.error('Error in deleteCabinet:', _error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error occurred'
+        error: _error instanceof Error ? _error.message : 'Unknown error occurred'
       };
     }
   }
@@ -240,10 +240,10 @@ export class CabinetService {
         data: config.configValue
       };
     } catch (_error) {
-      console.error('Error in getCabinetConfig:', error);
+      console.error('Error in getCabinetConfig:', _error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error occurred'
+        error: _error instanceof Error ? _error.message : 'Unknown error occurred'
       };
     }
   }
@@ -265,10 +265,10 @@ export class CabinetService {
         success: true
       };
     } catch (_error) {
-      console.error('Error in setCabinetConfig:', error);
+      console.error('Error in setCabinetConfig:', _error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error occurred'
+        error: _error instanceof Error ? _error.message : 'Unknown error occurred'
       };
     }
   }
@@ -282,10 +282,10 @@ export class CabinetService {
         data: deleted
       };
     } catch (_error) {
-      console.error('Error in deleteCabinetConfig:', error);
+      console.error('Error in deleteCabinetConfig:', _error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error occurred'
+        error: _error instanceof Error ? _error.message : 'Unknown error occurred'
       };
     }
   }
@@ -305,10 +305,10 @@ export class CabinetService {
         data: configObject
       };
     } catch (_error) {
-      console.error('Error in getAllCabinetConfigs:', error);
+      console.error('Error in getAllCabinetConfigs:', _error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error occurred'
+        error: _error instanceof Error ? _error.message : 'Unknown error occurred'
       };
     }
   }
