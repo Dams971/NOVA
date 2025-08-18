@@ -5,8 +5,12 @@ export { default as DatePicker } from './calendar/DatePicker';
 export * from './Skeleton';
 
 // Nova Design System components
-export { ButtonMedical, buttonVariants } from './nova/ButtonMedical';
-export type { ButtonMedicalProps } from './nova/ButtonMedical';
+import { ButtonMedical as ButtonMedicalComponent, buttonVariants as buttonVariantsExport } from './nova/ButtonMedical';
+import type { ButtonMedicalProps as ButtonMedicalPropsType } from './nova/ButtonMedical';
+
+export const ButtonMedical = ButtonMedicalComponent;
+export const buttonVariants = buttonVariantsExport;
+export type ButtonMedicalProps = ButtonMedicalPropsType;
 
 // Utility components - Named exports
 export { ErrorMessage, FieldError, FormError } from './ErrorMessage';
